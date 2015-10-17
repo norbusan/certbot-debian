@@ -1,4 +1,4 @@
-acme==0.0.0.dev20151008
+acme==0.0.0.dev20151017
 ConfigArgParse
 configobj
 cryptography>=0.7
@@ -10,6 +10,7 @@ python2-pythondialog>=3.2.2rc1
 pytz
 requests
 setuptools
+six
 zope.component
 zope.interface
 mock
