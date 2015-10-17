@@ -42,6 +42,8 @@ docs/api/plugins/common.rst
 docs/api/plugins/disco.rst
 docs/api/plugins/manual.rst
 docs/api/plugins/standalone.rst
+docs/api/plugins/util.rst
+docs/api/plugins/webroot.rst
 docs/man/jws.rst
 docs/man/letsencrypt-renewer.rst
 docs/man/letsencrypt.rst
@@ -94,10 +96,12 @@ letsencrypt/plugins/manual.py
 letsencrypt/plugins/manual_test.py
 letsencrypt/plugins/null.py
 letsencrypt/plugins/null_test.py
-letsencrypt/plugins/standalone/__init__.py
-letsencrypt/plugins/standalone/authenticator.py
-letsencrypt/plugins/standalone/tests/__init__.py
-letsencrypt/plugins/standalone/tests/authenticator_test.py
+letsencrypt/plugins/standalone.py
+letsencrypt/plugins/standalone_test.py
+letsencrypt/plugins/util.py
+letsencrypt/plugins/util_test.py
+letsencrypt/plugins/webroot.py
+letsencrypt/plugins/webroot_test.py
 letsencrypt/tests/__init__.py
 letsencrypt/tests/account_test.py
 letsencrypt/tests/achallenges_test.py
