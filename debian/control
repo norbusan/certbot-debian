@@ -23,6 +23,7 @@ Build-Depends:
 	python-requests,
 	python-rfc3339,
 	python-setuptools,
+	python-six,
 	python-sphinx (>= 1.0.7+dfsg-1~),
 	python-sphinxcontrib.programoutput,
 	python-tz,
