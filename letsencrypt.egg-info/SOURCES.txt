@@ -53,7 +53,7 @@ docs/pkgs/letsencrypt_nginx.rst
 docs/pkgs/letshelp_letsencrypt.rst
 docs/pkgs/acme/index.rst
 docs/pkgs/acme/jose.rst
-letsencrypt/EULA
+letsencrypt/DISCLAIMER
 letsencrypt/__init__.py
 letsencrypt/account.py
 letsencrypt/achallenges.py
