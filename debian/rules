@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 
-export PYBUILD_NAME = letsencrypt
+export PYBUILD_INSTALL_ARGS=--install-lib=/usr/share/letsencrypt/
 
 %:
 	dh $@ --with python2,sphinxdoc --buildsystem=pybuild
@@ -9,3 +9,7 @@ override_dh_auto_build:
 	dh_auto_build
 	PYTHONPATH=. http_proxy='127.0.0.1:9' sphinx-build -N -bhtml docs/ build/html
 	PYTHONPATH=. http_proxy='127.0.0.1:9' sphinx-build -N -bman docs/ build/man
+
+override_dh_install:
+	dh_install --fail-missing
+	find $(CURDIR)/debian -type d -name tests -print0 | xargs -0 rm -rf

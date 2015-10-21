@@ -1,0 +1,2 @@
+/usr/share/letsencrypt/letsencrypt.bin /usr/bin/letsencrypt
+/usr/share/letsencrypt/letsencrypt-renewer.bin /usr/bin/letsencrypt-renewer

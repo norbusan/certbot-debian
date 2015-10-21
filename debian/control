@@ -6,6 +6,7 @@ Uploaders: Harlan Lieberman-Berg <hlieberman@setec.io>,
 	   Francois Marier <francois@debian.org>
 Build-Depends:
 	debhelper (>= 9~),
+	dh-exec,
 	dh-python,
 	dialog,
 	python-acme,
@@ -49,15 +50,16 @@ Description: Let's Encrypt main client
  .
  This agent is used to:
  .
- - Automatically prove to the Let's Encrypt CA that you control the website
- - Obtain a browser-trusted certificate and set it up on your web server
- - Keep track of when your certificate is going to expire, and renew it
- - Help you revoke the certificate if that ever becomes necessary.
+   - Automatically prove to the Let's Encrypt CA that you control the website
+   - Obtain a browser-trusted certificate and set it up on your web server
+   - Keep track of when your certificate is going to expire, and renew it
+   - Help you revoke the certificate if that ever becomes necessary.
  .
  This package contains the main client, which includes the manual and
  standalone authenticator mechanisms.
 
 Package: letsencrypt-docs
+Section: doc
 Architecture: all
 Depends: libjs-sphinxdoc, python-sphinx-rtd-theme, ${misc:Depends}
 Description: Let's Encrypt client documentation
@@ -69,9 +71,9 @@ Description: Let's Encrypt client documentation
  .
  This agent is used to:
  .
- - Automatically prove to the Let's Encrypt CA that you control the website
- - Obtain a browser-trusted certificate and set it up on your web server
- - Keep track of when your certificate is going to expire, and renew it
- - Help you revoke the certificate if that ever becomes necessary.
+   - Automatically prove to the Let's Encrypt CA that you control the website
+   - Obtain a browser-trusted certificate and set it up on your web server
+   - Keep track of when your certificate is going to expire, and renew it
+   - Help you revoke the certificate if that ever becomes necessary.
  .
  This package contains the documentation.
