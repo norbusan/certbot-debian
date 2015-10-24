@@ -35,26 +35,29 @@ To install and run the client you just need to type:
 ``letsencrypt``.  ``letsencrypt-auto`` is a wrapper which installs virtualized
 dependencies and provides automated updates during the beta program)
 
-.. warning:: Please do **not** use ``python setup.py install`` or ``sudo pip install`.
-             Those mode of operation might corrupt your operating system and is
-             **not supported** by the Let's Encrypt team!
-
 The ``letsencrypt`` commandline tool has a builtin help:
 
 .. code-block:: shell
 
    ./letsencrypt-auto --help
 
+.. warning:: Please do **not** use ``python setup.py install`` or
+   ``python pip install .``. Please do **not** attempt the
+   installation commands as superuser/root and/or without virtual
+   environment, e.g. ``sudo python setup.py install``, ``sudo pip
+   install``, ``sudo ./venv/bin/...``. These modes of operation might
+   corrupt your operating system and are **not supported** by the
+   Let's Encrypt team!
+
 
 Configuration file
 ------------------
 
 It is possible to specify configuration file with
-``letsencrypt-auto --config cli.ini`` (or shorter ``-c cli.ini``). For
-instance, if you are a contributor, you might find the following
-handy:
+``letsencrypt-auto --config cli.ini`` (or shorter ``-c cli.ini``). An
+example configuration file is shown below:
 
-.. include:: ../examples/dev-cli.ini
+.. include:: ../examples/cli.ini
    :code: ini
 
 By default, the following locations are searched:
