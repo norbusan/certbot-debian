@@ -1,12 +1,11 @@
-Source: letsencrypt
-Section: web
+Source: python-letsencrypt
+Section: python
 Priority: optional
 Maintainer: Debian Let's Encrypt <letsencrypt-devel@lists.alioth.debian.org>
 Uploaders: Harlan Lieberman-Berg <hlieberman@setec.io>,
 	   Francois Marier <francois@debian.org>
 Build-Depends:
 	debhelper (>= 9~),
-	dh-exec,
 	dh-python,
 	dialog,
 	python-acme,
@@ -34,13 +33,37 @@ Standards-Version: 3.9.6
 Homepage: https://www.letsencrypt.org/
 X-Python-Version: >= 2.7
 
+Package: python-letsencrypt
+Architecture: all
+Depends:
+	${python:Depends},
+	${misc:Depends}
+Recommends: letsencrypt
+Description: Let's Encrypt main library
+ The objective of Let's Encrypt and the ACME (Automated Certificate
+ Management Environment) protocol is to make it possible to set up an
+ HTTPS server and have it automatically obtain a browser-trusted
+ certificate, without any human intervention. This is accomplished by
+ running a certificate management agent on the web server.
+ .
+ This agent is used to:
+ .
+   - Automatically prove to the Let's Encrypt CA that you control the website
+   - Obtain a browser-trusted certificate and set it up on your web server
+   - Keep track of when your certificate is going to expire, and renew it
+   - Help you revoke the certificate if that ever becomes necessary.
+ .
+ This package contains the main libraries.
+
 Package: letsencrypt
+Section: web
 Architecture: all
 Depends:
 	dialog,
+	python-letsencrypt,
 	${python:Depends},
 	${misc:Depends}
-Suggests: letsencrypt-apache, letsencrypt-doc
+Suggests: python-letsencrypt-apache, letsencrypt-doc
 Description: Let's Encrypt main client
  The objective of Let's Encrypt and the ACME (Automated Certificate
  Management Environment) protocol is to make it possible to set up an
@@ -55,8 +78,8 @@ Description: Let's Encrypt main client
    - Keep track of when your certificate is going to expire, and renew it
    - Help you revoke the certificate if that ever becomes necessary.
  .
- This package contains the main client, which includes the manual and
- standalone authenticator mechanisms.
+ This package contains the main application, including the standalone
+ and the manual authenticators.
 
 Package: letsencrypt-docs
 Section: doc

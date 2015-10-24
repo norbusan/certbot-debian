@@ -1,4 +1,0 @@
-#!/usr/bin/dh-exec
-usr/bin/letsencrypt => /usr/share/letsencrypt/letsencrypt.bin
-usr/bin/letsencrypt-renewer => /usr/share/letsencrypt/letsencrypt-renewer.bin
-usr/share/letsencrypt/*

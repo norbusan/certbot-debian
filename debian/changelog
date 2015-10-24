@@ -1,5 +1,6 @@
-letsencrypt (0.0.0.dev20151020-1) UNRELEASED; urgency=medium
+python-letsencrypt (0.0.0.dev20151021-1) UNRELEASED; urgency=medium
 
   * Initial release. (Closes: #801357)
+  * TODO: Docs are still broken; waiting on split from upstream.
 
- -- Harlan Lieberman-Berg <hlieberman@setec.io>  Tue, 20 Oct 2015 21:27:58 -0400
+ -- Harlan Lieberman-Berg <hlieberman@setec.io>  Wed, 21 Oct 2015 19:00:09 -0400
