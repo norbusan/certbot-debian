@@ -81,10 +81,10 @@ Description: Let's Encrypt main client
  This package contains the main application, including the standalone
  and the manual authenticators.
 
-Package: letsencrypt-docs
+Package: python-letsencrypt-doc
 Section: doc
 Architecture: all
-Depends: libjs-sphinxdoc, python-sphinx-rtd-theme, ${misc:Depends}
+Depends: ${sphinxdoc:Depends}, ${misc:Depends}
 Description: Let's Encrypt client documentation
  The objective of Let's Encrypt and the ACME (Automated Certificate
  Management Environment) protocol is to make it possible to set up an
