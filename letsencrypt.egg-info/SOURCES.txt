@@ -15,7 +15,7 @@ docs/contributing.rst
 docs/index.rst
 docs/intro.rst
 docs/make.bat
-docs/plugins.rst
+docs/packaging.rst
 docs/using.rst
 docs/_static/.gitignore
 docs/api/account.rst
@@ -46,7 +46,6 @@ docs/api/plugins/webroot.rst
 docs/man/letsencrypt-renewer.rst
 docs/man/letsencrypt.rst
 examples/.gitignore
-examples/acme_client.py
 examples/cli.ini
 examples/dev-cli.ini
 examples/generate-csr.sh
