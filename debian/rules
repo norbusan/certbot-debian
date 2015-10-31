@@ -1,6 +1,8 @@
-#!/usr/bin/make -f
+#!/usr/bin/make -ef
 
 export PYBUILD_NAME = letsencrypt
+
+
 
 %:
 	dh $@ --with python2,sphinxdoc --buildsystem=pybuild
@@ -8,7 +10,6 @@ export PYBUILD_NAME = letsencrypt
 override_dh_auto_build:
 	dh_auto_build
 	PYTHONPATH=. http_proxy='127.0.0.1:9' sphinx-build -N -bhtml docs/ build/html
-	PYTHONPATH=. http_proxy='127.0.0.1:9' sphinx-build -N -bman docs/ build/man
 
 override_dh_auto_install:
 	dh_auto_install
@@ -16,3 +17,7 @@ override_dh_auto_install:
 	mkdir -p debian/letsencrypt/usr/bin
 	mv debian/python-letsencrypt/usr/bin/* debian/letsencrypt/usr/bin
 	rm -rf debian/python-letsencrypt/usr/bin
+	PATH=../debian/letsencrypt/usr/bin:${PATH} \
+		http_proxy='127.0.0.1:9' \
+		sphinx-build -N -bman docs/ build/man
+	dh_installman
