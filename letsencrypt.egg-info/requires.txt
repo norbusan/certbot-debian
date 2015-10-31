@@ -1,4 +1,4 @@
-acme==0.0.0.dev20151024
+acme==0.0.0.dev20151030
 ConfigArgParse
 configobj
 cryptography>=0.7
