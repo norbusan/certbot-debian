@@ -85,6 +85,7 @@ More detailed help:
    plugins (certonly, install, nginx, apache, standalone, etc)
 """
 
+
 def usage_strings(plugins):
     """Make usage strings late so that plugins can be initialised late"""
     if "nginx" in plugins:
@@ -494,7 +495,8 @@ def install(args, config, plugins):
     # XXX: Update for renewer/RenewableCert
 
     try:
-        installer, _ = choose_configurator_plugins(args, config, plugins, "certonly")
+        installer, _ = choose_configurator_plugins(args, config,
+                                                   plugins, "install")
     except PluginSelectionError, e:
         return e.message
 
@@ -547,7 +549,6 @@ def plugins_cmd(args, config, plugins):  # TODO: Use IDisplay rather than print
     logger.debug("Filtered plugins: %r", filtered)
 
     if not args.init and not args.prepare:
-        print str(filtered)
         return
 
     filtered.init(config)
@@ -555,13 +556,11 @@ def plugins_cmd(args, config, plugins):  # TODO: Use IDisplay rather than print
     logger.debug("Verified plugins: %r", verified)
 
     if not args.prepare:
-        print str(verified)
         return
 
     verified.prepare()
     available = verified.available()
     logger.debug("Prepared plugins: %s", available)
-    print str(available)
 
 
 def read_file(filename, mode="rb"):
@@ -650,12 +649,12 @@ class HelpfulArgumentParser(object):
         help1 = self.prescan_for_flag("-h", self.help_topics)
         help2 = self.prescan_for_flag("--help", self.help_topics)
         assert max(True, "a") == "a", "Gravity changed direction"
-        help_arg = max(help1, help2)
-        if help_arg is True:
+        self.help_arg = max(help1, help2)
+        if self.help_arg is True:
             # just --help with no topic; avoid argparse altogether
             print usage
             sys.exit(0)
-        self.visible_topics = self.determine_help_topics(help_arg)
+        self.visible_topics = self.determine_help_topics(self.help_arg)
         #print self.visible_topics
         self.groups = {}  # elements are added by .add_group()
 
@@ -852,8 +851,8 @@ def prepare_and_parse_args(plugins, args):
     helpful.add(
         "testing", "--dvsni-port", type=int, default=flag_default("dvsni_port"),
         help=config_help("dvsni_port"))
-    helpful.add("testing", "--simple-http-port", type=int,
-                help=config_help("simple_http_port"))
+    helpful.add("testing", "--http-01-port", dest="http01_port", type=int,
+                help=config_help("http01_port"))
 
     helpful.add_group(
         "security", description="Security parameters & server settings")
@@ -873,12 +872,12 @@ def prepare_and_parse_args(plugins, args):
         help="Require that all configuration files are owned by the current "
              "user; only needed if your config is somewhere unsafe like /tmp/")
 
+    _create_subparsers(helpful)
     _paths_parser(helpful)
     # _plugins_parsing should be the last thing to act upon the main
     # parser (--help should display plugin-specific options last)
     _plugins_parsing(helpful, plugins)
 
-    _create_subparsers(helpful)
 
     return helpful.parse_args()
 
@@ -914,19 +913,27 @@ def _create_subparsers(helpful):
 def _paths_parser(helpful):
     add = helpful.add
     verb = helpful.verb
+    if verb == "help":
+        verb = helpful.help_arg
     helpful.add_group(
         "paths", description="Arguments changing execution paths & servers")
 
-    cph = "Path to where cert is saved (with auth), installed (with install --csr) or revoked."
+    cph = "Path to where cert is saved (with auth --csr), installed from or revoked."
+    section = "paths"
+    if verb in ("install", "revoke", "certonly"):
+        section = verb
     if verb == "certonly":
-        add("paths", "--cert-path", default=flag_default("auth_cert_path"), help=cph)
+        add(section, "--cert-path", default=flag_default("auth_cert_path"), help=cph)
     elif verb == "revoke":
-        add("paths", "--cert-path", type=read_file, required=True, help=cph)
+        add(section, "--cert-path", type=read_file, required=True, help=cph)
     else:
-        add("paths", "--cert-path", help=cph, required=(verb == "install"))
+        add(section, "--cert-path", help=cph, required=(verb == "install"))
 
+    section = "paths"
+    if verb in ("install", "revoke"):
+        section = verb
     # revoke --key-path reads a file, install --key-path takes a string
-    add("paths", "--key-path", type=((verb == "revoke" and read_file) or str),
+    add(section, "--key-path", type=((verb == "revoke" and read_file) or str),
         required=(verb == "install"),
         help="Path to private key for cert creation or revocation (if account key is missing)")
 
