@@ -1,5 +1,5 @@
-python-letsencrypt (0.0.0.dev20151030-1) UNRELEASED; urgency=medium
+python-letsencrypt (0.0.0.dev20151104-1) experimental; urgency=medium
 
   * Initial release. (Closes: #774387)
 
- -- Harlan Lieberman-Berg <hlieberman@setec.io>  Fri, 30 Oct 2015 21:29:38 -0400
+ -- Francois Marier <francois@debian.org>  Wed, 11 Nov 2015 18:49:07 -0800
