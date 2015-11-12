@@ -10,6 +10,7 @@ setup.py
 docs/.gitignore
 docs/Makefile
 docs/api.rst
+docs/ciphers.rst
 docs/conf.py
 docs/contributing.rst
 docs/index.rst

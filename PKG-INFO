@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: letsencrypt
-Version: 0.0.0.dev20151030
+Version: 0.0.0.dev20151104
 Summary: Let's Encrypt client
 Home-page: https://github.com/letsencrypt/letsencrypt
 Author: Let's Encrypt Project
