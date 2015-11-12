@@ -30,7 +30,7 @@ Build-Depends:
 	python-zope.component,
 	python-zope.interface
 Standards-Version: 3.9.6
-Homepage: https://www.letsencrypt.org/
+Homepage: https://letsencrypt.org/
 X-Python-Version: >= 2.7
 
 Package: python-letsencrypt
