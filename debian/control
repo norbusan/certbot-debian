@@ -3,41 +3,38 @@ Section: python
 Priority: optional
 Maintainer: Debian Let's Encrypt <letsencrypt-devel@lists.alioth.debian.org>
 Uploaders: Harlan Lieberman-Berg <hlieberman@setec.io>,
-	   Francois Marier <francois@debian.org>
-Build-Depends:
-	debhelper (>= 9~),
-	dh-python,
-	dialog,
-	python-acme,
-	python-all (>= 2.6.6.3~),
-	python-configargparse,
-	python-configobj,
-	python-cryptography (>= 0.7),
-	python-dialog,
-	python-docutils,
-	python-mock,
-	python-openssl (>= 0.15),
-	python-parsedatetime,
-	python-psutil (>= 2.1.0),
-	python-repoze.sphinx.autointerface,
-	python-requests,
-	python-rfc3339,
-	python-setuptools,
-	python-six,
-	python-sphinx (>= 1.0.7+dfsg-1~),
-	python-sphinxcontrib.programoutput,
-	python-tz,
-	python-zope.component,
-	python-zope.interface
+           Francois Marier <francois@debian.org>
+Build-Depends: debhelper (>= 9~),
+               dh-python,
+               dialog,
+               python-acme,
+               python-all (>= 2.6.6.3~),
+               python-configargparse,
+               python-configobj,
+               python-cryptography (>= 0.7),
+               python-dialog,
+               python-docutils,
+               python-mock,
+               python-openssl (>= 0.15),
+               python-parsedatetime,
+               python-psutil (>= 2.1.0),
+               python-repoze.sphinx.autointerface,
+               python-requests,
+               python-rfc3339,
+               python-setuptools,
+               python-six,
+               python-sphinx (>= 1.0.7+dfsg-1~),
+               python-sphinxcontrib.programoutput,
+               python-tz,
+               python-zope.component,
+               python-zope.interface
 Standards-Version: 3.9.6
 Homepage: https://letsencrypt.org/
 X-Python-Version: >= 2.7
 
 Package: python-letsencrypt
 Architecture: all
-Depends:
-	${python:Depends},
-	${misc:Depends}
+Depends: ${misc:Depends}, ${python:Depends}
 Recommends: letsencrypt
 Description: Let's Encrypt main library
  The objective of Let's Encrypt and the ACME (Automated Certificate
@@ -58,12 +55,8 @@ Description: Let's Encrypt main library
 Package: letsencrypt
 Section: web
 Architecture: all
-Depends:
-	dialog,
-	python-letsencrypt,
-	${python:Depends},
-	${misc:Depends}
-Suggests: python-letsencrypt-apache, letsencrypt-doc
+Depends: dialog, python-letsencrypt, ${misc:Depends}, ${python:Depends}
+Suggests: letsencrypt-doc, python-letsencrypt-apache
 Description: Let's Encrypt main client
  The objective of Let's Encrypt and the ACME (Automated Certificate
  Management Environment) protocol is to make it possible to set up an
@@ -84,7 +77,7 @@ Description: Let's Encrypt main client
 Package: python-letsencrypt-doc
 Section: doc
 Architecture: all
-Depends: ${sphinxdoc:Depends}, ${misc:Depends}
+Depends: ${misc:Depends}, ${sphinxdoc:Depends}
 Description: Let's Encrypt client documentation
  The objective of Let's Encrypt and the ACME (Automated Certificate
  Management Environment) protocol is to make it possible to set up an
