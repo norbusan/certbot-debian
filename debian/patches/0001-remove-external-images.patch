@@ -1,6 +1,7 @@
 Description:  Remove external image links in documentation
 Author: Harlan Lieberman-Berg <hlieberman@setec.io>
 Forwarded: not-needed
+Last-Update: 2015-10-24
 
 --- a/README.rst
 +++ b/README.rst

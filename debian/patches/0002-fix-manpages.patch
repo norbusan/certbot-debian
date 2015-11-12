@@ -1,6 +1,7 @@
 Description: Terrible hack to get the manpages to generate.
 Author: Harlan Lieberman-Berg <hlieberman@setec.io>
 Forwarded: not-needed
+Last-Update: 2015-10-30
 
 --- a/docs/man/letsencrypt.rst
 +++ b/docs/man/letsencrypt.rst
