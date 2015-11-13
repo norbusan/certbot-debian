@@ -4,7 +4,7 @@ LICENSE.txt
 MANIFEST.in
 README.rst
 linter_plugin.py
-requirements.txt
+py26reqs.txt
 setup.cfg
 setup.py
 docs/.gitignore
@@ -104,7 +104,6 @@ letsencrypt/plugins/webroot.py
 letsencrypt/plugins/webroot_test.py
 letsencrypt/tests/__init__.py
 letsencrypt/tests/account_test.py
-letsencrypt/tests/achallenges_test.py
 letsencrypt/tests/acme_util.py
 letsencrypt/tests/auth_handler_test.py
 letsencrypt/tests/cli_test.py

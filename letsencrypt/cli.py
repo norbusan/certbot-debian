@@ -843,14 +843,16 @@ def prepare_and_parse_args(plugins, args):
         "really know what you're doing!")
     helpful.add(
         "testing", "--debug", action="store_true",
-        help="Show tracebacks if the program exits abnormally")
+        help="Show tracebacks in case of errors, and allow letsencrypt-auto "
+             "execution on experimental platforms")
     helpful.add(
         "testing", "--no-verify-ssl", action="store_true",
         help=config_help("no_verify_ssl"),
         default=flag_default("no_verify_ssl"))
     helpful.add(
-        "testing", "--dvsni-port", type=int, default=flag_default("dvsni_port"),
-        help=config_help("dvsni_port"))
+        "testing", "--tls-sni-01-port", type=int,
+        default=flag_default("tls_sni_01_port"),
+        help=config_help("tls_sni_01_port"))
     helpful.add("testing", "--http-01-port", dest="http01_port", type=int,
                 help=config_help("http01_port"))
 
