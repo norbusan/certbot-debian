@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: letsencrypt
-Version: 0.0.0.dev20151108
+Version: 0.0.0.dev20151114
 Summary: Let's Encrypt client
 Home-page: https://github.com/letsencrypt/letsencrypt
 Author: Let's Encrypt Project
@@ -43,11 +43,11 @@ Description: .. notice for github users
         
         All you need to do to sign a single domain is::
         
-          user@www:~$ sudo letsencrypt -d www.example.org auth
+          user@www:~$ sudo letsencrypt -d www.example.org certonly
         
         For multiple domains (SAN) use::
         
-          user@www:~$ sudo letsencrypt -d www.example.org -d example.org auth
+          user@www:~$ sudo letsencrypt -d www.example.org -d example.org certonly
         
         and if you have a compatible web server (Apache or Nginx), Let's Encrypt can
         not only get a new certificate, but also deploy it and configure your
