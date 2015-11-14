@@ -1,14 +1,15 @@
-python-letsencrypt (0.0.0.dev20151108-1) UNRELEASED; urgency=medium
+python-letsencrypt (0.0.0.dev20151114-1) experimental; urgency=medium
 
   [ Francois Marier ]
   * Bump the python-sphinx dependency to >= 1.3.1-1 to ensure that
     python-sphinx-rtd-theme is pulled in.
 
   [ Harlan Lieberman-Berg ]
-  * New upstream release.
+  * New upstream release. (Closes: #805049)
   * Alter version of python-sphinx for backports compatibility.
+  * Update dependency versions to match setup.py
 
- -- Harlan Lieberman-Berg <hlieberman@setec.io>  Thu, 12 Nov 2015 20:39:21 -0500
+ -- Harlan Lieberman-Berg <hlieberman@setec.io>  Sat, 14 Nov 2015 12:26:04 -0500
 
 python-letsencrypt (0.0.0.dev20151104-1) experimental; urgency=medium
 
