@@ -1,4 +1,4 @@
-python-letsencrypt (0.0.0.dev20151114-2) UNRELEASED; urgency=medium
+python-letsencrypt (0.0.0.dev20151114-2) unstable; urgency=medium
 
   * Version dependency of letsencrypt on python-letsencrypt (closes: #805185)
   * Add python-acme dependency on python-letsencrypt (closes: #805186)
