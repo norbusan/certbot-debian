@@ -36,7 +36,7 @@ X-Python-Version: >= 2.7
 
 Package: python-letsencrypt
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends}
+Depends: python-acme (= ${source:Version}), ${misc:Depends}, ${python:Depends}
 Recommends: letsencrypt
 Description: Let's Encrypt main library
  The objective of Let's Encrypt and the ACME (Automated Certificate
