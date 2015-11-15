@@ -57,8 +57,11 @@ Description: Let's Encrypt main library
 Package: letsencrypt
 Section: web
 Architecture: all
-Depends: dialog, python-letsencrypt, ${misc:Depends}, ${python:Depends}
-Suggests: python-letsencrypt-doc, python-letsencrypt-apache
+Depends: dialog,
+         python-letsencrypt (= ${source:Version}),
+         ${misc:Depends},
+         ${python:Depends}
+Suggests: python-letsencrypt-apache, python-letsencrypt-doc
 Description: Let's Encrypt main client
  The objective of Let's Encrypt and the ACME (Automated Certificate
  Management Environment) protocol is to make it possible to set up an

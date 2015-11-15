@@ -1,3 +1,9 @@
+python-letsencrypt (0.0.0.dev20151114-2) UNRELEASED; urgency=medium
+
+  * Version dependency of letsencrypt on python-letsencrypt (closes: #805185)
+
+ -- Francois Marier <francois@debian.org>  Sun, 15 Nov 2015 10:07:50 -0800
+
 python-letsencrypt (0.0.0.dev20151114-1) experimental; urgency=medium
 
   [ Francois Marier ]
