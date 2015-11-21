@@ -1,3 +1,9 @@
+python-letsencrypt (0.0.0.dev20151114-3) experimental; urgency=medium
+
+  * Fix documentation errors due to path errors. (Closes: #805262)
+
+ -- Harlan Lieberman-Berg <hlieberman@setec.io>  Fri, 20 Nov 2015 21:19:21 -0500
+
 python-letsencrypt (0.0.0.dev20151114-2) experimental; urgency=medium
 
   * Version dependency of letsencrypt on python-letsencrypt (closes: #805185)
