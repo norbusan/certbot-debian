@@ -90,6 +90,8 @@ s.serve_forever()" """
     def add_parser_arguments(cls, add):
         add("test-mode", action="store_true",
             help="Test mode. Executes the manual command in subprocess.")
+        add("public-ip-logging-ok", action="store_true",
+            help="Automatically allows public IP logging.")
 
     def prepare(self):  # pylint: disable=missing-docstring,no-self-use
         pass  # pragma: no cover
@@ -164,26 +166,22 @@ s.serve_forever()" """
             if self._httpd.poll() is not None:
                 raise errors.Error("Couldn't execute manual command")
         else:
-            if not zope.component.getUtility(interfaces.IDisplay).yesno(
-                    self.IP_DISCLAIMER, "Yes", "No"):
-                raise errors.PluginError("Must agree to IP logging to proceed")
+            if not self.conf("public-ip-logging-ok"):
+                if not zope.component.getUtility(interfaces.IDisplay).yesno(
+                        self.IP_DISCLAIMER, "Yes", "No"):
+                    raise errors.PluginError("Must agree to IP logging to proceed")
 
             self._notify_and_wait(self.MESSAGE_TEMPLATE.format(
                 validation=validation, response=response,
                 uri=achall.chall.uri(achall.domain),
                 ct=achall.CONTENT_TYPE, command=command))
 
-        if response.simple_verify(
+        if not response.simple_verify(
                 achall.chall, achall.domain,
                 achall.account_key.public_key(), self.config.http01_port):
-            return response
-        else:
-            logger.error(
-                "Self-verify of challenge failed, authorization abandoned.")
-            if self.conf("test-mode") and self._httpd.poll() is not None:
-                # simply verify cause command failure...
-                return False
-            return None
+            logger.warning("Self-verify of challenge failed.")
+
+        return response
 
     def _notify_and_wait(self, message):  # pylint: disable=no-self-use
         # TODO: IDisplay wraps messages, breaking the command
