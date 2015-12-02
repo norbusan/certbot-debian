@@ -1,3 +1,9 @@
+python-letsencrypt (0.0.0.dev20151123-2) experimental; urgency=medium
+
+  * Alter dependency to solve unsatisfiable dependency. (Closes: #805738)
+
+ -- Harlan Lieberman-Berg <hlieberman@setec.io>  Tue, 01 Dec 2015 21:29:49 -0500
+
 python-letsencrypt (0.0.0.dev20151123-1) experimental; urgency=medium
 
   * New upstream version.
