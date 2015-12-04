@@ -5,19 +5,13 @@ Last-Update: 2015-10-24
 
 --- a/README.rst
 +++ b/README.rst
-@@ -17,8 +17,6 @@
- About the Let's Encrypt Client
- ==============================
+@@ -93,26 +93,6 @@
+ Mailing list: `client-dev`_ (to subscribe without a Google account, send an
+ email to client-dev+subscribe@letsencrypt.org)
  
 -|build-status| |coverage| |docs| |container|
 -
- In short: getting and installing SSL/TLS certificates made easy (`watch demo video`_).
- 
- The Let's Encrypt Client is a tool to automatically receive and install
-@@ -50,23 +48,6 @@
- 
- **Encrypt ALL the things!**
- 
+-
 -
 -.. |build-status| image:: https://travis-ci.org/letsencrypt/letsencrypt.svg?branch=master
 -   :target: https://travis-ci.org/letsencrypt/letsencrypt
