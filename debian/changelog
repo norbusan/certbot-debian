@@ -1,3 +1,11 @@
+python-letsencrypt (0.1.0-1) experimental; urgency=medium
+
+  * New upstream release.
+  * Refresh patches.
+  * Switch PGP key to new upstream key.
+
+ -- Harlan Lieberman-Berg <hlieberman@setec.io>  Thu, 03 Dec 2015 21:24:59 -0500
+
 python-letsencrypt (0.0.0.dev20151123-2) experimental; urgency=medium
 
   * Alter dependency to solve unsatisfiable dependency. (Closes: #805738)
