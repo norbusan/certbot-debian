@@ -1,3 +1,9 @@
+python-letsencrypt (0.1.0-2) unstable; urgency=medium
+
+  * First release for sid.
+
+ -- Harlan Lieberman-Berg <hlieberman@setec.io>  Thu, 10 Dec 2015 23:33:21 -0500
+
 python-letsencrypt (0.1.0-1) experimental; urgency=medium
 
   * New upstream release.
