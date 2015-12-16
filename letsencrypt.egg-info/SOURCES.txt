@@ -130,6 +130,7 @@ letsencrypt/tests/testdata/cert-san.pem
 letsencrypt/tests/testdata/cert.b64jose
 letsencrypt/tests/testdata/cert.der
 letsencrypt/tests/testdata/cert.pem
+letsencrypt/tests/testdata/cli.ini
 letsencrypt/tests/testdata/csr-6sans.pem
 letsencrypt/tests/testdata/csr-nosans.pem
 letsencrypt/tests/testdata/csr-san.der
