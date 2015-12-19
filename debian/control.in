@@ -7,7 +7,7 @@ Uploaders: Harlan Lieberman-Berg <hlieberman@setec.io>,
 Build-Depends: debhelper (>= 9~),
                dh-python,
                dialog,
-               python-acme,
+               python-acme (>= ###UPSTREAM_VERSION###~),
                python-all (>= 2.6.6.3~),
                python-configargparse,
                python-configobj,
@@ -36,11 +36,11 @@ X-Python-Version: >= 2.7
 
 Package: python-letsencrypt
 Architecture: all
-Depends: python-acme (>= ${source:Upstream-Version}),
+Depends: python-acme (>= ###UPSTREAM_VERSION###),
 	 ${misc:Depends},
 	 ${python:Depends}
 Recommends: letsencrypt
-Breaks: python-letsencrypt-apache (<< ${source:Upstream-Version})
+Breaks: python-letsencrypt-apache (<< ###UPSTREAM_VERSION###)
 Description: Let's Encrypt main library
  The objective of Let's Encrypt and the ACME (Automated Certificate
  Management Environment) protocol is to make it possible to set up an

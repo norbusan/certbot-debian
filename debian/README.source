@@ -1,0 +1,4 @@
+Because of version dependencies, the d/control file must be generated
+dynamically with each upstream version update.  dh_clean is overridden
+to ensure that this is done properly; make sure to run dh_clean prior
+to assembling the source package.
