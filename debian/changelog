@@ -1,3 +1,9 @@
+python-letsencrypt (0.1.1-2) unstable; urgency=medium
+
+  * Dynamically generate d/control.  (Closes: #794931)
+
+ -- Harlan Lieberman-Berg <hlieberman@setec.io>  Sat, 19 Dec 2015 17:50:38 -0500
+
 python-letsencrypt (0.1.1-1) unstable; urgency=medium
 
   * New upstream version.
