@@ -1,6 +1,12 @@
+python-letsencrypt (0.1.1-3) unstable; urgency=medium
+
+  * New version to fix FTBFS.  (Closes: #808361)
+
+ -- Harlan Lieberman-Berg <hlieberman@setec.io>  Tue, 22 Dec 2015 23:06:12 -0500
+
 python-letsencrypt (0.1.1-2) unstable; urgency=medium
 
-  * Dynamically generate d/control.  (Closes: #794931)
+  * Dynamically generate d/control.
 
  -- Harlan Lieberman-Berg <hlieberman@setec.io>  Sat, 19 Dec 2015 17:50:38 -0500
 
