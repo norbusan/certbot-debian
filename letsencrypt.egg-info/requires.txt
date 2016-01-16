@@ -1,5 +1,5 @@
-acme==0.1.1
-ConfigArgParse
+acme==0.2.0
+ConfigArgParse>=0.10.0
 configobj
 cryptography>=0.7
 parsedatetime
@@ -8,7 +8,6 @@ PyOpenSSL
 pyrfc3339
 python2-pythondialog>=3.2.2rc1
 pytz
-requests
 setuptools
 six
 zope.component

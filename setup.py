@@ -30,9 +30,10 @@ readme = read_file(os.path.join(here, 'README.rst'))
 changes = read_file(os.path.join(here, 'CHANGES.rst'))
 version = meta['version']
 
+# Please update tox.ini when modifying dependency version requirements
 install_requires = [
     'acme=={0}'.format(version),
-    'ConfigArgParse',
+    'ConfigArgParse>=0.10.0',  # python2.6 support, upstream #17
     'configobj',
     'cryptography>=0.7',  # load_pem_x509_certificate
     'parsedatetime',
@@ -41,7 +42,6 @@ install_requires = [
     'pyrfc3339',
     'python2-pythondialog>=3.2.2rc1',  # Debian squeeze support, cf. #280
     'pytz',
-    'requests',
     'setuptools',  # pkg_resources
     'six',
     'zope.component',
@@ -56,7 +56,9 @@ if sys.version_info < (2, 7):
         'mock<1.1.0',
     ])
 else:
-    install_requires.append('mock')
+    install_requires.extend([
+        'mock',
+    ])
 
 dev_extras = [
     # Pin astroid==1.3.5, pylint==1.4.2 as a workaround for #289
