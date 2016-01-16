@@ -4,7 +4,6 @@ LICENSE.txt
 MANIFEST.in
 README.rst
 linter_plugin.py
-py26reqs.txt
 setup.cfg
 setup.py
 docs/.gitignore
@@ -75,7 +74,6 @@ letsencrypt/renewer.py
 letsencrypt/reporter.py
 letsencrypt/reverter.py
 letsencrypt/storage.py
-letsencrypt/validator.py
 letsencrypt.egg-info/PKG-INFO
 letsencrypt.egg-info/SOURCES.txt
 letsencrypt.egg-info/dependency_links.txt
@@ -121,7 +119,6 @@ letsencrypt/tests/renewer_test.py
 letsencrypt/tests/reporter_test.py
 letsencrypt/tests/reverter_test.py
 letsencrypt/tests/test_util.py
-letsencrypt/tests/validator_test.py
 letsencrypt/tests/display/__init__.py
 letsencrypt/tests/display/enhancements_test.py
 letsencrypt/tests/display/ops_test.py

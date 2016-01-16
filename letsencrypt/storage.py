@@ -260,7 +260,7 @@ class RenewableCert(object):  # pylint: disable=too-many-instance-attributes
 
         :returns: The path to the current version of the specified
             member.
-        :rtype: str
+        :rtype: str or None
 
         """
         if kind not in ALL_FOUR:
@@ -450,12 +450,15 @@ class RenewableCert(object):  # pylint: disable=too-many-instance-attributes
         :param int version: the desired version number
         :returns: the subject names
         :rtype: `list` of `str`
+        :raises .CertStorageError: if could not find cert file.
 
         """
         if version is None:
             target = self.current_target("cert")
         else:
             target = self.version("cert", version)
+        if target is None:
+            raise errors.CertStorageError("could not find cert file")
         with open(target) as f:
             return crypto_util.get_sans_from_cert(f.read())
 
@@ -561,8 +564,9 @@ class RenewableCert(object):  # pylint: disable=too-many-instance-attributes
                 logger.debug("Should renew, certificate is revoked.")
                 return True
 
-            # Renewals on the basis of expiry time
-            interval = self.configuration.get("renew_before_expiry", "10 days")
+            # Renews some period before expiry time
+            default_interval = constants.RENEWER_DEFAULTS["renew_before_expiry"]
+            interval = self.configuration.get("renew_before_expiry", default_interval)
             expiry = crypto_util.notAfter(self.version(
                 "cert", self.latest_common_version()))
             now = pytz.UTC.fromutc(datetime.datetime.utcnow())
