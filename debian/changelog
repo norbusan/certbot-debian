@@ -1,9 +1,12 @@
-python-letsencrypt (0.1.1-4) UNRELEASED; urgency=medium
+python-letsencrypt (0.2.0-1) unstable; urgency=medium
 
+  * New upstream version.
   * Delete config and log directories on purge (closes: #809355)
   * Drop priority to extra due to transitive dep on python-mock.
+  * Drop dep on pyopenssl to 0.13, include dep version for configargparse.
+  * Drop permission-failures patch applied upstream.
 
- -- Harlan Lieberman-Berg <hlieberman@setec.io>  Sat, 09 Jan 2016 23:05:30 -0500
+ -- Harlan Lieberman-Berg <hlieberman@setec.io>  Fri, 15 Jan 2016 19:21:56 -0500
 
 python-letsencrypt (0.1.1-3) unstable; urgency=medium
 
