@@ -1,3 +1,10 @@
+python-letsencrypt (0.3.0-1) unstable; urgency=medium
+
+  * New upstream version.  (Closes: #812223)
+  * Switch Vcs-git to https.
+
+ -- Harlan Lieberman-Berg <hlieberman@setec.io>  Thu, 28 Jan 2016 19:09:44 -0500
+
 python-letsencrypt (0.2.0-1) unstable; urgency=medium
 
   * New upstream version.
