@@ -1,5 +1,5 @@
-acme==0.2.0
-ConfigArgParse>=0.10.0
+acme==0.3.0
+ConfigArgParse>=0.9.3
 configobj
 cryptography>=0.7
 parsedatetime
