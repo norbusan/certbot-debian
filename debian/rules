@@ -2,8 +2,7 @@
 
 export PYBUILD_NAME = letsencrypt
 
-UPSTREAM_VERSION := $(shell head -n 1 debian/changelog | \
-		perl -ne '$$_ =~ m/\((?:[0-9]+:)?([0-9][A-Za-z0-9\.\-\+~:]*)-([0-9A-Za-z\+\.~]+)\)/; print $$1;')
+include /usr/share/dpkg/pkg-info.mk
 
 %:
 	dh $@ --with python2,sphinxdoc --buildsystem=pybuild
@@ -12,7 +11,7 @@ clean: debian/control
 	dh_clean
 
 debian/control: debian/control.in debian/changelog
-	sed -e 's/###UPSTREAM_VERSION###/$(UPSTREAM_VERSION)/g' < debian/control.in > debian/control
+	sed -e 's/###UPSTREAM_VERSION###/$(DEB_VERSION_UPSTREAM)/g' < debian/control.in > debian/control
 
 override_dh_auto_install:
 	dh_auto_install
