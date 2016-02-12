@@ -33,7 +33,6 @@ docs/api/interfaces.rst
 docs/api/le_util.rst
 docs/api/log.rst
 docs/api/proof_of_possession.rst
-docs/api/renewer.rst
 docs/api/reporter.rst
 docs/api/reverter.rst
 docs/api/storage.rst
@@ -43,7 +42,6 @@ docs/api/plugins/manual.rst
 docs/api/plugins/standalone.rst
 docs/api/plugins/util.rst
 docs/api/plugins/webroot.rst
-docs/man/letsencrypt-renewer.rst
 docs/man/letsencrypt.rst
 examples/.gitignore
 examples/cli.ini
@@ -70,7 +68,6 @@ letsencrypt/le_util.py
 letsencrypt/log.py
 letsencrypt/notify.py
 letsencrypt/proof_of_possession.py
-letsencrypt/renewer.py
 letsencrypt/reporter.py
 letsencrypt/reverter.py
 letsencrypt/storage.py
@@ -115,9 +112,9 @@ letsencrypt/tests/le_util_test.py
 letsencrypt/tests/log_test.py
 letsencrypt/tests/notify_test.py
 letsencrypt/tests/proof_of_possession_test.py
-letsencrypt/tests/renewer_test.py
 letsencrypt/tests/reporter_test.py
 letsencrypt/tests/reverter_test.py
+letsencrypt/tests/storage_test.py
 letsencrypt/tests/test_util.py
 letsencrypt/tests/display/__init__.py
 letsencrypt/tests/display/enhancements_test.py
@@ -140,3 +137,13 @@ letsencrypt/tests/testdata/matching_cert.pem
 letsencrypt/tests/testdata/rsa256_key.pem
 letsencrypt/tests/testdata/rsa512_key.pem
 letsencrypt/tests/testdata/rsa512_key_2.pem
+letsencrypt/tests/testdata/sample-renewal.conf
+letsencrypt/tests/testdata/webrootconftest.ini
+letsencrypt/tests/testdata/archive/sample-renewal/cert1.pem
+letsencrypt/tests/testdata/archive/sample-renewal/chain1.pem
+letsencrypt/tests/testdata/archive/sample-renewal/fullchain1.pem
+letsencrypt/tests/testdata/archive/sample-renewal/privkey1.pem
+letsencrypt/tests/testdata/live/sample-renewal/cert.pem
+letsencrypt/tests/testdata/live/sample-renewal/chain.pem
+letsencrypt/tests/testdata/live/sample-renewal/fullchain.pem
+letsencrypt/tests/testdata/live/sample-renewal/privkey.pem
