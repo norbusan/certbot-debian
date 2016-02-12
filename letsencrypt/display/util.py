@@ -428,7 +428,7 @@ class NoninteractiveDisplay(object):
             msg += "\n" + extra
         if cli_flag:
             msg += "\n\n(You can set this with the {0} flag)".format(cli_flag)
-        raise errors.MissingCommandlineFlag, msg
+        raise errors.MissingCommandlineFlag(msg)
 
     def notification(self, message, height=10, pause=False):
         # pylint: disable=unused-argument
@@ -446,7 +446,7 @@ class NoninteractiveDisplay(object):
                 line=os.linesep, frame=side_frame, msg=message))
 
     def menu(self, message, choices, ok_label=None, cancel_label=None,
-             default=None, cli_flag=None):
+             help_label=None, default=None, cli_flag=None):
         # pylint: disable=unused-argument,too-many-arguments
         """Avoid displaying a menu.
 
