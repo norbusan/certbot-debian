@@ -1,15 +1,10 @@
 Description: Terrible hack to get the manpages to generate.
 Author: Harlan Lieberman-Berg <hlieberman@setec.io>
 Forwarded: not-needed
-Last-Update: 2015-10-30
+Last-Update: 2016-02-11
 
 --- a/docs/man/letsencrypt.rst
 +++ b/docs/man/letsencrypt.rst
-@@ -1 +1 @@
+@@ -1,1 +1,1 @@
 -.. program-output:: letsencrypt --help all
 +.. program-output:: bash -c "PYTHONPATH=../debian/python-letsencrypt/usr/lib/python2.7/dist-packages letsencrypt --help all"
---- a/docs/man/letsencrypt-renewer.rst
-+++ b/docs/man/letsencrypt-renewer.rst
-@@ -1 +1 @@
--.. program-output:: letsencrypt-renewer --help
-+.. program-output:: bash -c "PYTHONPATH=../debian/python-letsencrypt/usr/lib/python2.7/dist-packages letsencrypt-renewer --help all"
