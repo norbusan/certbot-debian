@@ -1,3 +1,10 @@
+python-letsencrypt (0.4.0-1) unstable; urgency=medium
+
+  * New upstream version. (Closes: #813689)
+  * Ship the upstream tests and testdata. (Closes: #814010)
+
+ -- Harlan Lieberman-Berg <hlieberman@setec.io>  Thu, 11 Feb 2016 20:54:43 -0500
+
 python-letsencrypt (0.3.0-1) unstable; urgency=medium
 
   * New upstream version.  (Closes: #812223)
