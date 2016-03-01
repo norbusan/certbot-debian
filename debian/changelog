@@ -1,3 +1,12 @@
+python-letsencrypt (0.4.1-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Match version restriction on python-parsedatetime
+  * Bump S-V; no changes needed
+  * Fix Vcs-git URL
+
+ -- Harlan Lieberman-Berg <hlieberman@setec.io>  Mon, 29 Feb 2016 21:22:32 -0500
+
 python-letsencrypt (0.4.0-1) unstable; urgency=medium
 
   * New upstream version. (Closes: #813689)
