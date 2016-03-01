@@ -28,7 +28,7 @@ Build-Depends: debhelper (>= 9~),
                python-tz,
                python-zope.component,
                python-zope.interface
-Standards-Version: 3.9.6
+Standards-Version: 3.9.7
 Homepage: https://letsencrypt.org/
 Vcs-Git: https://anonscm.debian.org/letsencrypt/python-letsencrypt.git
 Vcs-Browser: https://anonscm.debian.org/cgit/letsencrypt/python-letsencrypt.git/
