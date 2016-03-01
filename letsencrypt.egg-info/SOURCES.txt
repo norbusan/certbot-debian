@@ -137,6 +137,7 @@ letsencrypt/tests/testdata/matching_cert.pem
 letsencrypt/tests/testdata/rsa256_key.pem
 letsencrypt/tests/testdata/rsa512_key.pem
 letsencrypt/tests/testdata/rsa512_key_2.pem
+letsencrypt/tests/testdata/sample-renewal-ancient.conf
 letsencrypt/tests/testdata/sample-renewal.conf
 letsencrypt/tests/testdata/webrootconftest.ini
 letsencrypt/tests/testdata/archive/sample-renewal/cert1.pem
