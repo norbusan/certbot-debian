@@ -17,7 +17,6 @@ from letsencrypt import account
 from letsencrypt import auth_handler
 from letsencrypt import configuration
 from letsencrypt import constants
-from letsencrypt import continuity_auth
 from letsencrypt import crypto_util
 from letsencrypt import errors
 from letsencrypt import error_handler
@@ -28,6 +27,7 @@ from letsencrypt import storage
 
 from letsencrypt.display import ops as display_ops
 from letsencrypt.display import enhancements
+from letsencrypt.plugins import selection as plugin_selection
 
 
 logger = logging.getLogger(__name__)
@@ -105,7 +105,8 @@ def register(config, account_storage, tos_cb=None):
                    "--register-unsafely-without-email was not present.")
             logger.warn(msg)
             raise errors.Error(msg)
-        logger.warn("Registering without email!")
+        if not config.dry_run:
+            logger.warn("Registering without email!")
 
     # Each new registration shall use a fresh new key
     key = jose.JWKRSA(key=jose.ComparableRSAKey(
@@ -147,8 +148,7 @@ def perform_registration(acme, config):
     try:
         return acme.register(messages.NewRegistration.from_data(email=config.email))
     except messages.Error as e:
-        err = repr(e)
-        if "MX record" in err or "Validation of contact mailto" in err:
+        if e.typ == "urn:acme:error:invalidEmail":
             config.namespace.email = display_ops.get_email(more=True, invalid=True)
             return perform_registration(acme, config)
         else:
@@ -161,21 +161,21 @@ class Client(object):
     :ivar .IConfig config: Client configuration.
     :ivar .Account account: Account registered with `register`.
     :ivar .AuthHandler auth_handler: Authorizations handler that will
-        dispatch DV and Continuity challenges to appropriate
-        authenticators (providing `.IAuthenticator` interface).
-    :ivar .IAuthenticator dv_auth: Prepared (`.IAuthenticator.prepare`)
-        authenticator that can solve the `.constants.DV_CHALLENGES`.
+        dispatch DV challenges to appropriate authenticators
+        (providing `.IAuthenticator` interface).
+    :ivar .IAuthenticator auth: Prepared (`.IAuthenticator.prepare`)
+        authenticator that can solve ACME challenges.
     :ivar .IInstaller installer: Installer.
     :ivar acme.client.Client acme: Optional ACME client API handle.
        You might already have one from `register`.
 
     """
 
-    def __init__(self, config, account_, dv_auth, installer, acme=None):
+    def __init__(self, config, account_, auth, installer, acme=None):
         """Initialize a client."""
         self.config = config
         self.account = account_
-        self.dv_auth = dv_auth
+        self.auth = auth
         self.installer = installer
 
         # Initialize ACME if account is provided
@@ -183,20 +183,14 @@ class Client(object):
             acme = acme_from_config_key(config, self.account.key)
         self.acme = acme
 
-        # TODO: Check if self.config.enroll_autorenew is None. If
-        # so, set it based to the default: figure out if dv_auth is
-        # standalone (then default is False, otherwise default is True)
-
-        if dv_auth is not None:
-            cont_auth = continuity_auth.ContinuityAuthenticator(config,
-                                                                installer)
+        if auth is not None:
             self.auth_handler = auth_handler.AuthHandler(
-                dv_auth, cont_auth, self.acme, self.account)
+                auth, self.acme, self.account)
         else:
             self.auth_handler = None
 
     def obtain_certificate_from_csr(self, domains, csr,
-        typ=OpenSSL.crypto.FILETYPE_ASN1):
+        typ=OpenSSL.crypto.FILETYPE_ASN1, authzr=None):
         """Obtain certificate.
 
         Internal function with precondition that `domains` are
@@ -206,6 +200,8 @@ class Client(object):
         :param .le_util.CSR csr: DER-encoded Certificate Signing
             Request. The key used to generate this CSR can be different
             than `authkey`.
+        :param list authzr: List of
+            :class:`acme.messages.AuthorizationResource`
 
         :returns: `.CertificateResource` and certificate chain (as
             returned by `.fetch_chain`).
@@ -222,13 +218,14 @@ class Client(object):
 
         logger.debug("CSR: %s, domains: %s", csr, domains)
 
-        authzr = self.auth_handler.get_authorizations(domains)
+        if authzr is None:
+            authzr = self.auth_handler.get_authorizations(domains)
+
         certr = self.acme.request_issuance(
             jose.ComparableX509(
                 OpenSSL.crypto.load_certificate_request(typ, csr.data)),
-            authzr)
+                authzr)
         return certr, self.acme.fetch_chain(certr)
-
 
     def obtain_certificate(self, domains):
         """Obtains a certificate from the ACME server.
@@ -244,12 +241,20 @@ class Client(object):
         :rtype: tuple
 
         """
+        authzr = self.auth_handler.get_authorizations(
+                domains,
+                self.config.allow_subset_of_names)
+
+        domains = [a.body.identifier.value.encode('ascii')
+                                          for a in authzr]
+
         # Create CSR from names
         key = crypto_util.init_save_key(
             self.config.rsa_key_size, self.config.key_dir)
         csr = crypto_util.init_save_csr(key, domains, self.config.csr_dir)
 
-        return self.obtain_certificate_from_csr(domains, csr) + (key, csr)
+        return (self.obtain_certificate_from_csr(domains, csr, authzr=authzr)
+                                                                + (key, csr))
 
     def obtain_and_enroll_certificate(self, domains):
         """Obtain and enroll certificate.
@@ -531,7 +536,7 @@ def rollback(default_installer, checkpoints, config, plugins):
 
     """
     # Misconfigurations are only a slight problems... allow the user to rollback
-    installer = display_ops.pick_installer(
+    installer = plugin_selection.pick_installer(
         config, default_installer, plugins, question="Which installer "
         "should be used for rollback?")
 
@@ -543,7 +548,7 @@ def rollback(default_installer, checkpoints, config, plugins):
         installer.restart()
 
 
-def view_config_changes(config):
+def view_config_changes(config, num=None):
     """View checkpoints and associated configuration changes.
 
     .. note:: This assumes that the installation is using a Reverter object.
@@ -554,7 +559,7 @@ def view_config_changes(config):
     """
     rev = reverter.Reverter(config)
     rev.recovery_routine()
-    rev.view_config_changes()
+    rev.view_config_changes(num)
 
 
 def _save_chain(chain_pem, chain_path):
