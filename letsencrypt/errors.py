@@ -25,6 +25,10 @@ class CertStorageError(Error):
     """Generic `.CertStorage` error."""
 
 
+class HookCommandNotFound(Error):
+    """Failed to find a hook command in the PATH."""
+
+
 # Auth Handler Errors
 class AuthorizationError(Error):
     """Authorization error."""
@@ -46,19 +50,6 @@ class FailedChallenges(AuthorizationError):
             ", ".join(
                 "{0} ({1}): {2}".format(achall.domain, achall.typ, achall.error)
                 for achall in self.failed_achalls if achall.error is not None))
-
-
-class ContAuthError(AuthorizationError):
-    """Let's Encrypt Continuity Authenticator error."""
-
-
-class DvAuthError(AuthorizationError):
-    """Let's Encrypt DV Authenticator error."""
-
-
-# Authenticator - Challenge specific errors
-class TLSSNI01Error(DvAuthError):
-    """Let's Encrypt TLSSNI01 error."""
 
 
 # Plugin Errors
@@ -84,10 +75,6 @@ class MisconfigurationError(PluginError):
 
 class NotSupportedError(PluginError):
     """Let's Encrypt Plugin function not supported error."""
-
-
-class RevokerError(Error):
-    """Let's Encrypt Revoker error."""
 
 
 class StandaloneBindError(Error):
