@@ -1,0 +1,9 @@
+[certbot.plugins]
+manual = certbot.plugins.manual:Authenticator
+null = certbot.plugins.null:Installer
+standalone = certbot.plugins.standalone:Authenticator
+webroot = certbot.plugins.webroot:Authenticator
+
+[console_scripts]
+certbot = certbot.main:main
+
