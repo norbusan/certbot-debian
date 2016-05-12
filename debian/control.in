@@ -1,4 +1,4 @@
-Source: python-letsencrypt
+Source: python-certbot
 Section: python
 Priority: extra
 Maintainer: Debian Let's Encrypt <letsencrypt-devel@lists.alioth.debian.org>
@@ -34,19 +34,22 @@ Vcs-Git: https://anonscm.debian.org/git/letsencrypt/python-letsencrypt.git
 Vcs-Browser: https://anonscm.debian.org/cgit/letsencrypt/python-letsencrypt.git/
 X-Python-Version: >= 2.7
 
-Package: python-letsencrypt
+Package: python-certbot
 Architecture: all
 Depends: python-acme (>= ###UPSTREAM_VERSION###),
 	 ${misc:Depends},
 	 ${python:Depends}
 Recommends: letsencrypt
-Breaks: python-letsencrypt-apache (<< ###UPSTREAM_VERSION###)
-Description: Let's Encrypt main library
- The objective of Let's Encrypt and the ACME (Automated Certificate
- Management Environment) protocol is to make it possible to set up an
- HTTPS server and have it automatically obtain a browser-trusted
- certificate, without any human intervention. This is accomplished by
- running a certificate management agent on the web server.
+Breaks: python-letsencrypt-apache (<< ###UPSTREAM_VERSION###),
+        python-letsencrypt
+Replaces: python-letsencrypt
+Description: Certbot main library
+ The objective of Certbot, Let's Encrypt, and the ACME (Automated
+ Certificate Management Environment) protocol is to make it possible
+ to set up an HTTPS server and have it automatically obtain a
+ browser-trusted certificate, without any human intervention. This is
+ accomplished by running a certificate management agent on the web
+ server.
  .
  This agent is used to:
  .
@@ -57,20 +60,24 @@ Description: Let's Encrypt main library
  .
  This package contains the main libraries.
 
-Package: letsencrypt
+Package: certbot
 Section: web
 Architecture: all
 Depends: dialog,
-         python-letsencrypt (= ${source:Version}),
+         python-certbot (= ${source:Version}),
          ${misc:Depends},
          ${python:Depends}
-Suggests: python-letsencrypt-apache, python-letsencrypt-doc
-Description: Let's Encrypt main client
- The objective of Let's Encrypt and the ACME (Automated Certificate
- Management Environment) protocol is to make it possible to set up an
- HTTPS server and have it automatically obtain a browser-trusted
- certificate, without any human intervention. This is accomplished by
- running a certificate management agent on the web server.
+Breaks: letsencrypt
+Replaces: letsencrypt
+Provides: letsencrypt
+Suggests: python-certbot-apache, python-certbot-doc
+Description: Certbot main client
+ The objective of Certbot, Let's Encrypt, and the ACME (Automated
+ Certificate Management Environment) protocol is to make it possible
+ to set up an HTTPS server and have it automatically obtain a
+ browser-trusted certificate, without any human intervention. This is
+ accomplished by running a certificate management agent on the web
+ server.
  .
  This agent is used to:
  .
@@ -82,16 +89,17 @@ Description: Let's Encrypt main client
  This package contains the main application, including the standalone
  and the manual authenticators.
 
-Package: python-letsencrypt-doc
+Package: python-certbot-doc
 Section: doc
 Architecture: all
 Depends: ${misc:Depends}, ${sphinxdoc:Depends}
-Description: Let's Encrypt client documentation
- The objective of Let's Encrypt and the ACME (Automated Certificate
- Management Environment) protocol is to make it possible to set up an
- HTTPS server and have it automatically obtain a browser-trusted
- certificate, without any human intervention. This is accomplished by
- running a certificate management agent on the web server.
+Description: Certbot client documentation
+ The objective of Certbot, Let's Encrypt, and the ACME (Automated
+ Certificate Management Environment) protocol is to make it possible
+ to set up an HTTPS server and have it automatically obtain a
+ browser-trusted certificate, without any human intervention. This is
+ accomplished by running a certificate management agent on the web
+ server.
  .
  This agent is used to:
  .

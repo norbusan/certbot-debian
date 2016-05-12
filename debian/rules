@@ -1,6 +1,6 @@
 #!/usr/bin/make -ef
 
-export PYBUILD_NAME = letsencrypt
+export PYBUILD_NAME = certbot
 
 include /usr/share/dpkg/pkg-info.mk
 
@@ -14,13 +14,13 @@ debian/control: debian/control.in debian/changelog
 	sed -e 's/###UPSTREAM_VERSION###/$(DEB_VERSION_UPSTREAM)/g' < debian/control.in > debian/control
 
 override_dh_install:
-	mkdir -p debian/letsencrypt/usr/bin
-	mv debian/python-letsencrypt/usr/bin/* debian/letsencrypt/usr/bin
-	rm -rf debian/python-letsencrypt/usr/bin
-	PYTHONPATH=. PATH=../debian/letsencrypt/usr/bin:${PATH} \
+	mkdir -p debian/certbot/usr/bin
+	mv debian/python-certbot/usr/bin/* debian/certbot/usr/bin
+	rm -rf debian/python-certbot/usr/bin
+	PYTHONPATH=. PATH=../debian/certbot/usr/bin:${PATH} \
 		http_proxy='127.0.0.1:9' \
 		sphinx-build -N -bhtml docs/ build/html
-	PYTHONPATH=. PATH=../debian/letsencrypt/usr/bin:${PATH} \
+	PYTHONPATH=. PATH=../debian/certbot/usr/bin:${PATH} \
 		http_proxy='127.0.0.1:9' \
 		sphinx-build -N -bman docs/ build/man
-	chmod -x debian/python-letsencrypt/usr/lib/python2.7/dist-packages/letsencrypt/tests/testdata/sample-renewal*.conf
+	chmod -x debian/python-certbot/usr/lib/python2.7/dist-packages/certbot/tests/testdata/sample-renewal*.conf

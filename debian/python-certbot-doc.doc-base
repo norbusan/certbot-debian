@@ -1,0 +1,10 @@
+Document: python-certbot-doc
+Title: Documentation for Certbot
+Author: Let's Encrypt Team
+Abstract: These HTML documentation contain the auto-generated
+ documentation for the certbot application.
+Section: Web Development
+
+Format: HTML
+Index: /usr/share/doc/python-certbot-doc/html/index.html
+Files: /usr/share/doc/python-certbot-doc/html/*.html
