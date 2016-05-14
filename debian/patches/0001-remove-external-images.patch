@@ -1,24 +1,24 @@
 Description:  Remove external image links in documentation
 Author: Harlan Lieberman-Berg <hlieberman@setec.io>
 Forwarded: not-needed
-Last-Update: 2015-10-24
+Last-Update: 2016-05-12
 
 --- a/README.rst
 +++ b/README.rst
-@@ -93,26 +93,6 @@
+@@ -116,26 +116,6 @@
  Mailing list: `client-dev`_ (to subscribe without a Google account, send an
  email to client-dev+subscribe@letsencrypt.org)
- 
+
 -|build-status| |coverage| |docs| |container|
 -
 -
 -
--.. |build-status| image:: https://travis-ci.org/letsencrypt/letsencrypt.svg?branch=master
--   :target: https://travis-ci.org/letsencrypt/letsencrypt
+-.. |build-status| image:: https://travis-ci.org/certbot/certbot.svg?branch=master
+-   :target: https://travis-ci.org/certbot/certbot
 -   :alt: Travis CI status
 -
--.. |coverage| image:: https://coveralls.io/repos/letsencrypt/letsencrypt/badge.svg?branch=master
--   :target: https://coveralls.io/r/letsencrypt/letsencrypt
+-.. |coverage| image:: https://coveralls.io/repos/certbot/certbot/badge.svg?branch=master
+-   :target: https://coveralls.io/r/certbot/certbot
 -   :alt: Coverage status
 -
 -.. |docs| image:: https://readthedocs.org/projects/letsencrypt/badge/
@@ -31,4 +31,3 @@ Last-Update: 2015-10-24
 -
  .. _`installation instructions`:
     https://letsencrypt.readthedocs.org/en/latest/using.html
- 
