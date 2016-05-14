@@ -43,7 +43,7 @@ Recommends: letsencrypt
 Breaks: python-certbot-apache (<< ###UPSTREAM_VERSION###),
         python-letsencrypt
 Replaces: python-letsencrypt
-Description: Certbot main library
+Description: main library for certbot
  The objective of Certbot, Let's Encrypt, and the ACME (Automated
  Certificate Management Environment) protocol is to make it possible
  to set up an HTTPS server and have it automatically obtain a
@@ -71,7 +71,7 @@ Breaks: letsencrypt
 Replaces: letsencrypt
 Provides: letsencrypt
 Suggests: python-certbot-apache, python-certbot-doc
-Description: Certbot main client
+Description: automatically configure HTTPS using Let's Encrypt
  The objective of Certbot, Let's Encrypt, and the ACME (Automated
  Certificate Management Environment) protocol is to make it possible
  to set up an HTTPS server and have it automatically obtain a
@@ -93,7 +93,7 @@ Package: python-certbot-doc
 Section: doc
 Architecture: all
 Depends: ${misc:Depends}, ${sphinxdoc:Depends}
-Description: Certbot client documentation
+Description: client documentation for certbot
  The objective of Certbot, Let's Encrypt, and the ACME (Automated
  Certificate Management Environment) protocol is to make it possible
  to set up an HTTPS server and have it automatically obtain a
