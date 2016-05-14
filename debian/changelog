@@ -1,3 +1,18 @@
+python-certbot (0.6.0-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Migrate package to the certbot name.
+  * Require parsedatetime >= 1.3 (Closes: #818587)
+  * Update d/watch with new name.
+  * Refresh patches.
+  * Add cronjob to automatically renew certificates.
+  * Ship symlink from old letsencrypt binary.
+  * Switch Breaks for -apache to the certbot name.
+  * Reword short descriptions
+  * Bump S-V; no changes needed.
+
+ -- Harlan Lieberman-Berg <hlieberman@debian.org>  Sat, 14 May 2016 16:45:44 -0400
+
 python-letsencrypt (0.5.0-1) unstable; urgency=medium
 
   * New upstream release. (Closes: #820721)
