@@ -40,7 +40,7 @@ Depends: python-acme (>= ###UPSTREAM_VERSION###),
 	 ${misc:Depends},
 	 ${python:Depends}
 Recommends: letsencrypt
-Breaks: python-letsencrypt-apache (<< ###UPSTREAM_VERSION###),
+Breaks: python-certbot-apache (<< ###UPSTREAM_VERSION###),
         python-letsencrypt
 Replaces: python-letsencrypt
 Description: Certbot main library
