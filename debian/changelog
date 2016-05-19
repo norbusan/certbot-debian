@@ -1,3 +1,10 @@
+python-certbot (0.6.0-2) unstable; urgency=medium
+
+  * Fix major bug in crontab file. (Closes: #824709)
+  * Fix homepage to point to new location. (Thanks, Axel!)
+
+ -- Harlan Lieberman-Berg <hlieberman@debian.org>  Wed, 18 May 2016 21:06:12 -0400
+
 python-certbot (0.6.0-1) unstable; urgency=medium
 
   * New upstream release.
