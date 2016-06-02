@@ -20,7 +20,6 @@ certbot/error_handler.py
 certbot/errors.py
 certbot/hooks.py
 certbot/interfaces.py
-certbot/le_util.py
 certbot/log.py
 certbot/main.py
 certbot/notify.py
@@ -28,6 +27,7 @@ certbot/renewal.py
 certbot/reporter.py
 certbot/reverter.py
 certbot/storage.py
+certbot/util.py
 certbot.egg-info/PKG-INFO
 certbot.egg-info/SOURCES.txt
 certbot.egg-info/dependency_links.txt
@@ -69,7 +69,6 @@ certbot/tests/crypto_util_test.py
 certbot/tests/error_handler_test.py
 certbot/tests/errors_test.py
 certbot/tests/hook_test.py
-certbot/tests/le_util_test.py
 certbot/tests/log_test.py
 certbot/tests/main_test.py
 certbot/tests/notify_test.py
@@ -77,6 +76,7 @@ certbot/tests/reporter_test.py
 certbot/tests/reverter_test.py
 certbot/tests/storage_test.py
 certbot/tests/test_util.py
+certbot/tests/util_test.py
 certbot/tests/display/__init__.py
 certbot/tests/display/completer_test.py
 certbot/tests/display/enhancements_test.py
@@ -88,6 +88,7 @@ certbot/tests/testdata/cert.der
 certbot/tests/testdata/cert.pem
 certbot/tests/testdata/cli.ini
 certbot/tests/testdata/csr-6sans.pem
+certbot/tests/testdata/csr-nonames.pem
 certbot/tests/testdata/csr-nosans.pem
 certbot/tests/testdata/csr-san.der
 certbot/tests/testdata/csr-san.pem
@@ -96,6 +97,7 @@ certbot/tests/testdata/csr.pem
 certbot/tests/testdata/dsa512_key.pem
 certbot/tests/testdata/dsa_cert.pem
 certbot/tests/testdata/matching_cert.pem
+certbot/tests/testdata/os-release
 certbot/tests/testdata/rsa256_key.pem
 certbot/tests/testdata/rsa512_key.pem
 certbot/tests/testdata/rsa512_key_2.pem
@@ -114,6 +116,7 @@ docs/.gitignore
 docs/Makefile
 docs/api.rst
 docs/ciphers.rst
+docs/cli-help.txt
 docs/conf.py
 docs/contributing.rst
 docs/index.rst
@@ -133,11 +136,11 @@ docs/api/display.rst
 docs/api/errors.rst
 docs/api/index.rst
 docs/api/interfaces.rst
-docs/api/le_util.rst
 docs/api/log.rst
 docs/api/reporter.rst
 docs/api/reverter.rst
 docs/api/storage.rst
+docs/api/util.rst
 docs/api/plugins/common.rst
 docs/api/plugins/disco.rst
 docs/api/plugins/manual.rst

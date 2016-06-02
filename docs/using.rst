@@ -5,56 +5,28 @@ User Guide
 .. contents:: Table of Contents
    :local:
 
-.. _installation:
+Getting Certbot
+===============
 
-Installation
-============
+To get specific instructions for installing Certbot on your OS, we recommend
+visiting certbot.eff.org_. If you're offline, you can find some general
+instructions `in the README / Introduction <intro.html#installation>`__
+
+__ installation_
+.. _certbot.eff.org: https://certbot.eff.org
 
 .. _certbot-auto:
 
-certbot-auto
-----------------
+The name of the certbot command
+-------------------------------
 
-``certbot-auto`` is a wrapper which installs some dependencies
-from your OS standard package repositories (e.g. using `apt-get` or
-`yum`), and for other dependencies it sets up a virtualized Python
-environment with packages downloaded from PyPI [#venv]_. It also
-provides automated updates.
-
-To install and run the client, just type...
-
-.. code-block:: shell
-
-   ./certbot-auto
-
-.. hint:: The Let's Encrypt servers enforce rate
-   limits on the number of certificates issued for one domain. It is recommended
-   to initially use the test server via `--test-cert` until you get the desired
-   certificates.
-
-Throughout the documentation, whenever you see references to
-``certbot`` script/binary, you can substitute in
-``certbot-auto``. For example, to get basic help you would type:
-
-.. code-block:: shell
-
-  ./certbot-auto --help
-
-or for full help, type:
-
-.. code-block:: shell
-
-  ./certbot-auto --help all
-
-
-``certbot-auto`` is the recommended method of running the Certbot
-client beta releases on systems that don't have a packaged version.  Debian,
-Arch Linux, Gentoo, FreeBSD, and OpenBSD now have native packages, so on those
-systems you can just install ``certbot`` (and perhaps
-``certbot-apache``).  If you'd like to run the latest copy from Git, or
-run your own locally modified copy of the client, follow the instructions in
-the :doc:`contributing`.  Some `other methods of installation`_ are discussed
-below.
+Many platforms now have native packages that give you a ``certbot`` or (for
+older packages) ``letsencrypt`` command you can run. On others, the
+``certbot-auto`` / ``letsencrypt-auto`` installer and wrapper script is a
+stand-in. Throughout the documentation, whenever you see references to
+``certbot`` script/binary, you should substitute in the name of the command
+that certbot.eff.org_ told you to use on your system (``certbot``,
+``letsencrypt``, or ``certbot-auto``).
 
 
 Plugins
@@ -82,24 +54,7 @@ manual_     Y    N    Helps you obtain a cert by giving you instructions to perf
 nginx_      Y    Y    Very experimental and not included in certbot-auto_.
 =========== ==== ==== ===============================================================
 
-There are also a number of third-party plugins for the client, provided by other developers:
-
-=========== ==== ==== ===============================================================
-Plugin      Auth Inst Notes
-=========== ==== ==== ===============================================================
-plesk_      Y    Y    Integration with the Plesk web hosting tool
-haproxy_    Y    Y    Integration with the HAProxy load balancer
-s3front_    Y    Y    Integration with Amazon CloudFront distribution of S3 buckets
-gandi_      Y    Y    Integration with Gandi's hosting products and API
-=========== ==== ==== ===============================================================
-
-.. _plesk: https://github.com/plesk/letsencrypt-plesk
-.. _haproxy: https://code.greenhost.net/open/letsencrypt-haproxy
-.. _s3front: https://github.com/dlapiduz/letsencrypt-s3front
-.. _gandi: https://github.com/Gandi/letsencrypt-gandi
-
-Future plugins for IMAP servers, SMTP servers, IRC servers, etc, are likely to
-be installers but not authenticators.
+There are many third-party-plugins_ available.
 
 Apache
 ------
@@ -190,12 +145,45 @@ still experimental, however, and is not installed with certbot-auto_. If
 installed, you can select this plugin on the command line by including
 ``--nginx``.
 
+.. _third-party-plugins:
+
 Third-party plugins
 -------------------
 
-These plugins are listed at
-https://github.com/certbot/certbot/wiki/Plugins. If you're
-interested, you can also :ref:`write your own plugin <dev-plugin>`.
+There are also a number of third-party plugins for the client, provided by
+other developers. Many are beta/experimental, but some are already in
+widespread use:
+
+=========== ==== ==== ===============================================================
+Plugin      Auth Inst Notes
+=========== ==== ==== ===============================================================
+plesk_      Y    Y    Integration with the Plesk web hosting tool
+haproxy_    Y    Y    Integration with the HAProxy load balancer
+s3front_    Y    Y    Integration with Amazon CloudFront distribution of S3 buckets
+gandi_      Y    Y    Integration with Gandi's hosting products and API
+varnish_    Y    N    Obtain certs via a Varnish server
+external_   Y    N    A plugin for convenient scripting (See also ticket 2782_)
+icecast_    N    Y    Deploy certs to Icecast 2 streaming media servers
+pritunl_    N    Y    Install certs in pritunl distributed OpenVPN servers
+proxmox_    N    Y    Install certs in Proxmox Virtualization servers
+postfix_    N    Y    STARTTLS Everywhere is becoming a Certbot Postfix/Exim plugin
+=========== ==== ==== ===============================================================
+
+.. _plesk: https://github.com/plesk/letsencrypt-plesk
+.. _haproxy: https://code.greenhost.net/open/letsencrypt-haproxy
+.. _s3front: https://github.com/dlapiduz/letsencrypt-s3front
+.. _gandi: https://github.com/Gandi/letsencrypt-gandi
+.. _icecast: https://github.com/e00E/lets-encrypt-icecast
+.. _varnish: http://git.sesse.net/?p=letsencrypt-varnish-plugin
+.. _2782: https://github.com/certbot/certbot/issues/2782
+.. _pritunl: https://github.com/kharkevich/letsencrypt-pritunl
+.. _proxmox: https://github.com/kharkevich/letsencrypt-proxmox
+.. _external: https://github.com/marcan/letsencrypt-external
+.. _postfix: https://github.com/EFForg/starttls-everywhere
+
+If you're interested, you can also :ref:`write your own plugin <dev-plugin>`.
+
+
 
 Renewal
 =======
@@ -275,16 +263,20 @@ Certbot is working hard on improving the renewal process, and we
 apologize for any inconveniences you encounter in integrating these
 commands into your individual environment.
 
+.. _command-line:
+
+Command line options
+====================
+
+Certbot supports a lot of command line options.  Here's the full list, from
+``certbot --help all``:
+
+.. literalinclude:: cli-help.txt
 
 .. _where-certs:
 
 Where are my certificates?
 ==========================
-
-First of all, we encourage you to use Apache or nginx installers, both
-which perform the certificate management automatically. If, however,
-you prefer to manage everything by hand, this section provides
-information on where to find necessary files.
 
 All generated keys and issued certificates can be found in
 ``/etc/letsencrypt/live/$domain``. Rather than copying, please point
@@ -345,8 +337,8 @@ will cause nasty errors served through the browsers!
 
 .. note:: All files are PEM-encoded (as the filename suffix
    suggests). If you need other format, such as DER or PFX, then you
-   could convert using ``openssl``, but this means you will not
-   benefit from automatic renewal_!
+   could convert using ``openssl``. You can automate that with
+   ``--renew-hook`` if you're using automatic renewal_.
 
 
 .. _config-file:
@@ -391,7 +383,7 @@ give us as much information as possible:
   also might contain personally identifiable information)
 - copy and paste ``certbot --version`` output
 - your operating system, including specific version
-- specify which installation_ method you've chosen
+- specify which installation method you've chosen
 
 Other methods of installation
 =============================
@@ -468,7 +460,7 @@ repo, if you have not already done so. Then run:
 
 .. code-block:: shell
 
-   sudo apt-get install certbot python-certbot-apache -t jessie-backports
+   sudo apt-get install letsencrypt python-letsencrypt-apache -t jessie-backports
 
 **Fedora**
 
