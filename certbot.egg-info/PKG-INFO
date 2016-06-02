@@ -1,6 +1,6 @@
 Metadata-Version: 1.1
 Name: certbot
-Version: 0.6.0
+Version: 0.8.0
 Summary: ACME client
 Home-page: https://github.com/letsencrypt/letsencrypt
 Author: Certbot Project
@@ -39,14 +39,17 @@ Description: .. notice for github users
         If you'd like to contribute to this project please read `Developer Guide
         <https://certbot.eff.org/docs/contributing.html>`_.
         
+        .. _installation:
+        
         Installation
         ------------
         
-        If ``certbot`` (or ``letsencrypt``) is packaged for your Unix OS, you can install
-        it from there, and run it by typing ``certbot`` (or ``letsencrypt``).
-        Because not all operating systems have packages yet, we provide a temporary
-        solution via the ``certbot-auto`` wrapper script, which obtains some
-        dependencies from your OS and puts others in a python virtual environment::
+        If ``certbot`` (or ``letsencrypt``) is packaged for your Unix OS (visit
+        certbot.eff.org_ to find out), you can install it
+        from there, and run it by typing ``certbot`` (or ``letsencrypt``).  Because
+        not all operating systems have packages yet, we provide a temporary solution
+        via the ``certbot-auto`` wrapper script, which obtains some dependencies from
+        your OS and puts others in a python virtual environment::
         
           user@webserver:~$ wget https://dl.eff.org/certbot-auto
           user@webserver:~$ chmod a+x ./certbot-auto
@@ -196,6 +199,7 @@ Description: .. notice for github users
         .. _Freenode: https://webchat.freenode.net?channels=%23letsencrypt
         .. _OFTC: https://webchat.oftc.net?channels=%23certbot
         .. _client-dev: https://groups.google.com/a/letsencrypt.org/forum/#!forum/client-dev
+        .. _certbot.eff.org: https://certbot.eff.org/
         
 Platform: UNKNOWN
 Classifier: Development Status :: 3 - Alpha

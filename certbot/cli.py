@@ -6,10 +6,8 @@ import logging
 import logging.handlers
 import os
 import sys
-import traceback
 
 import configargparse
-import OpenSSL
 import six
 
 import certbot
@@ -19,7 +17,7 @@ from certbot import crypto_util
 from certbot import errors
 from certbot import hooks
 from certbot import interfaces
-from certbot import le_util
+from certbot import util
 
 from certbot.plugins import disco as plugins_disco
 import certbot.plugins.selection as plugin_selection
@@ -63,6 +61,7 @@ cert. Major SUBCOMMANDS are:
   install              Install a previously obtained cert in a server
   renew                Renew previously obtained certs that are near expiry
   revoke               Revoke a previously obtained certificate
+  register             Perform tasks related to registering with the CA
   rollback             Rollback server configuration changes made during install
   config_changes       Show changes made to server config during installation
   plugins              Display information about installed plugins
@@ -88,7 +87,8 @@ More detailed help:
                         the available topics are:
 
    all, automation, paths, security, testing, or any of the subcommands or
-   plugins (certonly, install, nginx, apache, standalone, webroot, etc)
+   plugins (certonly, install, register, nginx, apache, standalone, webroot,
+   etc.)
 """
 
 
@@ -287,8 +287,9 @@ class HelpfulArgumentParser(object):
         self.VERBS = {"auth": main.obtain_cert, "certonly": main.obtain_cert,
                       "config_changes": main.config_changes, "run": main.run,
                       "install": main.install, "plugins": main.plugins_cmd,
-                      "renew": main.renew, "revoke": main.revoke,
-                      "rollback": main.rollback, "everything": main.run}
+                      "register": main.register, "renew": main.renew,
+                      "revoke": main.revoke, "rollback": main.rollback,
+                      "everything": main.run}
 
         # List of topics for which additional help can be provided
         HELP_TOPICS = ["all", "security", "paths", "automation", "testing"] + list(self.VERBS)
@@ -336,35 +337,53 @@ class HelpfulArgumentParser(object):
 
         # Do any post-parsing homework here
 
+        if self.verb == "renew" and not parsed_args.dialog_mode:
+            parsed_args.noninteractive_mode = True
+
         if parsed_args.staging or parsed_args.dry_run:
-            if parsed_args.server not in (flag_default("server"), constants.STAGING_URI):
-                conflicts = ["--staging"] if parsed_args.staging else []
-                conflicts += ["--dry-run"] if parsed_args.dry_run else []
-                raise errors.Error("--server value conflicts with {0}".format(
-                    " and ".join(conflicts)))
-
-            parsed_args.server = constants.STAGING_URI
-
-            if parsed_args.dry_run:
-                if self.verb not in ["certonly", "renew"]:
-                    raise errors.Error("--dry-run currently only works with the "
-                                       "'certonly' or 'renew' subcommands (%r)" % self.verb)
-                parsed_args.break_my_certs = parsed_args.staging = True
-                if glob.glob(os.path.join(parsed_args.config_dir, constants.ACCOUNTS_DIR, "*")):
-                    # The user has a prod account, but might not have a staging
-                    # one; we don't want to start trying to perform interactive registration
-                    parsed_args.tos = True
-                    parsed_args.register_unsafely_without_email = True
+            self.set_test_server(parsed_args)
 
         if parsed_args.csr:
-            if parsed_args.allow_subset_of_names:
-                raise errors.Error("--allow-subset-of-names "
-                                   "cannot be used with --csr")
             self.handle_csr(parsed_args)
+
+        if parsed_args.must_staple:
+            parsed_args.staple = True
+
+        # Avoid conflicting args
+        conficting_args = ["quiet", "noninteractive_mode", "text_mode"]
+        if parsed_args.dialog_mode:
+            for arg in conficting_args:
+                if getattr(parsed_args, arg):
+                    raise errors.Error(
+                        ("Conflicting values for displayer."
+                        " {0} conflicts with dialog_mode").format(arg)
+                    )
 
         hooks.validate_hooks(parsed_args)
 
         return parsed_args
+
+    def set_test_server(self, parsed_args):
+        """We have --staging/--dry-run; perform sanity check and set config.server"""
+
+        if parsed_args.server not in (flag_default("server"), constants.STAGING_URI):
+            conflicts = ["--staging"] if parsed_args.staging else []
+            conflicts += ["--dry-run"] if parsed_args.dry_run else []
+            raise errors.Error("--server value conflicts with {0}".format(
+                " and ".join(conflicts)))
+
+        parsed_args.server = constants.STAGING_URI
+
+        if parsed_args.dry_run:
+            if self.verb not in ["certonly", "renew"]:
+                raise errors.Error("--dry-run currently only works with the "
+                                   "'certonly' or 'renew' subcommands (%r)" % self.verb)
+            parsed_args.break_my_certs = parsed_args.staging = True
+            if glob.glob(os.path.join(parsed_args.config_dir, constants.ACCOUNTS_DIR, "*")):
+                # The user has a prod account, but might not have a staging
+                # one; we don't want to start trying to perform interactive registration
+                parsed_args.tos = True
+                parsed_args.register_unsafely_without_email = True
 
     def handle_csr(self, parsed_args):
         """Process a --csr flag."""
@@ -373,21 +392,11 @@ class HelpfulArgumentParser(object):
                                "when obtaining a new or replacement "
                                "via the certonly command. Please try the "
                                "certonly command instead.")
+        if parsed_args.allow_subset_of_names:
+            raise errors.Error("--allow-subset-of-names cannot be used with --csr")
 
-        try:
-            csr = le_util.CSR(file=parsed_args.csr[0], data=parsed_args.csr[1], form="der")
-            typ = OpenSSL.crypto.FILETYPE_ASN1
-            domains = crypto_util.get_sans_from_csr(csr.data, OpenSSL.crypto.FILETYPE_ASN1)
-        except OpenSSL.crypto.Error:
-            try:
-                e1 = traceback.format_exc()
-                typ = OpenSSL.crypto.FILETYPE_PEM
-                csr = le_util.CSR(file=parsed_args.csr[0], data=parsed_args.csr[1], form="pem")
-                domains = crypto_util.get_sans_from_csr(csr.data, typ)
-            except OpenSSL.crypto.Error:
-                logger.debug("DER CSR parse error %s", e1)
-                logger.debug("PEM CSR parse error %s", traceback.format_exc())
-                raise errors.Error("Failed to parse CSR file: {0}".format(parsed_args.csr[0]))
+        csrfile, contents = parsed_args.csr[0:2]
+        typ, csr, domains = crypto_util.import_csr_file(csrfile, contents)
 
         # This is not necessary for webroot to work, however,
         # obtain_certificate_from_csr requires parsed_args.domains to be set
@@ -509,7 +518,7 @@ class HelpfulArgumentParser(object):
         :param int nargs: Number of arguments the option takes.
 
         """
-        le_util.add_deprecated_argument(
+        util.add_deprecated_argument(
             self.parser.add_argument, argument_name, num_args)
 
     def add_group(self, topic, **kwargs):
@@ -564,7 +573,7 @@ class HelpfulArgumentParser(object):
             return dict([(t, t == chosen_topic) for t in self.help_topics])
 
 
-def prepare_and_parse_args(plugins, args, detect_defaults=False):
+def prepare_and_parse_args(plugins, args, detect_defaults=False):  # pylint: disable=too-many-statements
     """Returns parsed command line arguments.
 
     :param .PluginsRegistry plugins: available plugins
@@ -574,6 +583,9 @@ def prepare_and_parse_args(plugins, args, detect_defaults=False):
     :rtype: argparse.Namespace
 
     """
+
+    # pylint: disable=too-many-statements
+
     helpful = HelpfulArgumentParser(args, plugins, detect_defaults)
 
     # --help is automatically provided by argparse
@@ -591,6 +603,9 @@ def prepare_and_parse_args(plugins, args, detect_defaults=False):
         help="Run without ever asking for user input. This may require "
               "additional command line flags; the client will try to explain "
               "which ones are required if it finds one missing")
+    helpful.add(
+        None, "--dialog", dest="dialog_mode", action="store_true",
+        help="Run using dialog")
     helpful.add(
         None, "--dry-run", action="store_true", dest="dry_run",
         help="Perform a test run of the client, obtaining test (invalid) certs"
@@ -613,6 +628,11 @@ def prepare_and_parse_args(plugins, args, detect_defaults=False):
              "certificates. Updates to the Subscriber Agreement will still "
              "affect you, and will be effective 14 days after posting an "
              "update to the web site.")
+    helpful.add(
+        "register", "--update-registration", action="store_true",
+        help="With the register verb, indicates that details associated "
+             "with an existing registration, such as the e-mail address, "
+             "should be updated, rather than registering a new account.")
     helpful.add(None, "-m", "--email", help=config_help("email"))
     # positional arg shadows --domains, instead of appending, and
     # --domains is useful, because it can be stored in config
@@ -705,6 +725,9 @@ def prepare_and_parse_args(plugins, args, detect_defaults=False):
         "security", "--rsa-key-size", type=int, metavar="N",
         default=flag_default("rsa_key_size"), help=config_help("rsa_key_size"))
     helpful.add(
+        "security", "--must-staple", action="store_true",
+        help=config_help("must_staple"), dest="must_staple", default=False)
+    helpful.add(
         "security", "--redirect", action="store_true",
         help="Automatically redirect all HTTP traffic to HTTPS for the newly "
              "authenticated vhost.", dest="redirect", default=None)
@@ -728,9 +751,20 @@ def prepare_and_parse_args(plugins, args, detect_defaults=False):
              " https:// for every http:// resource.", dest="uir", default=None)
     helpful.add(
         "security", "--no-uir", action="store_false",
-        help=" Do not automatically set the \"Content-Security-Policy:"
+        help="Do not automatically set the \"Content-Security-Policy:"
         " upgrade-insecure-requests\" header to every HTTP response.",
         dest="uir", default=None)
+    helpful.add(
+        "security", "--staple-ocsp", action="store_true",
+        help="Enables OCSP Stapling. A valid OCSP response is stapled to"
+        " the certificate that the server offers during TLS.",
+        dest="staple", default=None)
+    helpful.add(
+        "security", "--no-staple-ocsp", action="store_false",
+        help="Do not automatically enable OCSP Stapling.",
+        dest="staple", default=None)
+
+
     helpful.add(
         "security", "--strict-permissions", action="store_true",
         help="Require that all configuration files are owned by the current "
@@ -745,7 +779,8 @@ def prepare_and_parse_args(plugins, args, detect_defaults=False):
         " certificate lineage. You can try it with `--dry-run` first. For"
         " more fine-grained control, you can renew individual lineages with"
         " the `certonly` subcommand. Hooks are available to run commands "
-        " before and after renewal; see XXX for more information on these.")
+        " before and after renewal; see"
+        " https://certbot.eff.org/docs/using.html#renewal for more information on these.")
 
     helpful.add(
         "renew", "--pre-hook",
@@ -757,7 +792,8 @@ def prepare_and_parse_args(plugins, args, detect_defaults=False):
         "renew", "--post-hook",
         help="Command to be run in a shell after attempting to obtain/renew "
         " certificates. Can be used to deploy renewed certificates, or to restart"
-        " any servers that were stopped by --pre-hook.")
+        " any servers that were stopped by --pre-hook. This is only run if"
+        " an attempt was made to obtain/renew a certificate.")
     helpful.add(
         "renew", "--renew-hook",
         help="Command to be run in a shell once for each successfully renewed certificate."
@@ -926,7 +962,7 @@ def add_domains(args_or_config, domains):
     """
     validated_domains = []
     for domain in domains.split(","):
-        domain = le_util.enforce_domain_sanity(domain.strip())
+        domain = util.enforce_domain_sanity(domain.strip())
         validated_domains.append(domain)
         if domain not in args_or_config.domains:
             args_or_config.domains.append(domain)
