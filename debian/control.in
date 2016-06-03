@@ -42,7 +42,7 @@ Depends: python-acme (>= ###UPSTREAM_VERSION###),
 Recommends: letsencrypt
 Suggests: python-certbot-doc
 Breaks: python-certbot-apache (<< ###UPSTREAM_VERSION###),
-        python-letsencrypt
+        python-letsencrypt (<= 0.6.0)
 Replaces: python-letsencrypt
 Description: main library for certbot
  The objective of Certbot, Let's Encrypt, and the ACME (Automated
@@ -68,7 +68,7 @@ Depends: dialog,
          python-certbot (= ${source:Version}),
          ${misc:Depends},
          ${python:Depends}
-Breaks: letsencrypt
+Breaks: letsencrypt (<= 0.6.0)
 Replaces: letsencrypt
 Provides: letsencrypt
 Suggests: python-certbot-apache, python-certbot-doc
@@ -110,3 +110,11 @@ Description: client documentation for certbot
    - Help you revoke the certificate if that ever becomes necessary.
  .
  This package contains the documentation.
+
+Package: letsencrypt
+Section: oldlibs
+Architecture: all
+Depends: certbot, ${misc:Depends}
+Description: transitional dummy package
+ This is a transitional dummy package for the rename of letsencrypt to certbot.
+ It can safely be removed.
