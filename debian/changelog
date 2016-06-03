@@ -1,3 +1,15 @@
+python-certbot (0.8.0-1) unstable; urgency=high
+
+  * New upstream release. (Closes: #824452)
+  * Bump python-psutil dependency.
+  * Add Suggests for -doc. (Closes: #825598)
+  * Fix cron file to run only twice. (Closes: #825732)
+  * Add transitional dummy for letsencrypt. (Closes: #826010)
+  * Remove manpage patch no longer needed.
+  * Refresh patches.
+
+ -- Harlan Lieberman-Berg <hlieberman@debian.org>  Thu, 02 Jun 2016 20:09:02 -0400
+
 python-certbot (0.6.0-2) unstable; urgency=medium
 
   * Fix major bug in crontab file. (Closes: #824709)
