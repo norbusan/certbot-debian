@@ -5,10 +5,10 @@ Last-Update: 2016-05-12
 
 --- a/README.rst
 +++ b/README.rst
-@@ -116,26 +116,6 @@
+@@ -119,26 +119,6 @@
  Mailing list: `client-dev`_ (to subscribe without a Google account, send an
  email to client-dev+subscribe@letsencrypt.org)
-
+ 
 -|build-status| |coverage| |docs| |container|
 -
 -
@@ -31,3 +31,4 @@ Last-Update: 2016-05-12
 -
  .. _`installation instructions`:
     https://letsencrypt.readthedocs.org/en/latest/using.html
+ 
