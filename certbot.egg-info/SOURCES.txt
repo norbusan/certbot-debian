@@ -82,6 +82,7 @@ certbot/tests/display/completer_test.py
 certbot/tests/display/enhancements_test.py
 certbot/tests/display/ops_test.py
 certbot/tests/display/util_test.py
+certbot/tests/testdata/cert-5sans.pem
 certbot/tests/testdata/cert-san.pem
 certbot/tests/testdata/cert.b64jose
 certbot/tests/testdata/cert.der
