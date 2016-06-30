@@ -1,3 +1,10 @@
+python-certbot (0.8.1-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Add pydist-overrides to copy version deps.
+
+ -- Harlan Lieberman-Berg <hlieberman@debian.org>  Sun, 26 Jun 2016 20:55:52 -0400
+
 python-certbot (0.8.0-1) unstable; urgency=high
 
   * New upstream release. (Closes: #824452)
