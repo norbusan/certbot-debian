@@ -1,3 +1,9 @@
+python-certbot (0.8.1-2) unstable; urgency=medium
+
+  * Ship new crontab, fixing errors when using apache plugin
+
+ -- Harlan Lieberman-Berg <hlieberman@debian.org>  Thu, 07 Jul 2016 21:11:59 -0400
+
 python-certbot (0.8.1-1) unstable; urgency=medium
 
   * New upstream release.
