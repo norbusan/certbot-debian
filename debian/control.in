@@ -40,7 +40,7 @@ Architecture: all
 Depends: python-acme (>= ###UPSTREAM_VERSION###),
 	 ${misc:Depends},
 	 ${python:Depends}
-Recommends: letsencrypt
+Recommends: letsencrypt, python-psutil (>= 2.2.1)
 Suggests: python-certbot-doc
 Breaks: python-certbot-apache (<< ###UPSTREAM_VERSION###),
         python-letsencrypt (<= 0.6.0)
