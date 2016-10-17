@@ -90,7 +90,7 @@ def write_renewal_config(o_filename, n_filename, target, relevant_data):
     # TODO: add human-readable comments explaining other available
     #       parameters
     logger.debug("Writing new config %s.", n_filename)
-    with open(n_filename, "w") as f:
+    with open(n_filename, "wb") as f:
         config.write(outfile=f)
     return config
 
@@ -519,6 +519,22 @@ class RenewableCert(object):  # pylint: disable=too-many-instance-attributes
         # collide with a version that might exist for one file type but not
         # for the others.
         return max(self.newest_available_version(x) for x in ALL_FOUR) + 1
+
+    def ensure_deployed(self):
+        """Make sure we've deployed the latest version.
+
+        :returns: False if a change was needed, True otherwise
+        :rtype: bool
+
+        May need to recover from rare interrupted / crashed states."""
+
+        if self.has_pending_deployment():
+            logger.warn("Found a new cert /archive/ that was not linked to in /live/; "
+                        "fixing...")
+            self.update_all_links_to(self.latest_common_version())
+            return False
+        return True
+
 
     def has_pending_deployment(self):
         """Is there a later version of all of the managed items?
