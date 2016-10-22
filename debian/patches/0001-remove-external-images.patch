@@ -5,14 +5,18 @@ Last-Update: 2016-05-12
 
 --- a/README.rst
 +++ b/README.rst
-@@ -119,26 +119,6 @@
+@@ -100,30 +100,12 @@
  Mailing list: `client-dev`_ (to subscribe without a Google account, send an
  email to client-dev+subscribe@letsencrypt.org)
  
 -|build-status| |coverage| |docs| |container|
 -
--
--
+ .. _Freenode: https://webchat.freenode.net?channels=%23letsencrypt
+ 
+ .. _OFTC: https://webchat.oftc.net?channels=%23certbot
+ 
+ .. _client-dev: https://groups.google.com/a/letsencrypt.org/forum/#!forum/client-dev
+ 
 -.. |build-status| image:: https://travis-ci.org/certbot/certbot.svg?branch=master
 -   :target: https://travis-ci.org/certbot/certbot
 -   :alt: Travis CI status
@@ -29,6 +33,6 @@ Last-Update: 2016-05-12
 -   :target: https://quay.io/repository/letsencrypt/letsencrypt
 -   :alt: Docker Repository on Quay.io
 -
- .. _`installation instructions`:
-    https://letsencrypt.readthedocs.org/en/latest/using.html
+ .. Do not modify this comment unless you know what you're doing. tag:links-end
  
+ System Requirements
