@@ -1,8 +1,8 @@
 [Unit]
 Description=Certbot
-
+Documentation=file:///usr/share/doc/python-certbot-doc/html/index.html
+Documentation=https://letsencrypt.readthedocs.io/en/latest/
 [Service]
 Type=oneshot
 ExecStart=/usr/bin/certbot -q renew
 PrivateTmp=true
-
