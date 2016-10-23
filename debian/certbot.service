@@ -1,0 +1,8 @@
+[Unit]
+Description=Certbot
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/certbot -q renew
+PrivateTmp=true
+

@@ -5,7 +5,7 @@ export PYBUILD_NAME = certbot
 include /usr/share/dpkg/pkg-info.mk
 
 %:
-	dh $@ --with python2,sphinxdoc --buildsystem=pybuild
+	dh $@ --with python2,sphinxdoc,systemd --buildsystem=pybuild
 
 override_dh_clean: debian/control
 	dh_clean
@@ -26,3 +26,13 @@ override_dh_install:
 		https_proxy='127.0.0.1:8' \
 		sphinx-build -N -bman docs/ build/man
 	chmod -x debian/python-certbot/usr/lib/python2.7/dist-packages/certbot/tests/testdata/sample-renewal*.conf
+	install -D --mode=644 --target-directory=debian/certbot/lib/systemd/system debian/certbot.timer
+
+override_dh_systemd_enable:
+	dh_systemd_enable --package=certbot certbot.timer
+
+override_dh_systemd_start:
+	dh_systemd_start --package=certbot certbot.timer
+	dh_systemd_start --package=certbot --no-start certbot.service
+
+override_dh_installinit:
