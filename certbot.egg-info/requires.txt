@@ -1,4 +1,4 @@
-acme==0.9.3
+acme==0.10.1
 ConfigArgParse>=0.9.3
 configobj
 cryptography>=0.7
@@ -10,7 +10,6 @@ setuptools>=1.0
 six
 zope.component
 zope.interface
-python2-pythondialog>=3.2.2rc1
 mock
 
 [dev]
@@ -28,4 +27,3 @@ wheel
 repoze.sphinx.autointerface
 Sphinx>=1.0
 sphinx_rtd_theme
-sphinxcontrib-programoutput

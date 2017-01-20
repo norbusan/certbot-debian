@@ -10,6 +10,7 @@ certbot/__init__.py
 certbot/account.py
 certbot/achallenges.py
 certbot/auth_handler.py
+certbot/cert_manager.py
 certbot/cli.py
 certbot/client.py
 certbot/colored_logging.py
@@ -20,9 +21,9 @@ certbot/error_handler.py
 certbot/errors.py
 certbot/hooks.py
 certbot/interfaces.py
-certbot/log.py
 certbot/main.py
 certbot/notify.py
+certbot/ocsp.py
 certbot/renewal.py
 certbot/reporter.py
 certbot/reverter.py
@@ -61,6 +62,7 @@ certbot/tests/__init__.py
 certbot/tests/account_test.py
 certbot/tests/acme_util.py
 certbot/tests/auth_handler_test.py
+certbot/tests/cert_manager_test.py
 certbot/tests/cli_test.py
 certbot/tests/client_test.py
 certbot/tests/colored_logging_test.py
@@ -69,13 +71,14 @@ certbot/tests/crypto_util_test.py
 certbot/tests/error_handler_test.py
 certbot/tests/errors_test.py
 certbot/tests/hook_test.py
-certbot/tests/log_test.py
 certbot/tests/main_test.py
 certbot/tests/notify_test.py
+certbot/tests/ocsp_test.py
+certbot/tests/renewal_test.py
 certbot/tests/reporter_test.py
 certbot/tests/reverter_test.py
 certbot/tests/storage_test.py
-certbot/tests/test_util.py
+certbot/tests/util.py
 certbot/tests/util_test.py
 certbot/tests/display/__init__.py
 certbot/tests/display/completer_test.py
@@ -135,7 +138,6 @@ docs/api/display.rst
 docs/api/errors.rst
 docs/api/index.rst
 docs/api/interfaces.rst
-docs/api/log.rst
 docs/api/reporter.rst
 docs/api/reverter.rst
 docs/api/storage.rst
