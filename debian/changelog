@@ -1,3 +1,16 @@
+python-certbot (0.10.1-1) unstable; urgency=medium
+
+  [ Ondřej Surý ]
+  * Tweaks to B-D, Depends for backporting to Trusty. (Closes: #844687)
+
+  [ Harlan Lieberman-Berg ]
+  * New upstream version.
+  * Update dependencies dropped by upstream, misc. cleanup
+  * Remove ugly PYTHONPATH hack no longer needed, misc. cleanup
+  * Pre-create /etc/letsencrypt (Closes: #845792)
+
+ -- Harlan Lieberman-Berg <hlieberman@debian.org>  Fri, 20 Jan 2017 22:19:59 -0500
+
 python-certbot (0.9.3-1) unstable; urgency=medium
 
   * New upstream version. (Closes: #840995)
