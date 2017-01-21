@@ -17,15 +17,12 @@ override_dh_install:
 	mkdir -p debian/certbot/usr/bin
 	mv debian/python-certbot/usr/bin/* debian/certbot/usr/bin
 	rm -rf debian/python-certbot/usr/bin
-	PYTHONPATH=. PATH=../debian/certbot/usr/bin:${PATH} \
-		http_proxy='127.0.0.1:9' \
+	http_proxy='127.0.0.1:9' \
 		https_proxy='127.0.0.1:9' \
 		sphinx-build -N -bhtml docs/ build/html
-	PYTHONPATH=. PATH=../debian/certbot/usr/bin:${PATH} \
-		http_proxy='127.0.0.1:9' \
+	http_proxy='127.0.0.1:9' \
 		https_proxy='127.0.0.1:8' \
 		sphinx-build -N -bman docs/ build/man
-	chmod -x debian/python-certbot/usr/lib/python2.7/dist-packages/certbot/tests/testdata/sample-renewal*.conf
 	install -D --mode=644 --target-directory=debian/certbot/lib/systemd/system debian/certbot.timer
 
 override_dh_systemd_enable:
