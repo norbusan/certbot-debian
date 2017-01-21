@@ -7,13 +7,11 @@ Uploaders: Harlan Lieberman-Berg <hlieberman@debian.org>,
 Build-Depends: debhelper (>= 9~),
                dh-python,
                dh-systemd,
-               dialog,
                python-acme (>= ###UPSTREAM_VERSION###~),
                python-all (>= 2.6.6.3~),
                python-configargparse (>= 0.10.0),
                python-configobj,
                python-cryptography (>= 0.7),
-               python-dialog (>= 3.2.2rc1),
                python-docutils,
                python-mock,
                python-openssl (>= 16.0~),
@@ -26,7 +24,6 @@ Build-Depends: debhelper (>= 9~),
                python-six,
                python-sphinx,
                python-sphinx-rtd-theme,
-               python-sphinxcontrib.programoutput | python-sphinxcontrib-programoutput,
                python-tz,
                python-zope.component,
                python-zope.interface
@@ -39,14 +36,14 @@ X-Python-Version: >= 2.7
 Package: python-certbot
 Architecture: all
 Depends: python-acme (>= ###UPSTREAM_VERSION###),
-         python-dialog (>= 3.2.2rc1),
          python-requests (>= 2.4.3),
          ${misc:Depends},
          ${python:Depends}
-Recommends: letsencrypt,
+Recommends: certbot,
             python-psutil (>= 2.2.1)
 Suggests: python-certbot-doc
 Breaks: python-certbot-apache (<< ###UPSTREAM_VERSION###),
+	python-certbot-nginx (<< ###UPSTREAM_VERSION###),
         python-letsencrypt (<= 0.6.0)
 Replaces: python-letsencrypt
 Description: main library for certbot
@@ -69,8 +66,7 @@ Description: main library for certbot
 Package: certbot
 Section: web
 Architecture: all
-Depends: dialog,
-         python-certbot (= ${source:Version}),
+Depends: python-certbot (= ${source:Version}),
          ${misc:Depends},
          ${python:Depends}
 Breaks: letsencrypt (<= 0.6.0)
