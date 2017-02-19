@@ -17,6 +17,7 @@ certbot/colored_logging.py
 certbot/configuration.py
 certbot/constants.py
 certbot/crypto_util.py
+certbot/eff.py
 certbot/error_handler.py
 certbot/errors.py
 certbot/hooks.py
@@ -68,6 +69,7 @@ certbot/tests/client_test.py
 certbot/tests/colored_logging_test.py
 certbot/tests/configuration_test.py
 certbot/tests/crypto_util_test.py
+certbot/tests/eff_test.py
 certbot/tests/error_handler_test.py
 certbot/tests/errors_test.py
 certbot/tests/hook_test.py
