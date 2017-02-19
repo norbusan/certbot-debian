@@ -52,13 +52,18 @@ class ParseTest(unittest.TestCase):
         return cli.prepare_and_parse_args(PLUGINS, *args, **kwargs)
 
     def _help_output(self, args):
-        "Run a command, and return the ouput string for scrutiny"
+        "Run a command, and return the output string for scrutiny"
 
         output = six.StringIO()
         with mock.patch('certbot.main.sys.stdout', new=output):
             with mock.patch('certbot.main.sys.stderr'):
                 self.assertRaises(SystemExit, self.parse, args, output)
         return output.getvalue()
+
+    def test_no_args(self):
+        namespace = self.parse([])
+        for d in ('config_dir', 'logs_dir', 'work_dir'):
+            self.assertEqual(getattr(namespace, d), cli.flag_default(d))
 
     def test_install_abspath(self):
         cert = 'cert'
@@ -121,6 +126,7 @@ class ParseTest(unittest.TestCase):
         out = self._help_output(['--help', 'revoke'])
         self.assertTrue("--cert-path" in out)
         self.assertTrue("--key-path" in out)
+        self.assertTrue("--reason" in out)
 
         out = self._help_output(['-h', 'config_changes'])
         self.assertTrue("--cert-path" not in out)
@@ -131,6 +137,26 @@ class ParseTest(unittest.TestCase):
         self.assertTrue(cli.COMMAND_OVERVIEW[:100] in out)
         self.assertTrue("%s" not in out)
         self.assertTrue("{0}" not in out)
+
+    def test_help_no_dashes(self):
+        self._help_output(['help'])  # assert SystemExit is raised here
+
+        out = self._help_output(['help', 'all'])
+        self.assertTrue("--configurator" in out)
+        self.assertTrue("how a cert is deployed" in out)
+        self.assertTrue("--webroot-path" in out)
+        self.assertTrue("--text" not in out)
+        self.assertTrue("--dialog" not in out)
+        self.assertTrue("%s" not in out)
+        self.assertTrue("{0}" not in out)
+
+        out = self._help_output(['help', 'install'])
+        self.assertTrue("--cert-path" in out)
+        self.assertTrue("--key-path" in out)
+
+        out = self._help_output(['help', 'revoke'])
+        self.assertTrue("--cert-path" in out)
+        self.assertTrue("--key-path" in out)
 
     def test_parse_domains(self):
         short_args = ['-d', 'example.com']
@@ -261,6 +287,14 @@ class ParseTest(unittest.TestCase):
         config_dir_option = 'config_dir'
         self.assertFalse(cli.option_was_set(
             config_dir_option, cli.flag_default(config_dir_option)))
+
+    def test_encode_revocation_reason(self):
+        for reason, code in constants.REVOCATION_REASONS.items():
+            namespace = self.parse(['--reason', reason])
+            self.assertEqual(namespace.reason, code)
+        for reason, code in constants.REVOCATION_REASONS.items():
+            namespace = self.parse(['--reason', reason.upper()])
+            self.assertEqual(namespace.reason, code)
 
     def test_force_interactive(self):
         self.assertRaises(
