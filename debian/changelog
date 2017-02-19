@@ -1,3 +1,11 @@
+python-certbot (0.11.1-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Add .pc to gitignore
+  * Drop python-psutil dep no longer needed
+
+ -- Harlan Lieberman-Berg <hlieberman@debian.org>  Sun, 19 Feb 2017 14:05:17 -0500
+
 python-certbot (0.10.2-1) unstable; urgency=medium
 
   * New upstream release.
