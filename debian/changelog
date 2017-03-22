@@ -1,3 +1,10 @@
+python-certbot (0.12.0-1) experimental; urgency=medium
+
+  * New upstream release.
+  * Add python-ipdb as build dependency.
+
+ -- Harlan Lieberman-Berg <hlieberman@debian.org>  Tue, 21 Mar 2017 23:10:14 -0400
+
 python-certbot (0.11.1-1) unstable; urgency=medium
 
   * New upstream release.
