@@ -2,6 +2,7 @@ python-certbot (0.12.0-1) experimental; urgency=medium
 
   * New upstream release.
   * Add python-ipdb as build dependency.
+  * Drop unnecessary dependency on dh-systemd (Closes: #856239)
 
  -- Harlan Lieberman-Berg <hlieberman@debian.org>  Tue, 21 Mar 2017 23:10:14 -0400
 
