@@ -13,7 +13,6 @@ certbot/auth_handler.py
 certbot/cert_manager.py
 certbot/cli.py
 certbot/client.py
-certbot/colored_logging.py
 certbot/configuration.py
 certbot/constants.py
 certbot/crypto_util.py
@@ -22,6 +21,8 @@ certbot/error_handler.py
 certbot/errors.py
 certbot/hooks.py
 certbot/interfaces.py
+certbot/lock.py
+certbot/log.py
 certbot/main.py
 certbot/notify.py
 certbot/ocsp.py
@@ -66,13 +67,14 @@ certbot/tests/auth_handler_test.py
 certbot/tests/cert_manager_test.py
 certbot/tests/cli_test.py
 certbot/tests/client_test.py
-certbot/tests/colored_logging_test.py
 certbot/tests/configuration_test.py
 certbot/tests/crypto_util_test.py
 certbot/tests/eff_test.py
 certbot/tests/error_handler_test.py
 certbot/tests/errors_test.py
 certbot/tests/hook_test.py
+certbot/tests/lock_test.py
+certbot/tests/log_test.py
 certbot/tests/main_test.py
 certbot/tests/notify_test.py
 certbot/tests/ocsp_test.py
@@ -96,7 +98,6 @@ certbot/tests/testdata/cli.ini
 certbot/tests/testdata/csr-6sans.pem
 certbot/tests/testdata/csr-nonames.pem
 certbot/tests/testdata/csr-nosans.pem
-certbot/tests/testdata/csr-san.der
 certbot/tests/testdata/csr-san.pem
 certbot/tests/testdata/csr.der
 certbot/tests/testdata/csr.pem
@@ -117,6 +118,7 @@ certbot/tests/testdata/sample-archive/privkey1.pem
 docs/.gitignore
 docs/Makefile
 docs/api.rst
+docs/challenges.rst
 docs/ciphers.rst
 docs/cli-help.txt
 docs/conf.py
