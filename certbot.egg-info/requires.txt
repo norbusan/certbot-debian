@@ -1,4 +1,4 @@
-acme==0.14.1
+acme==0.14.2
 ConfigArgParse>=0.9.3
 configobj
 cryptography>=0.7
