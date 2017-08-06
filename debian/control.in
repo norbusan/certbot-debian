@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Debian Let's Encrypt <letsencrypt-devel@lists.alioth.debian.org>
 Uploaders: Harlan Lieberman-Berg <hlieberman@debian.org>,
            Francois Marier <francois@debian.org>
-Build-Depends: debhelper (>= 9~),
+Build-Depends: debhelper (>= 10~),
                dh-python,
                python-acme (>= ###UPSTREAM_VERSION###~),
                python-all (>= 2.6.6.3~),
