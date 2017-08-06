@@ -24,10 +24,10 @@ CANCEL = "cancel"
 """Display exit code for a user canceling the display."""
 
 HELP = "help"
-"""Display exit code when for when the user requests more help. (UNUSED)"""
+"""Display exit code when for when the user requests more help."""
 
 ESC = "esc"
-"""Display exit code when the user hits Escape (UNUSED)"""
+"""Display exit code when the user hits Escape"""
 
 
 def _wrap_lines(msg):
@@ -123,8 +123,8 @@ class FileDisplay(object):
             else:
                 logger.debug("Not pausing for user confirmation")
 
-    def menu(self, message, choices, ok_label=None, cancel_label=None,
-             help_label=None, default=None,
+    def menu(self, message, choices, ok_label="", cancel_label="",
+             help_label="", default=None,
              cli_flag=None, force_interactive=False, **unused_kwargs):
         # pylint: disable=unused-argument
         """Display a menu.
@@ -176,9 +176,12 @@ class FileDisplay(object):
         if self._return_default(message, default, cli_flag, force_interactive):
             return OK, default
 
-        # Trailing space must be added outside of _wrap_lines to be preserved
-        message = _wrap_lines("%s (Enter 'c' to cancel):" % message) + " "
-        ans = input_with_timeout(message)
+        ans = input_with_timeout(
+            textwrap.fill(
+                "%s (Enter 'c' to cancel): " % message,
+                80,
+                break_long_words=False,
+                break_on_hyphens=False))
 
         if ans == "c" or ans == "C":
             return CANCEL, "-1"
@@ -228,13 +231,14 @@ class FileDisplay(object):
                     ans.startswith(no_label[0].upper())):
                 return False
 
-    def checklist(self, message, tags, default=None,
+    def checklist(self, message, tags, default_status=True, default=None,
                   cli_flag=None, force_interactive=False, **unused_kwargs):
         # pylint: disable=unused-argument
         """Display a checklist.
 
         :param str message: Message to display to user
         :param list tags: `str` tags to select, len(tags) > 0
+        :param bool default_status: Not used for FileDisplay
         :param default: default value to return (if one exists)
         :param str cli_flag: option used to set this value with the CLI
         :param bool force_interactive: True if it's safe to prompt the user
@@ -388,8 +392,12 @@ class FileDisplay(object):
 
         # Write out the menu choices
         for i, desc in enumerate(choices, 1):
-            msg = "{num}: {desc}".format(num=i, desc=desc)
-            self.outfile.write(_wrap_lines(msg))
+            self.outfile.write(
+                textwrap.fill(
+                    "{num}: {desc}".format(num=i, desc=desc),
+                    80,
+                    break_long_words=False,
+                    break_on_hyphens=False))
 
             # Keep this outside of the textwrap
             self.outfile.write(os.linesep)

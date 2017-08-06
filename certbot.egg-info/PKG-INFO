@@ -1,6 +1,10 @@
 Metadata-Version: 1.1
 Name: certbot
+<<<<<<< HEAD
 Version: 0.17.0
+=======
+Version: 0.14.2
+>>>>>>> 1ce3efe787c1ff9b37254c5a7a25bf15ae503b8e
 Summary: ACME client
 Home-page: https://github.com/letsencrypt/letsencrypt
 Author: Certbot Project
