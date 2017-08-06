@@ -30,7 +30,8 @@ logger = logging.getLogger(__name__)
 STR_CONFIG_ITEMS = ["config_dir", "logs_dir", "work_dir", "user_agent",
                     "server", "account", "authenticator", "installer",
                     "standalone_supported_challenges", "renew_hook",
-                    "pre_hook", "post_hook"]
+                    "pre_hook", "post_hook", "tls_sni_01_address",
+                    "http01_address"]
 INT_CONFIG_ITEMS = ["rsa_key_size", "tls_sni_01_port", "http01_port"]
 BOOL_CONFIG_ITEMS = ["must_staple", "allow_subset_of_names"]
 
@@ -79,7 +80,7 @@ def _reconstitute(config, full_path):
     except (ValueError, errors.Error) as error:
         logger.warning(
             "An error occurred while parsing %s. The error was %s. "
-            "Skipping the file.", full_path, error.message)
+            "Skipping the file.", full_path, str(error))
         logger.debug("Traceback was:\n%s", traceback.format_exc())
         return None
 
@@ -103,13 +104,13 @@ def _restore_webroot_config(config, renewalparams):
     """
     if "webroot_map" in renewalparams:
         if not cli.set_by_cli("webroot_map"):
-            config.namespace.webroot_map = renewalparams["webroot_map"]
+            config.webroot_map = renewalparams["webroot_map"]
     elif "webroot_path" in renewalparams:
         logger.debug("Ancient renewal conf file without webroot-map, restoring webroot-path")
         wp = renewalparams["webroot_path"]
         if isinstance(wp, str):  # prior to 0.1.0, webroot_path was a string
             wp = [wp]
-        config.namespace.webroot_path = wp
+        config.webroot_path = wp
 
 
 def _restore_plugin_configs(config, renewalparams):
@@ -148,10 +149,10 @@ def _restore_plugin_configs(config, renewalparams):
                 if config_value in ("None", "True", "False"):
                     # bool("False") == True
                     # pylint: disable=eval-used
-                    setattr(config.namespace, config_item, eval(config_value))
+                    setattr(config, config_item, eval(config_value))
                 else:
                     cast = cli.argparse_type(config_item)
-                    setattr(config.namespace, config_item, cast(config_value))
+                    setattr(config, config_item, cast(config_value))
 
 
 def restore_required_config_elements(config, renewalparams):
@@ -172,7 +173,7 @@ def restore_required_config_elements(config, renewalparams):
     for item_name, restore_func in required_items:
         if item_name in renewalparams and not cli.set_by_cli(item_name):
             value = restore_func(item_name, renewalparams[item_name])
-            setattr(config.namespace, item_name, value)
+            setattr(config, item_name, value)
 
 
 def _restore_pref_challs(unused_name, value):
@@ -388,14 +389,16 @@ def handle_renewal_request(config):
         disp = zope.component.getUtility(interfaces.IDisplay)
         disp.notification("Processing " + renewal_file, pause=False)
         lineage_config = copy.deepcopy(config)
+        lineagename = storage.lineagename_for_filename(renewal_file)
 
         # Note that this modifies config (to add back the configuration
         # elements from within the renewal configuration file).
         try:
             renewal_candidate = _reconstitute(lineage_config, renewal_file)
         except Exception as e:  # pylint: disable=broad-except
-            logger.warning("Renewal configuration file %s produced an "
-                           "unexpected error: %s. Skipping.", renewal_file, e)
+            logger.warning("Renewal configuration file %s (cert: %s) "
+                           "produced an unexpected error: %s. Skipping.",
+                           renewal_file, lineagename, e)
             logger.debug("Traceback was:\n%s", traceback.format_exc())
             parse_failures.append(renewal_file)
             continue
@@ -421,8 +424,9 @@ def handle_renewal_request(config):
                     renew_skipped.append(renewal_candidate.fullchain)
         except Exception as e:  # pylint: disable=broad-except
             # obtain_cert (presumably) encountered an unanticipated problem.
-            logger.warning("Attempting to renew cert from %s produced an "
-                           "unexpected error: %s. Skipping.", renewal_file, e)
+            logger.warning("Attempting to renew cert (%s) from %s produced an "
+                           "unexpected error: %s. Skipping.", lineagename,
+                               renewal_file, e)
             logger.debug("Traceback was:\n%s", traceback.format_exc())
             renew_failures.append(renewal_candidate.fullchain)
 

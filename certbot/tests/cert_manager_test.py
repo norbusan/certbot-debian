@@ -18,11 +18,14 @@ from certbot.storage import ALL_FOUR
 from certbot.tests import storage_test
 from certbot.tests import util as test_util
 
-class BaseCertManagerTest(unittest.TestCase):
+from certbot.tests.util import TempDirTestCase
+
+
+class BaseCertManagerTest(TempDirTestCase):
     """Base class for setting up Cert Manager tests.
     """
     def setUp(self):
-        self.tempdir = tempfile.mkdtemp()
+        super(BaseCertManagerTest, self).setUp()
 
         os.makedirs(os.path.join(self.tempdir, "renewal"))
 
@@ -67,9 +70,6 @@ class BaseCertManagerTest(unittest.TestCase):
                                        domain + ".conf")
         config.write()
         return config
-
-    def tearDown(self):
-        shutil.rmtree(self.tempdir)
 
 
 class UpdateLiveSymlinksTest(BaseCertManagerTest):
@@ -149,12 +149,14 @@ class CertificatesTest(BaseCertManagerTest):
         self.assertFalse(mock_utility.notification.called)
         self.assertTrue(mock_logger.warning.called) #pylint: disable=no-member
 
+    @mock.patch('certbot.crypto_util.verify_renewable_cert')
     @mock.patch('certbot.cert_manager.logger')
     @test_util.patch_get_utility()
     @mock.patch("certbot.storage.RenewableCert")
     @mock.patch('certbot.cert_manager._report_human_readable')
     def test_certificates_parse_success(self, mock_report, mock_renewable_cert,
-        mock_utility, mock_logger):
+        mock_utility, mock_logger, mock_verifier):
+        mock_verifier.return_value = None
         mock_report.return_value = ""
         self._certificates(self.cli_config)
         self.assertFalse(mock_logger.warning.called) #pylint: disable=no-member
@@ -436,9 +438,6 @@ class DuplicativeCertsTest(storage_test.BaseRenewableCertTest):
         super(DuplicativeCertsTest, self).setUp()
         self.config.write()
         self._write_out_ex_kinds()
-
-    def tearDown(self):
-        shutil.rmtree(self.tempdir)
 
     @mock.patch('certbot.util.make_or_verify_dir')
     def test_find_duplicative_names(self, unused_makedir):

@@ -1,6 +1,7 @@
 """Certbot client API."""
 import logging
 import os
+import platform
 
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.asymmetric import rsa
@@ -8,6 +9,8 @@ import OpenSSL
 import zope.component
 
 from acme import client as acme_client
+from acme import crypto_util as acme_crypto_util
+from acme import errors as acme_errors
 from acme import jose
 from acme import messages
 
@@ -51,22 +54,54 @@ def determine_user_agent(config):
     :rtype: `str`
     """
 
+    # WARNING: To ensure changes are in line with Certbot's privacy
+    # policy, talk to a core Certbot team member before making any
+    # changes here.
     if config.user_agent is None:
-        ua = "CertbotACMEClient/{0} ({1}) Authenticator/{2} Installer/{3}"
-        ua = ua.format(certbot.__version__, util.get_os_info_ua(),
-                       config.authenticator, config.installer)
+        ua = ("CertbotACMEClient/{0} ({1}; {2}{8}) Authenticator/{3} Installer/{4} "
+              "({5}; flags: {6}) Py/{7}")
+        ua = ua.format(certbot.__version__, cli.cli_command, util.get_os_info_ua(),
+                       config.authenticator, config.installer, config.verb,
+                       ua_flags(config), platform.python_version(),
+                       "; " + config.user_agent_comment if config.user_agent_comment else "")
     else:
         ua = config.user_agent
     return ua
 
+def ua_flags(config):
+    "Turn some very important CLI flags into clues in the user agent."
+    if isinstance(config, DummyConfig):
+        return "FLAGS"
+    flags = []
+    if config.duplicate:
+        flags.append("dup")
+    if config.renew_by_default:
+        flags.append("frn")
+    if config.allow_subset_of_names:
+        flags.append("asn")
+    if config.noninteractive_mode:
+        flags.append("n")
+    hook_names = ("pre", "post", "renew", "manual_auth", "manual_cleanup")
+    hooks = [getattr(config, h + "_hook") for h in hook_names]
+    if any(hooks):
+        flags.append("hook")
+    return " ".join(flags)
+
+class DummyConfig(object):
+    "Shim for computing a sample user agent."
+    def __init__(self):
+        self.authenticator = "XXX"
+        self.installer = "YYY"
+        self.user_agent = None
+        self.verb = "SUBCOMMAND"
+
+    def __getattr__(self, name):
+        "Any config properties we might have are None."
+        return None
+
 def sample_user_agent():
     "Document what this Certbot's user agent string will be like."
-    class DummyConfig(object):
-        "Shim for computing a sample user agent."
-        def __init__(self):
-            self.authenticator = "XXX"
-            self.installer = "YYY"
-            self.user_agent = None
+
     return determine_user_agent(DummyConfig())
 
 
@@ -117,7 +152,7 @@ def register(config, account_storage, tos_cb=None):
             logger.warning(msg)
             raise errors.Error(msg)
         if not config.dry_run:
-            logger.warning("Registering without email!")
+            logger.info("Registering without email!")
 
     # Each new registration shall use a fresh new key
     key = jose.JWKRSA(key=jose.ComparableRSAKey(
@@ -138,7 +173,7 @@ def register(config, account_storage, tos_cb=None):
 
     acc = account.Account(regr, key)
     account.report_new_account(config)
-    account_storage.save(acc)
+    account_storage.save(acc, acme)
 
     eff.handle_subscription(config)
 
@@ -155,8 +190,6 @@ def perform_registration(acme, config):
 
     :returns: Registration Resource.
     :rtype: `acme.messages.RegistrationResource`
-
-    :raises .UnexpectedUpdate:
     """
     try:
         return acme.register(messages.NewRegistration.from_data(email=config.email))
@@ -168,7 +201,7 @@ def perform_registration(acme, config):
                        "registration again." % config.email)
                 raise errors.Error(msg)
             else:
-                config.namespace.email = display_ops.get_email(invalid=True)
+                config.email = display_ops.get_email(invalid=True)
                 return perform_registration(acme, config)
         else:
             raise
@@ -208,15 +241,14 @@ class Client(object):
         else:
             self.auth_handler = None
 
-    def obtain_certificate_from_csr(self, domains, csr,
-        typ=OpenSSL.crypto.FILETYPE_ASN1, authzr=None):
+    def obtain_certificate_from_csr(self, domains, csr, authzr=None):
         """Obtain certificate.
 
         Internal function with precondition that `domains` are
         consistent with identifiers present in the `csr`.
 
         :param list domains: Domain names.
-        :param .util.CSR csr: DER-encoded Certificate Signing
+        :param .util.CSR csr: PEM-encoded Certificate Signing
             Request. The key used to generate this CSR can be different
             than `authkey`.
         :param list authzr: List of
@@ -242,9 +274,30 @@ class Client(object):
 
         certr = self.acme.request_issuance(
             jose.ComparableX509(
-                OpenSSL.crypto.load_certificate_request(typ, csr.data)),
+                OpenSSL.crypto.load_certificate_request(OpenSSL.crypto.FILETYPE_PEM, csr.data)),
                 authzr)
-        return certr, self.acme.fetch_chain(certr)
+
+        notify = zope.component.getUtility(interfaces.IDisplay).notification
+        retries = 0
+        chain = None
+
+        while retries <= 1:
+            if retries:
+                notify('Failed to fetch chain, please check your network '
+                       'and continue', pause=True)
+            try:
+                chain = self.acme.fetch_chain(certr)
+                break
+            except acme_errors.Error:
+                logger.debug('Failed to fetch chain', exc_info=True)
+                retries += 1
+
+        if chain is None:
+            raise acme_errors.Error(
+                'Failed to fetch chain. You should not deploy the generated '
+                'certificate, please rerun the command for a new one.')
+
+        return certr, chain
 
     def obtain_certificate(self, domains):
         """Obtains a certificate from the ACME server.
@@ -268,13 +321,23 @@ class Client(object):
         domains = [d for d in domains if d in auth_domains]
 
         # Create CSR from names
-        key = crypto_util.init_save_key(
-            self.config.rsa_key_size, self.config.key_dir)
-        csr = crypto_util.init_save_csr(key, domains, self.config.csr_dir)
+        if self.config.dry_run:
+            key = util.Key(file=None,
+                           pem=crypto_util.make_key(self.config.rsa_key_size))
+            csr = util.CSR(file=None, form="pem",
+                           data=acme_crypto_util.make_csr(
+                               key.pem, domains, self.config.must_staple))
+        else:
+            key = crypto_util.init_save_key(
+                self.config.rsa_key_size, self.config.key_dir)
+            csr = crypto_util.init_save_csr(key, domains, self.config.csr_dir)
 
-        return (self.obtain_certificate_from_csr(domains, csr, authzr=authzr)
-                                                                + (key, csr))
+        certr, chain = self.obtain_certificate_from_csr(
+            domains, csr, authzr=authzr)
 
+        return certr, chain, key, csr
+
+    # pylint: disable=no-member
     def obtain_and_enroll_certificate(self, domains, certname):
         """Obtain and enroll certificate.
 
@@ -443,15 +506,11 @@ class Client(object):
     def apply_enhancement(self, domains, enhancement, options=None):
         """Applies an enhancement on all domains.
 
-        :param domains: list of ssl_vhosts
-        :type list of str
+        :param list domains: list of ssl_vhosts (as strings)
+        :param str enhancement: name of enhancement, e.g. ensure-http-header
+        :param str options: options to enhancement, e.g. Strict-Transport-Security
 
-        :param enhancement: name of enhancement, e.g. ensure-http-header
-        :type str
-
-        .. note:: when more options are need make options a list.
-        :param options: options to enhancement, e.g. Strict-Transport-Security
-        :type str
+            .. note:: When more `options` are needed, make options a list.
 
         :raises .errors.PluginError: If Enhancement is not supported, or if
             there is any other problem with the enhancement.

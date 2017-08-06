@@ -32,7 +32,7 @@ class AccountStorage(object):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def save(self, account):  # pragma: no cover
+    def save(self, account, client):  # pragma: no cover
         """Save account.
 
         :raises .AccountStorageError: if account could not be saved
@@ -99,7 +99,7 @@ class IPluginFactory(zope.interface.Interface):
 class IPlugin(zope.interface.Interface):
     """Certbot plugin."""
 
-    def prepare():
+    def prepare():  # type: ignore
         """Prepare the plugin.
 
         Finish up any additional initialization.
@@ -118,7 +118,7 @@ class IPlugin(zope.interface.Interface):
 
         """
 
-    def more_info():
+    def more_info():  # type: ignore
         """Human-readable string to help the user.
 
         Should describe the steps taken and any relevant info to help the user
@@ -229,12 +229,32 @@ class IConfig(zope.interface.Interface):
         "Port used during tls-sni-01 challenge. "
         "This only affects the port Certbot listens on. "
         "A conforming ACME server will still attempt to connect on port 443.")
+    tls_sni_01_address = zope.interface.Attribute(
+        "The address the server listens to during tls-sni-01 challenge.")
 
     http01_port = zope.interface.Attribute(
         "Port used in the http-01 challenge. "
         "This only affects the port Certbot listens on. "
         "A conforming ACME server will still attempt to connect on port 80.")
 
+    http01_address = zope.interface.Attribute(
+        "The address the server listens to during http-01 challenge.")
+
+    pref_challs = zope.interface.Attribute(
+        "Sorted user specified preferred challenges"
+        "type strings with the most preferred challenge listed first")
+
+    allow_subset_of_names = zope.interface.Attribute(
+        "When performing domain validation, do not consider it a failure "
+        "if authorizations can not be obtained for a strict subset of "
+        "the requested domains. This may be useful for allowing renewals for "
+        "multiple domains to succeed even if some domains no longer point "
+        "at this system. This is a boolean")
+
+    strict_permissions = zope.interface.Attribute(
+        "Require that all configuration files are owned by the current "
+        "user; only needed if your config is somewhere unsafe like /tmp/."
+        "This is a boolean")
 
 class IInstaller(IPlugin):
     """Generic Certbot Installer Interface.
@@ -251,7 +271,7 @@ class IInstaller(IPlugin):
 
     """
 
-    def get_all_names():
+    def get_all_names():  # type: ignore
         """Returns all names that may be authenticated.
 
         :rtype: `collections.Iterable` of `str`
@@ -288,7 +308,7 @@ class IInstaller(IPlugin):
 
         """
 
-    def supported_enhancements():
+    def supported_enhancements():  # type: ignore
         """Returns a `collections.Iterable` of supported enhancements.
 
         :returns: supported enhancements which should be a subset of
@@ -326,7 +346,7 @@ class IInstaller(IPlugin):
 
         """
 
-    def recovery_routine():
+    def recovery_routine():  # type: ignore
         """Revert configuration to most recent finalized checkpoint.
 
         Remove all changes (temporary and permanent) that have not been
@@ -337,21 +357,21 @@ class IInstaller(IPlugin):
 
         """
 
-    def view_config_changes():
+    def view_config_changes():  # type: ignore
         """Display all of the LE config changes.
 
         :raises .PluginError: when config changes cannot be parsed
 
         """
 
-    def config_test():
+    def config_test():  # type: ignore
         """Make sure the configuration is valid.
 
         :raises .MisconfigurationError: when the config is not in a usable state
 
         """
 
-    def restart():
+    def restart():  # type: ignore
         """Restart or refresh the server content.
 
         :raises .PluginError: when server cannot be restarted
@@ -376,8 +396,8 @@ class IDisplay(zope.interface.Interface):
 
         """
 
-    def menu(message, choices, ok_label="OK",
-             cancel_label="Cancel", help_label="",
+    def menu(message, choices, ok_label=None,
+             cancel_label=None, help_label=None,
              default=None, cli_flag=None, force_interactive=False):
         """Displays a generic menu.
 
@@ -389,9 +409,9 @@ class IDisplay(zope.interface.Interface):
         :param choices: choices
         :type choices: :class:`list` of :func:`tuple` or :class:`str`
 
-        :param str ok_label: label for OK button
-        :param str cancel_label: label for Cancel button
-        :param str help_label: label for Help button
+        :param str ok_label: label for OK button (UNUSED)
+        :param str cancel_label: label for Cancel button (UNUSED)
+        :param str help_label: label for Help button (UNUSED)
         :param int default: default (non-interactive) choice from the menu
         :param str cli_flag: to automate choice from the menu, eg "--keep"
         :param bool force_interactive: True if it's safe to prompt the user
@@ -450,8 +470,7 @@ class IDisplay(zope.interface.Interface):
 
         """
 
-    def checklist(message, tags, default_state,
-                  default=None, cli_args=None, force_interactive=False):
+    def checklist(message, tags, default=None, cli_args=None, force_interactive=False):
         """Allow for multiple selections from a menu.
 
         When not setting force_interactive=True, you must provide a
@@ -459,7 +478,6 @@ class IDisplay(zope.interface.Interface):
 
         :param str message: message to display to the user
         :param list tags: where each is of type :class:`str` len(tags) > 0
-        :param bool default_status: If True, items are in a selected state by default.
         :param str default: default (non-interactive) state of the checklist
         :param str cli_flag: to automate choice from the menu, eg "--domains"
         :param bool force_interactive: True if it's safe to prompt the user
