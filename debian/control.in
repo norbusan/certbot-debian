@@ -31,6 +31,7 @@ Homepage: https://certbot.eff.org/
 Vcs-Git: https://anonscm.debian.org/git/letsencrypt/python-certbot.git
 Vcs-Browser: https://anonscm.debian.org/git/letsencrypt/python-certbot.git
 X-Python-Version: >= 2.7
+Testsuite: autopkgtest-pkg-python
 
 Package: python-certbot
 Architecture: all
