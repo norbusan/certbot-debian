@@ -5,17 +5,13 @@ Last-Update: 2016-05-12
 
 --- a/README.rst
 +++ b/README.rst
-@@ -100,30 +100,12 @@
- Mailing list: `client-dev`_ (to subscribe without a Google account, send an
- email to client-dev+subscribe@letsencrypt.org)
+@@ -96,26 +96,8 @@
+ 
+ ACME working area in github: https://github.com/ietf-wg-acme/acme
  
 -|build-status| |coverage| |docs| |container|
 -
  .. _Freenode: https://webchat.freenode.net?channels=%23letsencrypt
- 
- .. _OFTC: https://webchat.oftc.net?channels=%23certbot
- 
- .. _client-dev: https://groups.google.com/a/letsencrypt.org/forum/#!forum/client-dev
  
 -.. |build-status| image:: https://travis-ci.org/certbot/certbot.svg?branch=master
 -   :target: https://travis-ci.org/certbot/certbot
