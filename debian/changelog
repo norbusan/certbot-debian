@@ -1,3 +1,9 @@
+python-certbot (0.17.0-2) unstable; urgency=high
+
+  * Revert d/rules for systemd cleanup. (Closes: #872090)
+
+ -- Harlan Lieberman-Berg <hlieberman@debian.org>  Mon, 14 Aug 2017 22:28:10 -0400
+
 python-certbot (0.17.0-1) unstable; urgency=medium
 
   [ Mattia Rizzolo ]
