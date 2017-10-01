@@ -17,17 +17,17 @@ Build-Depends: debhelper (>= 9.20160709~) | dh-systemd,
                python-mock,
                python-openssl (>= 16.0~),
                python-parsedatetime (>= 1.3),
-               python-repoze.sphinx.autointerface,
                python-requests (>= 2.4.3),
                python-rfc3339,
                python-setuptools (>= 1.0),
                python-six,
-               python-sphinx,
-               python-sphinx-rtd-theme,
                python-tz,
                python-zope.component,
-               python-zope.interface
-Standards-Version: 4.0.1
+               python-zope.interface,
+               python3-repoze.sphinx.autointerface,
+               python3-sphinx,
+               python3-sphinx-rtd-theme
+Standards-Version: 4.1.1
 Homepage: https://certbot.eff.org/
 Vcs-Git: https://anonscm.debian.org/git/letsencrypt/python-certbot.git
 Vcs-Browser: https://anonscm.debian.org/git/letsencrypt/python-certbot.git
