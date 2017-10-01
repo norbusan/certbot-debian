@@ -11,6 +11,9 @@ import sys
 
 import configargparse
 import six
+import zope.component
+
+from zope.interface import interfaces as zope_interfaces
 
 from acme import challenges
 
@@ -23,6 +26,7 @@ from certbot import hooks
 from certbot import interfaces
 from certbot import util
 
+from certbot.display import util as display_util
 from certbot.plugins import disco as plugins_disco
 import certbot.plugins.selection as plugin_selection
 
@@ -45,8 +49,13 @@ if "CERTBOT_AUTO" in os.environ:
     # user saved the script under a different name
     LEAUTO = os.path.basename(os.environ["CERTBOT_AUTO"])
 
-fragment = os.path.join(".local", "share", "letsencrypt")
-cli_command = LEAUTO if fragment in sys.argv[0] else "certbot"
+old_path_fragment = os.path.join(".local", "share", "letsencrypt")
+new_path_prefix = os.path.abspath(os.path.join(os.sep, "opt",
+                                               "eff.org", "certbot", "venv"))
+if old_path_fragment in sys.argv[0] or sys.argv[0].startswith(new_path_prefix):
+    cli_command = LEAUTO
+else:
+    cli_command = "certbot"
 
 # Argparse's help formatting has a lot of unhelpful peculiarities, so we want
 # to replace as much of it as we can...
@@ -439,6 +448,15 @@ class HelpfulArgumentParser(object):
             "delete": main.delete,
         }
 
+        # Get notification function for printing
+        try:
+            self.notify = zope.component.getUtility(
+                interfaces.IDisplay).notification
+        except zope_interfaces.ComponentLookupError:
+            self.notify = display_util.NoninteractiveDisplay(
+                sys.stdout).notification
+
+
         # List of topics for which additional help can be provided
         HELP_TOPICS = ["all", "security", "paths", "automation", "testing"]
         HELP_TOPICS += list(self.VERBS) + self.COMMANDS_TOPICS + ["manage"]
@@ -510,10 +528,10 @@ class HelpfulArgumentParser(object):
 
         usage = SHORT_USAGE
         if help_arg == True:
-            print(usage + COMMAND_OVERVIEW % (apache_doc, nginx_doc) + HELP_USAGE)
+            self.notify(usage + COMMAND_OVERVIEW % (apache_doc, nginx_doc) + HELP_USAGE)
             sys.exit(0)
         elif help_arg in self.COMMANDS_TOPICS:
-            print(usage + self._list_subcommands())
+            self.notify(usage + self._list_subcommands())
             sys.exit(0)
         elif help_arg == "all":
             # if we're doing --help all, the OVERVIEW is part of the SHORT_USAGE at
@@ -873,14 +891,21 @@ def prepare_and_parse_args(plugins, args, detect_defaults=False):  # pylint: dis
         metavar="DOMAIN", action=_DomainsAction, default=[],
         help="Domain names to apply. For multiple domains you can use "
              "multiple -d flags or enter a comma separated list of domains "
-             "as a parameter. (default: Ask)")
+             "as a parameter. The first provided domain will be used in "
+             "some software user interfaces and file paths for the "
+             "certificate and related material unless otherwise "
+             "specified or you already have a certificate for the same "
+             "domains. (default: Ask)")
     helpful.add(
         [None, "run", "certonly", "manage", "delete", "certificates"],
         "--cert-name", dest="certname",
         metavar="CERTNAME", default=None,
-        help="Certificate name to apply. Only one certificate name can be used "
-             "per Certbot run. To see certificate names, run 'certbot certificates'. "
-             "When creating a new certificate, specifies the new certificate's name.")
+        help="Certificate name to apply. This name is used by Certbot for housekeeping "
+             "and in file paths; it doesn't affect the content of the certificate itself. "
+             "To see certificate names, run 'certbot certificates'. "
+             "When creating a new certificate, specifies the new certificate's name. "
+             "(default: the first provided domain or the name of an existing "
+             "certificate on your system for the same domains)")
     helpful.add(
         [None, "testing", "renew", "certonly"],
         "--dry-run", action="store_true", dest="dry_run",
@@ -1156,9 +1181,10 @@ def _create_subparsers(helpful):
                 " Currently --csr only works with the 'certonly' subcommand.")
     helpful.add("revoke",
                 "--reason", dest="reason",
-                choices=CaseInsensitiveList(constants.REVOCATION_REASONS.keys()),
+                choices=CaseInsensitiveList(sorted(constants.REVOCATION_REASONS,
+                                                   key=constants.REVOCATION_REASONS.get)),
                 action=_EncodeReasonAction, default=0,
-                help="Specify reason for revoking certificate.")
+                help="Specify reason for revoking certificate. (default: unspecified)")
     helpful.add("rollback",
                 "--checkpoints", type=int, metavar="N",
                 default=flag_default("rollback_checkpoints"),
