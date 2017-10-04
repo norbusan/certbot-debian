@@ -1,3 +1,9 @@
+python-certbot (0.19.0-1) unstable; urgency=medium
+
+  * New upstream release. (Closes: #838548)
+
+ -- Harlan Lieberman-Berg <hlieberman@debian.org>  Wed, 04 Oct 2017 19:39:01 -0400
+
 python-certbot (0.18.2-1) unstable; urgency=medium
 
   * New upstream release.
