@@ -4,46 +4,43 @@ Priority: optional
 Maintainer: Debian Let's Encrypt <letsencrypt-devel@lists.alioth.debian.org>
 Uploaders: Harlan Lieberman-Berg <hlieberman@debian.org>,
            Francois Marier <francois@debian.org>
-Build-Depends: debhelper (>= 9.20160709~) | dh-systemd,
-               debhelper (>= 9~),
+Build-Depends: debhelper (>= 11~),
                dh-python,
-               python-acme (>= ###UPSTREAM_VERSION###~),
-               python-all (>= 2.6.6.3~),
-               python-configargparse (>= 0.10.0),
-               python-configobj,
-               python-cryptography (>= 1.2),
-               python-docutils,
-               python-ipdb,
-               python-mock,
-               python-openssl (>= 16.0~),
-               python-parsedatetime (>= 1.3),
-               python-requests (>= 2.4.3),
-               python-rfc3339,
-               python-setuptools (>= 1.0),
-               python-six,
-               python-tz,
-               python-zope.component,
-               python-zope.interface,
+	       python3,
+	       python3-acme (>= ###UPSTREAM_VERSION###~),
+               python3-configargparse (>= 0.10.0),
+               python3-configobj,
+               python3-cryptography (>= 1.2),
+               python3-ipdb,
+               python3-mock,
+               python3-openssl (>= 16.0~),
+               python3-parsedatetime (>= 1.3),
                python3-repoze.sphinx.autointerface,
+               python3-requests (>= 2.4.3),
+               python3-rfc3339,
+               python3-setuptools (>= 1.0),
+               python3-six,
                python3-sphinx,
-               python3-sphinx-rtd-theme
-Standards-Version: 4.1.1
+               python3-sphinx-rtd-theme,
+               python3-tz,
+               python3-zope.component,
+               python3-zope.interface
+Standards-Version: 4.1.3
 Homepage: https://certbot.eff.org/
 Vcs-Git: https://anonscm.debian.org/git/letsencrypt/python-certbot.git
 Vcs-Browser: https://anonscm.debian.org/git/letsencrypt/python-certbot.git
-X-Python-Version: >= 2.7
 Testsuite: autopkgtest-pkg-python
 
-Package: python-certbot
+Package: python3-certbot
 Architecture: all
-Depends: python-acme (>= ###UPSTREAM_VERSION###),
-         python-requests (>= 2.4.3),
+Depends: python3-acme (>= ###UPSTREAM_VERSION###),
+         python3-requests (>= 2.4.3),
          ${misc:Depends},
-         ${python:Depends}
+         ${python3:Depends}
 Recommends: certbot
 Suggests: python-certbot-doc
-Breaks: python-certbot-apache (<< ###UPSTREAM_VERSION###),
-	python-certbot-nginx (<< ###UPSTREAM_VERSION###),
+Breaks: python3-certbot-apache (<< ###UPSTREAM_VERSION###),
+	python3-certbot-nginx (<< ###UPSTREAM_VERSION###),
         python-letsencrypt (<= 0.6.0)
 Replaces: python-letsencrypt
 Description: main library for certbot
@@ -66,13 +63,14 @@ Description: main library for certbot
 Package: certbot
 Section: web
 Architecture: all
-Depends: python-certbot (= ${source:Version}),
+Depends: python3-certbot (= ${source:Version}),
          ${misc:Depends},
-         ${python:Depends}
+         ${python3:Depends}
 Breaks: letsencrypt (<= 0.6.0)
 Replaces: letsencrypt
 Provides: letsencrypt
-Suggests: python-certbot-apache,
+Suggests: python3-certbot-apache,
+	  python3-certbot-nginx,
           python-certbot-doc
 Description: automatically configure HTTPS using Let's Encrypt
  The objective of Certbot, Let's Encrypt, and the ACME (Automated
