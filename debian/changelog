@@ -1,3 +1,11 @@
+python-certbot (0.20.0-1) unstable; urgency=low
+
+  * New upstream release.
+  * Switch to python3!
+  * Update to debhelper 11, bump S-V.
+
+ -- Harlan Lieberman-Berg <hlieberman@debian.org>  Fri, 05 Jan 2018 21:49:26 -0500
+
 python-certbot (0.19.0-1) unstable; urgency=medium
 
   * New upstream release. (Closes: #838548)
