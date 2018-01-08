@@ -6,8 +6,8 @@ Uploaders: Harlan Lieberman-Berg <hlieberman@debian.org>,
            Francois Marier <francois@debian.org>
 Build-Depends: debhelper (>= 11~),
                dh-python,
-	       python3,
-	       python3-acme (>= ###UPSTREAM_VERSION###~),
+               python3,
+               python3-acme (>= ###UPSTREAM_VERSION###~),
                python3-configargparse (>= 0.10.0),
                python3-configobj,
                python3-cryptography (>= 1.2),
@@ -39,7 +39,9 @@ Depends: python3-acme (>= ###UPSTREAM_VERSION###),
 Recommends: certbot
 Suggests: python-certbot-doc
 Breaks: python3-certbot-apache (<< ###UPSTREAM_VERSION###),
-	python3-certbot-nginx (<< ###UPSTREAM_VERSION###),
+        python3-certbot-nginx (<< ###UPSTREAM_VERSION###),
+        python-certbot-nginx (<< 0.20.0),
+        python-certbot-apache (<< 0.20.0),
         python-letsencrypt (<= 0.6.0)
 Replaces: python-letsencrypt
 Description: main library for certbot
