@@ -14,9 +14,10 @@ debian/control: debian/control.in debian/changelog
 	sed -e 's/###UPSTREAM_VERSION###/$(DEB_VERSION_UPSTREAM)/g' < debian/control.in > debian/control
 
 override_dh_install:
-	mkdir -p debian/certbot/usr/bin
+	mkdir -p debian/certbot/usr/bin debian/certbot/etc/letsencrypt
 	mv debian/python3-certbot/usr/bin/* debian/certbot/usr/bin
 	rm -rf debian/python3-certbot/usr/bin
+	mv debian/cli.ini debian/certbot/etc/letsencrypt/cli.ini
 	http_proxy='127.0.0.1:9' \
 		https_proxy='127.0.0.1:9' \
 		sphinx-build -N -bhtml docs/ build/html

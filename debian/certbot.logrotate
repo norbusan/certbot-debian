@@ -1,0 +1,6 @@
+/var/log/letsencrypt/*.log {
+    rotate 12
+    weekly
+    compress
+    missingok
+}
