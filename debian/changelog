@@ -1,3 +1,9 @@
+python-certbot (0.20.0-3) unstable; urgency=medium
+
+  * Setup logrotation for certbot log files. (Closes: #873581, #881176)
+
+ -- Harlan Lieberman-Berg <hlieberman@debian.org>  Tue, 09 Jan 2018 22:03:27 -0500
+
 python-certbot (0.20.0-2) unstable; urgency=low
 
   * Add additional Breaks on py2 variants of libs.
