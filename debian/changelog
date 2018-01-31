@@ -1,3 +1,10 @@
+python-certbot (0.21.1-1) unstable; urgency=high
+
+  * New upstream release.
+  * Move d/copyright format to HTTPS
+
+ -- Harlan Lieberman-Berg <hlieberman@debian.org>  Tue, 30 Jan 2018 21:02:48 -0500
+
 python-certbot (0.20.0-3) unstable; urgency=medium
 
   * Setup logrotation for certbot log files. (Closes: #873581, #881176)
