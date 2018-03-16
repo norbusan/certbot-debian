@@ -1,3 +1,10 @@
+python-certbot (0.22.0-1) unstable; urgency=medium
+
+  * New upstream release -- now with wildcards!
+  * Break the strict dependency relationship between certbot packages.
+
+ -- Harlan Lieberman-Berg <hlieberman@debian.org>  Thu, 15 Mar 2018 20:22:37 -0400
+
 python-certbot (0.21.1-1) unstable; urgency=high
 
   * New upstream release.
