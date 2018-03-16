@@ -140,6 +140,7 @@ docs/resources.rst
 docs/using.rst
 docs/what.rst
 docs/_static/.gitignore
+docs/_templates/footer.html
 docs/api/account.rst
 docs/api/achallenges.rst
 docs/api/auth_handler.rst
