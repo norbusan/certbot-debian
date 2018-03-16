@@ -2,16 +2,8 @@
 
 export PYBUILD_NAME = certbot
 
-include /usr/share/dpkg/pkg-info.mk
-
 %:
 	dh $@ --with python3,sphinxdoc --buildsystem=pybuild
-
-override_dh_clean: debian/control
-	dh_clean
-
-debian/control: debian/control.in debian/changelog
-	sed -e 's/###UPSTREAM_VERSION###/$(DEB_VERSION_UPSTREAM)/g' < debian/control.in > debian/control
 
 override_dh_install:
 	mkdir -p debian/certbot/usr/bin debian/certbot/etc/letsencrypt
