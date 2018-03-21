@@ -1,3 +1,9 @@
+python-certbot (0.22.2-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Harlan Lieberman-Berg <hlieberman@debian.org>  Wed, 21 Mar 2018 00:54:31 -0400
+
 python-certbot (0.22.0-1) unstable; urgency=medium
 
   * New upstream release -- now with wildcards!
