@@ -1,3 +1,10 @@
+python-certbot (0.22.2-2) unstable; urgency=medium
+
+  * Change the way we remove testdata for better downstream support
+  * Add dep on python3-distutils (Closes: #893775)
+
+ -- Harlan Lieberman-Berg <hlieberman@debian.org>  Thu, 22 Mar 2018 18:53:32 -0400
+
 python-certbot (0.22.2-1) unstable; urgency=medium
 
   * New upstream release.
