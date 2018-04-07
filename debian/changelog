@@ -1,3 +1,11 @@
+python-certbot (0.23.0-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Add testdata back in to prevent test failure in RDeps. (Closes: #894025)
+  * Bump S-V; no changes needed.
+
+ -- Harlan Lieberman-Berg <hlieberman@debian.org>  Fri, 06 Apr 2018 23:23:17 -0400
+
 python-certbot (0.22.2-2) unstable; urgency=medium
 
   * Change the way we remove testdata for better downstream support
