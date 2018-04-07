@@ -10,7 +10,6 @@ override_dh_install:
 	mv debian/python3-certbot/usr/bin/* debian/certbot/usr/bin
 	rm -rf debian/python3-certbot/usr/bin
 	mv debian/cli.ini debian/certbot/etc/letsencrypt/cli.ini
-	rm -rf debian/python3-certbot/usr/lib/python*/dist-packages/certbot/tests/testdata
 	http_proxy='127.0.0.1:9' \
 		https_proxy='127.0.0.1:9' \
 		sphinx-build -N -bhtml docs/ build/html
