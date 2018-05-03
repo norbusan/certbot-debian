@@ -1,4 +1,4 @@
-acme>0.21.1
+acme>=0.22.1
 ConfigArgParse>=0.9.3
 configobj
 cryptography>=1.2
@@ -22,6 +22,9 @@ pylint==1.4.2
 tox
 twine
 wheel
+
+[dev3]
+mypy
 
 [docs]
 repoze.sphinx.autointerface

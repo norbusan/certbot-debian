@@ -63,6 +63,8 @@ certbot/plugins/selection.py
 certbot/plugins/selection_test.py
 certbot/plugins/standalone.py
 certbot/plugins/standalone_test.py
+certbot/plugins/storage.py
+certbot/plugins/storage_test.py
 certbot/plugins/util.py
 certbot/plugins/util_test.py
 certbot/plugins/webroot.py
