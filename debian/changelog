@@ -1,3 +1,11 @@
+python-certbot (0.24.0-1) unstable; urgency=medium
+
+  * Add OR to dep on python-distutils for stretch-bpo
+  * New upstream version 0.24.0
+  * Bump version dep on python3-acme
+
+ -- Harlan Lieberman-Berg <hlieberman@debian.org>  Thu, 03 May 2018 19:43:04 -0400
+
 python-certbot (0.23.0-1) unstable; urgency=medium
 
   * New upstream release.
