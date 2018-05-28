@@ -1,3 +1,9 @@
+python-certbot (0.24.0-2) unstable; urgency=medium
+
+  * Update team email address. (Closes: #899858)
+
+ -- Harlan Lieberman-Berg <hlieberman@debian.org>  Mon, 28 May 2018 19:03:01 -0400
+
 python-certbot (0.24.0-1) unstable; urgency=medium
 
   * Add OR to dep on python-distutils for stretch-bpo
