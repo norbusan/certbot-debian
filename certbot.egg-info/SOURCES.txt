@@ -31,6 +31,7 @@ certbot/reporter.py
 certbot/reverter.py
 certbot/ssl-dhparams.pem
 certbot/storage.py
+certbot/updater.py
 certbot/util.py
 certbot.egg-info/PKG-INFO
 certbot.egg-info/SOURCES.txt
@@ -88,6 +89,7 @@ certbot/tests/main_test.py
 certbot/tests/notify_test.py
 certbot/tests/ocsp_test.py
 certbot/tests/renewal_test.py
+certbot/tests/renewupdater_test.py
 certbot/tests/reporter_test.py
 certbot/tests/reverter_test.py
 certbot/tests/storage_test.py
