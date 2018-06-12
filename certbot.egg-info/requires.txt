@@ -1,4 +1,4 @@
-acme>=0.22.1
+acme>0.24.0
 ConfigArgParse>=0.9.3
 configobj
 cryptography>=1.2
@@ -25,6 +25,7 @@ wheel
 
 [dev3]
 mypy
+typing
 
 [docs]
 repoze.sphinx.autointerface
