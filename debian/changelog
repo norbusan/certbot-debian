@@ -1,3 +1,10 @@
+python-certbot (0.25.0-1) unstable; urgency=medium
+
+  * New upstream version 0.25.0
+  * Bump python-acme dep version.
+
+ -- Harlan Lieberman-Berg <hlieberman@debian.org>  Mon, 11 Jun 2018 22:05:17 -0400
+
 python-certbot (0.24.0-2) unstable; urgency=medium
 
   * Update team email address. (Closes: #899858)
