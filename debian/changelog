@@ -1,3 +1,10 @@
+python-certbot (0.26.0-1) unstable; urgency=medium
+
+  * New upstream version 0.26.0
+  * Bump S-V; add R-R-R: no
+
+ -- Harlan Lieberman-Berg <hlieberman@debian.org>  Thu, 12 Jul 2018 22:39:22 -0400
+
 python-certbot (0.25.0-1) unstable; urgency=medium
 
   * New upstream version 0.25.0
