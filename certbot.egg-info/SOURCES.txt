@@ -56,6 +56,8 @@ certbot/plugins/dns_common_lexicon_test.py
 certbot/plugins/dns_common_test.py
 certbot/plugins/dns_test_common.py
 certbot/plugins/dns_test_common_lexicon.py
+certbot/plugins/enhancements.py
+certbot/plugins/enhancements_test.py
 certbot/plugins/manual.py
 certbot/plugins/manual_test.py
 certbot/plugins/null.py
@@ -102,6 +104,7 @@ certbot/tests/display/ops_test.py
 certbot/tests/display/util_test.py
 certbot/tests/testdata/README
 certbot/tests/testdata/cert-5sans_512.pem
+certbot/tests/testdata/cert-nosans_nistp256.pem
 certbot/tests/testdata/cert-san_512.pem
 certbot/tests/testdata/cert_2048.pem
 certbot/tests/testdata/cert_512.pem
@@ -113,9 +116,11 @@ certbot/tests/testdata/csr-6sans_512.pem
 certbot/tests/testdata/csr-nonames_512.pem
 certbot/tests/testdata/csr-nosans_512.conf
 certbot/tests/testdata/csr-nosans_512.pem
+certbot/tests/testdata/csr-nosans_nistp256.pem
 certbot/tests/testdata/csr-san_512.pem
 certbot/tests/testdata/csr_512.der
 certbot/tests/testdata/csr_512.pem
+certbot/tests/testdata/nistp256_key.pem
 certbot/tests/testdata/os-release
 certbot/tests/testdata/rsa2048_key.pem
 certbot/tests/testdata/rsa256_key.pem
