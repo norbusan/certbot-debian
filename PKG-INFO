@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: certbot
-Version: 0.26.1
+Version: 0.27.0
 Summary: ACME client
 Home-page: https://github.com/letsencrypt/letsencrypt
 Author: Certbot Project
@@ -115,8 +115,8 @@ Description: .. This file contains a series of comments that are used to include
            :target: https://travis-ci.org/certbot/certbot
            :alt: Travis CI status
         
-        .. |coverage| image:: https://coveralls.io/repos/certbot/certbot/badge.svg?branch=master
-           :target: https://coveralls.io/r/certbot/certbot
+        .. |coverage| image:: https://codecov.io/gh/certbot/certbot/branch/master/graph/badge.svg
+           :target: https://codecov.io/gh/certbot/certbot
            :alt: Coverage status
         
         .. |docs| image:: https://readthedocs.org/projects/letsencrypt/badge/
