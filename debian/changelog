@@ -1,3 +1,12 @@
+python-certbot (0.27.0-1) unstable; urgency=medium
+
+  * New upstream version 0.27.0
+  * Refresh patch after upstream migration to codecov
+  * Bump python-sphinx requirement defensively; bump S-V with no changes
+  * Bump dep on python-acme to 0.26.0~
+
+ -- Harlan Lieberman-Berg <hlieberman@debian.org>  Wed, 05 Sep 2018 20:29:44 -0400
+
 python-certbot (0.26.1-1) unstable; urgency=medium
 
   * New upstream release.
