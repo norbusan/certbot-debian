@@ -1,0 +1,3 @@
+# The README file detected in testdata/ is an explanation of how the
+# testdata keys were generated.
+python3-certbot binary: package-contains-documentation-outside-usr-share-doc usr/lib/python3/dist-packages/certbot/tests/testdata/README
