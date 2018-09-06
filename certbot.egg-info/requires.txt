@@ -1,4 +1,4 @@
-acme>=0.25.0
+acme>=0.26.0
 ConfigArgParse>=0.9.3
 configobj
 cryptography>=1.2
@@ -29,5 +29,5 @@ typing
 
 [docs]
 repoze.sphinx.autointerface
-Sphinx<=1.5.6,>=1.0
+Sphinx>=1.6
 sphinx_rtd_theme
