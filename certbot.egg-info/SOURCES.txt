@@ -1,4 +1,4 @@
-CHANGES.rst
+CHANGELOG.md
 CONTRIBUTING.md
 LICENSE.txt
 MANIFEST.in
@@ -13,6 +13,7 @@ certbot/auth_handler.py
 certbot/cert_manager.py
 certbot/cli.py
 certbot/client.py
+certbot/compat.py
 certbot/configuration.py
 certbot/constants.py
 certbot/crypto_util.py
@@ -79,6 +80,7 @@ certbot/tests/auth_handler_test.py
 certbot/tests/cert_manager_test.py
 certbot/tests/cli_test.py
 certbot/tests/client_test.py
+certbot/tests/compat_test.py
 certbot/tests/configuration_test.py
 certbot/tests/crypto_util_test.py
 certbot/tests/eff_test.py
