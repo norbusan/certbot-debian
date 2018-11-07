@@ -7,14 +7,12 @@ Index: python-certbot/README.rst
 ===================================================================
 --- python-certbot.orig/README.rst
 +++ python-certbot/README.rst
-@@ -99,26 +99,8 @@ ACME spec: http://ietf-wg-acme.github.io
+@@ -97,24 +97,6 @@ ACME spec: http://ietf-wg-acme.github.io
  
  ACME working area in github: https://github.com/ietf-wg-acme/acme
  
 -|build-status| |coverage| |docs| |container|
 -
- .. _Freenode: https://webchat.freenode.net?channels=%23letsencrypt
- 
 -.. |build-status| image:: https://travis-ci.org/certbot/certbot.svg?branch=master
 -   :target: https://travis-ci.org/certbot/certbot
 -   :alt: Travis CI status
