@@ -1,3 +1,9 @@
+python-certbot (0.28.0-2) unstable; urgency=medium
+
+  * Remove unnecessary letsencrypt.postrm (Closes: #921423)
+
+ -- Harlan Lieberman-Berg <hlieberman@debian.org>  Tue, 05 Feb 2019 22:15:02 -0500
+
 python-certbot (0.28.0-1) unstable; urgency=medium
 
   * Add systemd warning to crontab file (Closes: #908841)
