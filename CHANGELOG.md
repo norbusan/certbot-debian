@@ -1,6 +1,168 @@
 # Certbot change log
 
-Certbot adheres to [Semantic Versioning](http://semver.org/).
+Certbot adheres to [Semantic Versioning](https://semver.org/).
+
+## 0.31.0 - 2019-02-07
+
+### Added
+
+* Avoid reprocessing challenges that are already validated
+  when a certificate is issued.
+* Support for initiating (but not solving end-to-end) TLS-ALPN-01 challenges
+  with the `acme` module.
+
+### Changed
+
+* Certbot's official Docker images are now based on Alpine Linux 3.9 rather
+  than 3.7. The new version comes with OpenSSL 1.1.1.
+* Lexicon-based DNS plugins are now fully compatible with Lexicon 3.x (support
+  on 2.x branch is maintained).
+* Apache plugin now attempts to configure all VirtualHosts matching requested
+  domain name instead of only a single one when answering the HTTP-01 challenge.
+
+### Fixed
+
+* Fixed accessing josepy contents through acme.jose when the full acme.jose
+  path is used.
+* Clarify behavior for deleting certs as part of revocation.
+
+Despite us having broken lockstep, we are continuing to release new versions of
+all Certbot components during releases for the time being, however, the only
+package with changes other than its version number was:
+
+* acme
+* certbot
+* certbot-apache
+* certbot-dns-cloudxns
+* certbot-dns-dnsimple
+* certbot-dns-dnsmadeeasy
+* certbot-dns-gehirn
+* certbot-dns-linode
+* certbot-dns-luadns
+* certbot-dns-nsone
+* certbot-dns-ovh
+* certbot-dns-sakuracloud
+
+More details about these changes can be found on our GitHub repo.
+
+## 0.30.2 - 2019-01-25
+
+### Fixed
+
+* Update the version of setuptools pinned in certbot-auto to 40.6.3 to
+  solve installation problems on newer OSes.
+
+Despite us having broken lockstep, we are continuing to release new versions of
+all Certbot components during releases for the time being, however, this
+release only affects certbot-auto.
+
+More details about these changes can be found on our GitHub repo.
+
+## 0.30.1 - 2019-01-24
+
+### Fixed
+
+* Always download the pinned version of pip in pipstrap to address breakages
+* Rename old,default.conf to old-and-default.conf to address commas in filenames
+  breaking recent versions of pip.
+* Add VIRTUALENV_NO_DOWNLOAD=1 to all calls to virtualenv to address breakages
+  from venv downloading the latest pip
+
+Despite us having broken lockstep, we are continuing to release new versions of
+all Certbot components during releases for the time being, however, the only
+package with changes other than its version number was:
+
+* certbot-apache
+
+More details about these changes can be found on our GitHub repo.
+
+## 0.30.0 - 2019-01-02
+
+### Added
+
+* Added the `update_account` subcommand for account management commands.
+
+### Changed
+
+* Copied account management functionality from the `register` subcommand
+  to the `update_account` subcommand.
+* Marked usage `register --update-registration` for deprecation and
+  removal in a future release.
+
+### Fixed
+
+* Older modules in the josepy library can now be accessed through acme.jose
+  like it could in previous versions of acme. This is only done to preserve
+  backwards compatibility and support for doing this with new modules in josepy
+  will not be added. Users of the acme library should switch to using josepy
+  directly if they haven't done so already.
+
+Despite us having broken lockstep, we are continuing to release new versions of
+all Certbot components during releases for the time being, however, the only
+package with changes other than its version number was:
+
+* acme
+
+More details about these changes can be found on our GitHub repo.
+
+## 0.29.1 - 2018-12-05
+
+### Added
+
+*
+
+### Changed
+
+*
+
+### Fixed
+
+* The default work and log directories have been changed back to
+  /var/lib/letsencrypt and /var/log/letsencrypt respectively.
+
+Despite us having broken lockstep, we are continuing to release new versions of
+all Certbot components during releases for the time being, however, the only
+package with changes other than its version number was:
+
+* certbot
+
+More details about these changes can be found on our GitHub repo.
+
+## 0.29.0 - 2018-12-05
+
+### Added
+
+* Noninteractive renewals with `certbot renew` (those not started from a
+  terminal) now randomly sleep 1-480 seconds before beginning work in
+  order to spread out load spikes on the server side.
+* Added External Account Binding support in cli and acme library.
+  Command line arguments --eab-kid and --eab-hmac-key added.
+
+### Changed
+
+* Private key permissioning changes: Renewal preserves existing group mode
+  & gid of previous private key material. Private keys for new
+  lineages (i.e. new certs, not renewed) default to 0o600.
+
+### Fixed
+
+* Update code and dependencies to clean up Resource and Deprecation Warnings.
+* Only depend on imgconverter extension for Sphinx >= 1.6
+
+Despite us having broken lockstep, we are continuing to release new versions of
+all Certbot components during releases for the time being, however, the only
+package with changes other than its version number was:
+
+* acme
+* certbot
+* certbot-apache
+* certbot-dns-cloudflare
+* certbot-dns-digitalocean
+* certbot-dns-google
+* certbot-nginx
+
+More details about these changes can be found on our GitHub repo:
+https://github.com/certbot/certbot/milestone/62?closed=1
 
 ## 0.28.0 - 2018-11-7
 
