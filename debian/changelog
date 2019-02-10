@@ -1,3 +1,12 @@
+python-certbot (0.31.0-1) unstable; urgency=medium
+
+  * New upstream version 0.31.0
+  * Bump deps changed by upstream.
+  * Bump S-V; no changes needed.
+  * Refresh patches.
+
+ -- Harlan Lieberman-Berg <hlieberman@debian.org>  Sat, 09 Feb 2019 19:39:59 -0500
+
 python-certbot (0.28.0-2) unstable; urgency=medium
 
   * Remove unnecessary letsencrypt.postrm (Closes: #921423)
