@@ -1,30 +1,29 @@
 """Functionality for autorenewal and associated juggling of configurations"""
 from __future__ import print_function
+
 import copy
 import itertools
 import logging
-import os
-import traceback
+import random
 import sys
 import time
-import random
-
-import six
-import zope.component
+import traceback
 
 import OpenSSL
+import six
+import zope.component
 
 from acme.magic_typing import List  # pylint: disable=unused-import, no-name-in-module
 
 from certbot import cli
 from certbot import crypto_util
 from certbot import errors
-from certbot import interfaces
-from certbot import util
 from certbot import hooks
+from certbot import interfaces
 from certbot import storage
 from certbot import updater
-
+from certbot import util
+from certbot.compat import os
 from certbot.plugins import disco as plugins_disco
 
 logger = logging.getLogger(__name__)
@@ -35,10 +34,8 @@ logger = logging.getLogger(__name__)
 # the renewal configuration process loses this information.
 STR_CONFIG_ITEMS = ["config_dir", "logs_dir", "work_dir", "user_agent",
                     "server", "account", "authenticator", "installer",
-                    "standalone_supported_challenges", "renew_hook",
-                    "pre_hook", "post_hook", "tls_sni_01_address",
-                    "http01_address"]
-INT_CONFIG_ITEMS = ["rsa_key_size", "tls_sni_01_port", "http01_port"]
+                    "renew_hook", "pre_hook", "post_hook", "http01_address"]
+INT_CONFIG_ITEMS = ["rsa_key_size", "http01_port"]
 BOOL_CONFIG_ITEMS = ["must_staple", "allow_subset_of_names", "reuse_key",
                      "autorenew"]
 
@@ -109,11 +106,11 @@ def _restore_webroot_config(config, renewalparams):
     restoring logic is not able to correctly parse it from the serialized
     form.
     """
-    if "webroot_map" in renewalparams:
-        if not cli.set_by_cli("webroot_map"):
-            config.webroot_map = renewalparams["webroot_map"]
-    elif "webroot_path" in renewalparams:
-        logger.debug("Ancient renewal conf file without webroot-map, restoring webroot-path")
+    if "webroot_map" in renewalparams and not cli.set_by_cli("webroot_map"):
+        config.webroot_map = renewalparams["webroot_map"]
+    # To understand why webroot_path and webroot_map processing are not mutually exclusive,
+    # see https://github.com/certbot/certbot/pull/7095
+    if "webroot_path" in renewalparams and not cli.set_by_cli("webroot_path"):
         wp = renewalparams["webroot_path"]
         if isinstance(wp, six.string_types):  # prior to 0.1.0, webroot_path was a string
             wp = [wp]

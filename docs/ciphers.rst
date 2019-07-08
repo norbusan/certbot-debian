@@ -227,7 +227,7 @@ BetterCrypto.org
 
 BetterCrypto.org, a collaboration of mostly European IT security experts, has published a draft paper, "Applied Crypto Hardening"
 
-https://bettercrypto.org/static/applied-crypto-hardening.pdf
+https://bettercrypto.org/
 
 FF-DHE Internet-Draft
 ~~~~~~~~~~~~~~~~~~~~~
@@ -286,7 +286,7 @@ https://weakdh.org/sysadmin.html
 These lists may have been derived from Mozilla's recommendations.
 One of the authors clarified his view of the priorities for various changes as a result of the research at
 
-https://www.ietf.org/mail-archive/web/tls/current/msg16496.html
+https://web.archive.org/web/20150526022820/https://www.ietf.org/mail-archive/web/tls/current/msg16496.html
 
 In particular, he supports ECDHE and also supports the use of the standardized groups in the FF-DHE Internet-Draft mentioned above (which isn't clear from the group's original recommendations).
 

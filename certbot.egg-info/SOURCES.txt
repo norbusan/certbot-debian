@@ -13,7 +13,6 @@ certbot/auth_handler.py
 certbot/cert_manager.py
 certbot/cli.py
 certbot/client.py
-certbot/compat.py
 certbot/configuration.py
 certbot/constants.py
 certbot/crypto_util.py
@@ -40,6 +39,9 @@ certbot.egg-info/dependency_links.txt
 certbot.egg-info/entry_points.txt
 certbot.egg-info/requires.txt
 certbot.egg-info/top_level.txt
+certbot/compat/__init__.py
+certbot/compat/misc.py
+certbot/compat/os.py
 certbot/display/__init__.py
 certbot/display/completer.py
 certbot/display/dummy_readline.py
@@ -80,7 +82,6 @@ certbot/tests/auth_handler_test.py
 certbot/tests/cert_manager_test.py
 certbot/tests/cli_test.py
 certbot/tests/client_test.py
-certbot/tests/compat_test.py
 certbot/tests/configuration_test.py
 certbot/tests/crypto_util_test.py
 certbot/tests/eff_test.py
@@ -99,6 +100,8 @@ certbot/tests/reverter_test.py
 certbot/tests/storage_test.py
 certbot/tests/util.py
 certbot/tests/util_test.py
+certbot/tests/compat/__init__.py
+certbot/tests/compat/compat_test.py
 certbot/tests/display/__init__.py
 certbot/tests/display/completer_test.py
 certbot/tests/display/enhancements_test.py
@@ -123,6 +126,9 @@ certbot/tests/testdata/csr-san_512.pem
 certbot/tests/testdata/csr_512.der
 certbot/tests/testdata/csr_512.pem
 certbot/tests/testdata/nistp256_key.pem
+certbot/tests/testdata/ocsp_certificate.pem
+certbot/tests/testdata/ocsp_issuer_certificate.pem
+certbot/tests/testdata/ocsp_responder_certificate.pem
 certbot/tests/testdata/os-release
 certbot/tests/testdata/rsa2048_key.pem
 certbot/tests/testdata/rsa256_key.pem
