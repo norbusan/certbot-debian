@@ -1,10 +1,12 @@
 """Certbot constants."""
 import logging
-import os
+
 import pkg_resources
 
 from acme import challenges
-from certbot import compat
+
+from certbot.compat import misc
+from certbot.compat import os
 
 SETUPTOOLS_PLUGINS_ENTRY_POINT = "certbot.plugins"
 """Setuptools entry point group name for plugins."""
@@ -14,7 +16,7 @@ OLD_SETUPTOOLS_PLUGINS_ENTRY_POINT = "letsencrypt.plugins"
 
 CLI_DEFAULTS = dict(
     config_files=[
-        os.path.join(compat.get_default_folder('config'), 'cli.ini'),
+        os.path.join(misc.get_default_folder('config'), 'cli.ini'),
         # http://freedesktop.org/wiki/Software/xdg-user-dirs/
         os.path.join(os.environ.get("XDG_CONFIG_HOME", "~/.config"),
                      "letsencrypt", "cli.ini"),
@@ -44,16 +46,16 @@ CLI_DEFAULTS = dict(
     duplicate=False,
     os_packages_only=False,
     no_self_upgrade=False,
+    no_permissions_check=False,
     no_bootstrap=False,
     quiet=False,
     staging=False,
     debug=False,
     debug_challenges=False,
     no_verify_ssl=False,
-    tls_sni_01_port=challenges.TLSSNI01Response.PORT,
-    tls_sni_01_address="",
     http01_port=challenges.HTTP01Response.PORT,
     http01_address="",
+    https_port=443,
     break_my_certs=False,
     rsa_key_size=2048,
     must_staple=False,
@@ -88,9 +90,9 @@ CLI_DEFAULTS = dict(
     auth_cert_path="./cert.pem",
     auth_chain_path="./chain.pem",
     key_path=None,
-    config_dir=compat.get_default_folder('config'),
-    work_dir=compat.get_default_folder('work'),
-    logs_dir=compat.get_default_folder('logs'),
+    config_dir=misc.get_default_folder('config'),
+    work_dir=misc.get_default_folder('work'),
+    logs_dir=misc.get_default_folder('logs'),
     server="https://acme-v02.api.letsencrypt.org/directory",
 
     # Plugins parsers
