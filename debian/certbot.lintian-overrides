@@ -1,0 +1,2 @@
+# Certbot does not actually ship a daemon; the systemd service is a one-shot.
+certbot binary: package-supports-alternative-init-but-no-init.d-script lib/systemd/system/certbot.service
