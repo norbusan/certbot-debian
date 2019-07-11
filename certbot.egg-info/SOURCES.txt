@@ -40,6 +40,7 @@ certbot.egg-info/entry_points.txt
 certbot.egg-info/requires.txt
 certbot.egg-info/top_level.txt
 certbot/compat/__init__.py
+certbot/compat/filesystem.py
 certbot/compat/misc.py
 certbot/compat/os.py
 certbot/display/__init__.py
@@ -101,7 +102,8 @@ certbot/tests/storage_test.py
 certbot/tests/util.py
 certbot/tests/util_test.py
 certbot/tests/compat/__init__.py
-certbot/tests/compat/compat_test.py
+certbot/tests/compat/filesystem_test.py
+certbot/tests/compat/os_test.py
 certbot/tests/display/__init__.py
 certbot/tests/display/completer_test.py
 certbot/tests/display/enhancements_test.py

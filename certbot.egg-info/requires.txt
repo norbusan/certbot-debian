@@ -11,6 +11,9 @@ setuptools
 zope.component
 zope.interface
 
+[:sys_platform == "win32"]
+pywin32
+
 [dev]
 astroid==1.6.5
 coverage
