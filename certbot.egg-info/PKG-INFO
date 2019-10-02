@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: certbot
-Version: 0.36.0
+Version: 0.39.0
 Summary: ACME client
 Home-page: https://github.com/letsencrypt/letsencrypt
 Author: Certbot Project
@@ -153,6 +153,7 @@ Classifier: Programming Language :: Python :: 3.4
 Classifier: Programming Language :: Python :: 3.5
 Classifier: Programming Language :: Python :: 3.6
 Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
 Classifier: Topic :: Internet :: WWW/HTTP
 Classifier: Topic :: Security
 Classifier: Topic :: System :: Installation/Setup

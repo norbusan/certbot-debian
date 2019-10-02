@@ -40,6 +40,7 @@ certbot.egg-info/entry_points.txt
 certbot.egg-info/requires.txt
 certbot.egg-info/top_level.txt
 certbot/compat/__init__.py
+certbot/compat/_path.py
 certbot/compat/filesystem.py
 certbot/compat/misc.py
 certbot/compat/os.py
