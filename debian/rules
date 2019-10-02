@@ -18,7 +18,7 @@ override_dh_install:
 		sphinx-build -N -bman docs/ build/man
 
 override_dh_installsystemd:
-	dh_installsystemd --no-start --package=certbot
+	dh_installsystemd --no-start --package=certbot certbot.service
 	dh_installsystemd --package=certbot certbot.timer
 
 override_dh_installinit:
