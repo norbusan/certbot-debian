@@ -113,12 +113,3 @@ Description: client documentation for certbot
    - Help you revoke the certificate if that ever becomes necessary.
  .
  This package contains the documentation.
-
-Package: letsencrypt
-Section: oldlibs
-Architecture: all
-Depends: certbot,
-         ${misc:Depends}
-Description: transitional dummy package
- This is a transitional dummy package for the rename of letsencrypt to certbot.
- It can safely be removed.
