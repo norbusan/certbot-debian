@@ -1,3 +1,12 @@
+python-certbot (0.39.0-1) unstable; urgency=medium
+
+  * New upstream version 0.39.0
+  * Add dep on python3-distro
+  * Drop transitional dummy package (Closes: #940765)
+  * Fix duplicate calls to install systemd timer (Closes: #924262)
+
+ -- Harlan Lieberman-Berg <hlieberman@debian.org>  Tue, 01 Oct 2019 21:54:04 -0400
+
 python-certbot (0.36.0-1) unstable; urgency=medium
 
   * New upstream version 0.36.0
