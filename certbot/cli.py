@@ -163,24 +163,6 @@ def report_config_interaction(modified, modifiers):
         VAR_MODIFIERS.setdefault(var, set()).update(modifiers)
 
 
-def possible_deprecation_warning(config):
-    "A deprecation warning for users with the old, not-self-upgrading letsencrypt-auto."
-    if cli_command != LEAUTO:
-        return
-    if config.no_self_upgrade:
-        # users setting --no-self-upgrade might be hanging on a client version like 0.3.0
-        # or 0.5.0 which is the new script, but doesn't set CERTBOT_AUTO; they don't
-        # need warnings
-        return
-    if "CERTBOT_AUTO" not in os.environ:
-        logger.warning("You are running with an old copy of letsencrypt-auto"
-            " that does not receive updates, and is less reliable than more"
-            " recent versions. The letsencrypt client has also been renamed"
-            " to Certbot. We recommend upgrading to the latest certbot-auto"
-            " script, or using native OS packages.")
-        logger.debug("Deprecation warning circumstances: %s / %s", sys.argv[0], os.environ)
-
-
 class _Default(object):
     """A class to use as a default to detect if a value is set by a user"""
 
@@ -642,20 +624,25 @@ class HelpfulArgumentParser(object):
             raise errors.Error(
                 "Parameters --hsts and --auto-hsts cannot be used simultaneously.")
 
-        possible_deprecation_warning(parsed_args)
-
         return parsed_args
 
     def set_test_server(self, parsed_args):
         """We have --staging/--dry-run; perform sanity check and set config.server"""
 
-        if parsed_args.server not in (flag_default("server"), constants.STAGING_URI):
-            conflicts = ["--staging"] if parsed_args.staging else []
-            conflicts += ["--dry-run"] if parsed_args.dry_run else []
-            raise errors.Error("--server value conflicts with {0}".format(
-                " and ".join(conflicts)))
+        # Flag combinations should produce these results:
+        #                             | --staging      | --dry-run   |
+        # ------------------------------------------------------------
+        # | --server acme-v02         | Use staging    | Use staging |
+        # | --server acme-staging-v02 | Use staging    | Use staging |
+        # | --server <other>          | Conflict error | Use <other> |
 
-        parsed_args.server = constants.STAGING_URI
+        default_servers = (flag_default("server"), constants.STAGING_URI)
+
+        if parsed_args.staging and parsed_args.server not in default_servers:
+            raise errors.Error("--server value conflicts with --staging")
+
+        if parsed_args.server in default_servers:
+            parsed_args.server = constants.STAGING_URI
 
         if parsed_args.dry_run:
             if self.verb not in ["certonly", "renew"]:
@@ -1259,20 +1246,6 @@ def prepare_and_parse_args(plugins, args, detect_defaults=False):  # pylint: dis
         default=flag_default("autorenew"), dest="autorenew",
         help="Disable auto renewal of certificates.")
 
-    helpful.add_deprecated_argument("--agree-dev-preview", 0)
-    helpful.add_deprecated_argument("--dialog", 0)
-
-    # Deprecation of tls-sni-01 related cli flags
-    # TODO: remove theses flags completely in few releases
-    class _DeprecatedTLSSNIAction(util._ShowWarning):  # pylint: disable=protected-access
-        def __call__(self, parser, namespace, values, option_string=None):
-            super(_DeprecatedTLSSNIAction, self).__call__(parser, namespace, values, option_string)
-            namespace.https_port = values
-    helpful.add(
-        ["testing", "standalone", "apache", "nginx"], "--tls-sni-01-port",
-        type=int, action=_DeprecatedTLSSNIAction, help=argparse.SUPPRESS)
-    helpful.add_deprecated_argument("--tls-sni-01-address", 1)
-
     # Populate the command line parameters for new style enhancements
     enhancements.populate_cli(helpful.add)
 
@@ -1559,17 +1532,9 @@ def parse_preferred_challenges(pref_challs):
     :raises errors.Error: if pref_challs is invalid
 
     """
-    aliases = {"dns": "dns-01", "http": "http-01", "tls-sni": "tls-sni-01"}
+    aliases = {"dns": "dns-01", "http": "http-01"}
     challs = [c.strip() for c in pref_challs]
     challs = [aliases.get(c, c) for c in challs]
-
-    # Ignore tls-sni-01 from the list, and generates a deprecation warning
-    # TODO: remove this option completely in few releases
-    if "tls-sni-01" in challs:
-        logger.warning('TLS-SNI-01 support is deprecated. This value is being dropped from the '
-                       'setting of --preferred-challenges and future versions of Certbot will '
-                       'error if it is included.')
-        challs = [chall for chall in challs if chall != "tls-sni-01"]
 
     unrecognized = ", ".join(name for name in challs
                              if name not in challenges.Challenge.TYPES)
