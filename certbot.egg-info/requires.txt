@@ -1,4 +1,4 @@
-acme>=0.29.0
+acme>=0.40.0
 ConfigArgParse>=0.9.3
 configobj
 cryptography>=1.2.3
@@ -13,7 +13,7 @@ zope.component
 zope.interface
 
 [:sys_platform == "win32"]
-pywin32>=224
+pywin32>=225
 
 [dev]
 astroid==1.6.5
