@@ -1,3 +1,13 @@
+python-certbot (0.40.0-1) unstable; urgency=medium
+
+  * New upstream version 0.40.0
+  * Switch to debian-compat instead of d/compat
+  * Bump python-acme version to 0.40.0
+  * Bump S-V; no changes needed
+  * Drop unnecessary lintian override.
+
+ -- Harlan Lieberman-Berg <hlieberman@debian.org>  Tue, 05 Nov 2019 19:40:23 -0500
+
 python-certbot (0.39.0-1) unstable; urgency=medium
 
   * New upstream version 0.39.0
