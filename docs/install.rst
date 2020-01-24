@@ -41,7 +41,7 @@ client as root, either `letsencrypt-nosudo
 
 The Apache plugin currently requires an OS with augeas version 1.0; currently `it
 supports
-<https://github.com/certbot/certbot/blob/master/certbot-apache/certbot_apache/constants.py>`_
+<https://github.com/certbot/certbot/blob/master/certbot-apache/certbot_apache/_internal/constants.py>`_
 modern OSes based on Debian, Ubuntu, Fedora, SUSE, Gentoo and Darwin.
 
 
@@ -70,11 +70,13 @@ The ``certbot-auto`` wrapper script installs Certbot, obtaining some dependencie
 from your web server OS and putting others in a python virtual environment. You can
 download and run it as follows::
 
-  user@webserver:~$ wget https://dl.eff.org/certbot-auto
-  user@webserver:~$ sudo mv certbot-auto /usr/local/bin/certbot-auto
-  user@webserver:~$ sudo chown root /usr/local/bin/certbot-auto
-  user@webserver:~$ chmod 0755 /usr/local/bin/certbot-auto
-  user@webserver:~$ /usr/local/bin/certbot-auto --help
+  wget https://dl.eff.org/certbot-auto
+  sudo mv certbot-auto /usr/local/bin/certbot-auto
+  sudo chown root /usr/local/bin/certbot-auto
+  sudo chmod 0755 /usr/local/bin/certbot-auto
+  /usr/local/bin/certbot-auto --help
+
+To remove certbot-auto, just delete it and the files it places under /opt/eff.org, along with any cronjob or systemd timer you may have created.
 
 To check the integrity of the ``certbot-auto`` script,
 you can use these steps::
@@ -328,9 +330,9 @@ Installing from source
 Installation from source is only supported for developers and the
 whole process is described in the :doc:`contributing`.
 
-.. warning:: Please do **not** use ``python setup.py install``, ``python pip
-   install .``, or ``easy_install .``. Please do **not** attempt the
+.. warning:: Please do **not** use ``python certbot/setup.py install``, ``python pip
+   install certbot``, or ``easy_install certbot``. Please do **not** attempt the
    installation commands as superuser/root and/or without virtual environment,
-   e.g. ``sudo python setup.py install``, ``sudo pip install``, ``sudo
+   e.g. ``sudo python certbot/setup.py install``, ``sudo pip install``, ``sudo
    ./venv/bin/...``. These modes of operation might corrupt your operating
    system and are **not supported** by the Certbot team!

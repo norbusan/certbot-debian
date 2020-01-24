@@ -19,7 +19,6 @@ import sys
 
 import sphinx
 
-
 here = os.path.abspath(os.path.dirname(__file__))
 
 # read version number (and other metadata) from package init
@@ -53,7 +52,7 @@ if sphinx.version_info >= (1, 6):
     extensions.append('sphinx.ext.imgconverter')
 
 autodoc_member_order = 'bysource'
-autodoc_default_flags = ['show-inheritance', 'private-members']
+autodoc_default_flags = ['show-inheritance']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

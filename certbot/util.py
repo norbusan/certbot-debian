@@ -1,10 +1,10 @@
 """Utilities for all Certbot."""
+# distutils.version under virtualenv confuses pylint
+# For more info, see: https://github.com/PyCQA/pylint/issues/73
 import argparse
 import atexit
 import collections
 from collections import OrderedDict
-# distutils.version under virtualenv confuses pylint
-# For more info, see: https://github.com/PyCQA/pylint/issues/73
 import distutils.version  # pylint: disable=import-error,no-name-in-module
 import errno
 import logging
@@ -13,21 +13,20 @@ import re
 import socket
 import subprocess
 import sys
-import warnings
 
 import configargparse
 import six
 
-from acme.magic_typing import Tuple, Union  # pylint: disable=unused-import, no-name-in-module
-
-from certbot import constants
+from acme.magic_typing import Tuple  # pylint: disable=unused-import, no-name-in-module
+from acme.magic_typing import Union  # pylint: disable=unused-import, no-name-in-module
 from certbot import errors
-from certbot import lock
-from certbot.compat import os
+from certbot._internal import constants
+from certbot._internal import lock
 from certbot.compat import filesystem
+from certbot.compat import os
 
 if sys.platform.startswith('linux'):
-    import distro
+    import distro  # pylint: disable=import-error
     _USE_DISTRO = True
 else:
     _USE_DISTRO = False
@@ -106,10 +105,9 @@ def exe_exists(exe):
     path, _ = os.path.split(exe)
     if path:
         return filesystem.is_executable(exe)
-    else:
-        for path in os.environ["PATH"].split(os.pathsep):
-            if filesystem.is_executable(os.path.join(path, exe)):
-                return True
+    for path in os.environ["PATH"].split(os.pathsep):
+        if filesystem.is_executable(os.path.join(path, exe)):
+            return True
 
     return False
 
@@ -308,19 +306,6 @@ def get_os_info_ua():
         return " ".join(get_python_os_info(pretty=True))
     return os_info
 
-def get_systemd_os_info():
-    """
-    Parse systemd /etc/os-release for distribution information
-
-    :returns: (os_name, os_version)
-    :rtype: `tuple` of `str`
-    """
-
-    warnings.warn(
-        "The get_sytemd_os_like() function is deprecated and will be removed in "
-        "a future release.", DeprecationWarning, stacklevel=2)
-    return get_os_info()[:2]
-
 def get_systemd_os_like():
     """
     Get a list of strings that indicate the distribution likeness to
@@ -450,7 +435,6 @@ def add_deprecated_argument(add_argument, argument_name, nargs):
         # In version 0.12.0 ACTION_TYPES_THAT_DONT_NEED_A_VALUE was
         # changed from a set to a tuple.
         if isinstance(configargparse.ACTION_TYPES_THAT_DONT_NEED_A_VALUE, set):
-            # pylint: disable=no-member
             configargparse.ACTION_TYPES_THAT_DONT_NEED_A_VALUE.add(
                 _ShowWarning)
         else:
@@ -551,7 +535,7 @@ def enforce_domain_sanity(domain):
     for l in labels:
         if not l:
             raise errors.ConfigurationError("{0} it contains an empty label.".format(msg))
-        elif len(l) > 63:
+        if len(l) > 63:
             raise errors.ConfigurationError("{0} label {1} is too long.".format(msg, l))
 
     return domain
@@ -585,7 +569,6 @@ def get_strict_version(normalized):
 
     """
     # strict version ending with "a" and a number designates a pre-release
-    # pylint: disable=no-member
     return distutils.version.StrictVersion(normalized.replace(".dev", "a"))
 
 

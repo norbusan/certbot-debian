@@ -13,22 +13,22 @@ zope.component
 zope.interface
 
 [:sys_platform == "win32"]
-pywin32>=225
+pywin32>=227
 
 [dev]
-astroid==1.6.5
 coverage
 ipdb
 pytest
 pytest-cov
 pytest-xdist
-pylint==1.9.4
 tox
 twine
 wheel
 
 [dev3]
+astroid
 mypy
+pylint
 typing
 
 [docs]

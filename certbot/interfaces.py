@@ -1,10 +1,10 @@
 """Certbot client interfaces."""
 import abc
+
 import six
 import zope.interface
 
 # pylint: disable=no-self-argument,no-method-argument,no-init,inherit-non-class
-# pylint: disable=too-few-public-methods
 
 
 @six.add_metaclass(abc.ABCMeta)
@@ -295,10 +295,10 @@ class IInstaller(IPlugin):
 
         :param str domain: domain for which to provide enhancement
         :param str enhancement: An enhancement as defined in
-            :const:`~certbot.constants.ENHANCEMENTS`
+            :const:`~certbot.plugins.enhancements.ENHANCEMENTS`
         :param options: Flexible options parameter for enhancement.
             Check documentation of
-            :const:`~certbot.constants.ENHANCEMENTS`
+            :const:`~certbot.plugins.enhancements.ENHANCEMENTS`
             for expected options for each enhancement.
 
         :raises .PluginError: If Enhancement is not supported, or if
@@ -310,7 +310,7 @@ class IInstaller(IPlugin):
         """Returns a `collections.Iterable` of supported enhancements.
 
         :returns: supported enhancements which should be a subset of
-            :const:`~certbot.constants.ENHANCEMENTS`
+            :const:`~certbot.plugins.enhancements.ENHANCEMENTS`
         :rtype: :class:`collections.Iterable` of :class:`str`
 
         """
@@ -372,7 +372,6 @@ class IInstaller(IPlugin):
 
 class IDisplay(zope.interface.Interface):
     """Generic display."""
-    # pylint: disable=too-many-arguments
     # see https://github.com/certbot/certbot/issues/3915
 
     def notification(message, pause, wrap=True, force_interactive=False):
@@ -534,6 +533,62 @@ class IReporter(zope.interface.Interface):
         """Prints messages to the user and clears the message queue."""
 
 
+@six.add_metaclass(abc.ABCMeta)
+class RenewableCert(object):
+    """Interface to a certificate lineage."""
+
+    @abc.abstractproperty
+    def cert_path(self):
+        """Path to the certificate file.
+
+        :rtype: str
+
+        """
+
+    @abc.abstractproperty
+    def key_path(self):
+        """Path to the private key file.
+
+        :rtype: str
+
+        """
+
+    @abc.abstractproperty
+    def chain_path(self):
+        """Path to the certificate chain file.
+
+        :rtype: str
+
+        """
+
+    @abc.abstractproperty
+    def fullchain_path(self):
+        """Path to the full chain file.
+
+        The full chain is the certificate file plus the chain file.
+
+        :rtype: str
+
+        """
+
+    @abc.abstractproperty
+    def lineagename(self):
+        """Name given to the certificate lineage.
+
+        :rtype: str
+
+        """
+
+    @abc.abstractmethod
+    def names(self):
+        """What are the subject names of this certificate?
+
+        :returns: the subject names
+        :rtype: `list` of `str`
+        :raises .CertStorageError: if could not find cert file.
+
+        """
+
 # Updater interfaces
 #
 # When "certbot renew" is run, Certbot will iterate over each lineage and check
@@ -572,7 +627,7 @@ class GenericUpdater(object):
         This method is called once for each lineage.
 
         :param lineage: Certificate lineage object
-        :type lineage: storage.RenewableCert
+        :type lineage: RenewableCert
 
         """
 
@@ -601,6 +656,6 @@ class RenewDeployer(object):
         This method is called once for each lineage renewed
 
         :param lineage: Certificate lineage object
-        :type lineage: storage.RenewableCert
+        :type lineage: RenewableCert
 
         """
