@@ -1,3 +1,12 @@
+python-certbot (1.1.0-1) unstable; urgency=medium
+
+  * New upstream version 1.1.0
+  * Drop inactive Uploaders
+  * Bump S-V; no changes needed
+  * Cleanup unnecessary version deps (cme fix)
+
+ -- Harlan Lieberman-Berg <hlieberman@debian.org>  Thu, 23 Jan 2020 23:02:48 -0500
+
 python-certbot (0.40.0-1) unstable; urgency=medium
 
   * New upstream version 0.40.0
