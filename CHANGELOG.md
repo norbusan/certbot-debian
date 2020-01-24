@@ -2,6 +2,78 @@
 
 Certbot adheres to [Semantic Versioning](https://semver.org/).
 
+## 1.1.0 - 2020-01-14
+
+### Added
+
+*
+
+### Changed
+
+* Removed the fallback introduced with 0.34.0 in `acme` to retry a POST-as-GET
+  request as a GET request when the targeted ACME CA server seems to not support
+  POST-as-GET requests.
+* certbot-auto no longer supports architectures other than x86_64 on RHEL 6
+  based systems. Existing certbot-auto installations affected by this will
+  continue to work, but they will no longer receive updates. To install a
+  newer version of Certbot on these systems, you should update your OS.
+* Support for Python 3.4 in Certbot and its ACME library is deprecated and will be
+  removed in the next release of Certbot. certbot-auto users on x86_64 systems running
+  RHEL 6 or derivatives will be asked to enable Software Collections (SCL) repository
+  so Python 3.6 can be installed. certbot-auto can enable the SCL repo for you on CentOS 6
+  while users on other RHEL 6 based systems will be asked to do this manually.
+
+### Fixed
+
+*
+
+More details about these changes can be found on our GitHub repo.
+
+## 1.0.0 - 2019-12-03
+
+### Added
+
+*
+
+### Removed
+
+* The `docs` extras for the `certbot-apache` and `certbot-nginx` packages
+  have been removed.
+
+### Changed
+
+* certbot-auto has deprecated support for systems using OpenSSL 1.0.1 that are
+  not running on x86-64. This primarily affects RHEL 6 based systems.
+* Certbot's `config_changes` subcommand has been removed
+* `certbot.plugins.common.TLSSNI01` has been removed.
+* Deprecated attributes related to the TLS-SNI-01 challenge in
+  `acme.challenges` and `acme.standalone`
+  have been removed.
+* The functions `certbot.client.view_config_changes`,
+  `certbot.main.config_changes`,
+  `certbot.plugins.common.Installer.view_config_changes`,
+  `certbot.reverter.Reverter.view_config_changes`, and
+  `certbot.util.get_systemd_os_info` have been removed
+* Certbot's `register --update-registration` subcommand has been removed
+* When possible, default to automatically configuring the webserver so all requests
+  redirect to secure HTTPS access. This is mostly relevant when running Certbot
+  in non-interactive mode. Previously, the default was to not redirect all requests.
+
+### Fixed
+
+*
+
+More details about these changes can be found on our GitHub repo.
+
+## 0.40.1 - 2019-11-05
+
+### Changed
+
+* Added back support for Python 3.4 to Certbot components and certbot-auto due
+  to a bug when requiring Python 2.7 or 3.5+ on RHEL 6 based systems.
+
+More details about these changes can be found on our GitHub repo.
+
 ## 0.40.0 - 2019-11-05
 
 ### Added
@@ -32,6 +104,7 @@ Certbot adheres to [Semantic Versioning](https://semver.org/).
 * acme.standalone.BaseRequestHandlerWithLogging and
   acme.standalone.simple_tls_sni_01_server have been deprecated and will be
   removed in a future release of the library.
+* certbot-dns-rfc2136 now use TCP to query SOA records.
 
 ### Fixed
 
@@ -49,7 +122,7 @@ More details about these changes can be found on our GitHub repo.
 ### Changed
 
 * Don't send OCSP requests for expired certificates
-* Return to using platform.linux_distribution instead of distro.linux_distribution in OS fingerprinting for Python < 3.8 
+* Return to using platform.linux_distribution instead of distro.linux_distribution in OS fingerprinting for Python < 3.8
 * Updated the Nginx plugin's TLS configuration to keep support for some versions of IE11.
 
 ### Fixed

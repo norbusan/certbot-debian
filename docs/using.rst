@@ -58,8 +58,8 @@ standalone_ Y    N    | Uses a "standalone" webserver to obtain a certificate.  
                       | the only way to obtain wildcard certificates from Let's
                       | Encrypt.
 manual_     Y    N    | Helps you obtain a certificate by giving you instructions to  http-01_ (80) or
-                      | perform domain validation yourself. Additionally allows you   dns-01_ (53) 
-                      | to specify scripts to automate the validation task in a 
+                      | perform domain validation yourself. Additionally allows you   dns-01_ (53)
+                      | to specify scripts to automate the validation task in a
                       | customized way.
 =========== ==== ==== =============================================================== =============================
 
@@ -83,7 +83,7 @@ Apache
 ------
 
 The Apache plugin currently `supports
-<https://github.com/certbot/certbot/blob/master/certbot-apache/certbot_apache/entrypoint.py>`_
+<https://github.com/certbot/certbot/blob/master/certbot-apache/certbot_apache/_internal/entrypoint.py>`_
 modern OSes based on Debian, Fedora, SUSE, Gentoo and Darwin.
 This automates both obtaining *and* installing certificates on an Apache
 webserver. To specify this plugin on the command line, simply include
@@ -275,7 +275,7 @@ haproxy_           Y    Y    Integration with the HAProxy load balancer
 s3front_           Y    Y    Integration with Amazon CloudFront distribution of S3 buckets
 gandi_             Y    N    Obtain certificates via the Gandi LiveDNS API
 varnish_           Y    N    Obtain certificates via a Varnish server
-external_          Y    N    A plugin for convenient scripting (See also ticket 2782_)
+external-auth_     Y    Y    A plugin for convenient scripting
 pritunl_           N    Y    Install certificates in pritunl distributed OpenVPN servers
 proxmox_           N    Y    Install certificates in Proxmox Virtualization servers
 dns-standalone_    Y    N    Obtain certificates via an integrated DNS server
@@ -286,10 +286,9 @@ dns-ispconfig_     Y    N    DNS Authentication using ISPConfig as DNS server
 .. _s3front: https://github.com/dlapiduz/letsencrypt-s3front
 .. _gandi: https://github.com/obynio/certbot-plugin-gandi
 .. _varnish: http://git.sesse.net/?p=letsencrypt-varnish-plugin
-.. _2782: https://github.com/certbot/certbot/issues/2782
 .. _pritunl: https://github.com/kharkevich/letsencrypt-pritunl
 .. _proxmox: https://github.com/kharkevich/letsencrypt-proxmox
-.. _external: https://github.com/marcan/letsencrypt-external
+.. _external-auth: https://github.com/EnigmaBridge/certbot-external-auth
 .. _dns-standalone: https://github.com/siilike/certbot-dns-standalone
 .. _dns-ispconfig: https://github.com/m42e/certbot-dns-ispconfig
 
@@ -680,8 +679,8 @@ Where are my certificates?
 ==========================
 
 All generated keys and issued certificates can be found in
-``/etc/letsencrypt/live/$domain``. In the case of creating a SAN certificate 
-with multiple alternative names, ``$domain`` is the first domain passed in 
+``/etc/letsencrypt/live/$domain``. In the case of creating a SAN certificate
+with multiple alternative names, ``$domain`` is the first domain passed in
 via -d parameter. Rather than copying, please point
 your (web) server configuration directly to those files (or create
 symlinks). During the renewal_, ``/etc/letsencrypt/live`` is updated

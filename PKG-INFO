@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: certbot
-Version: 0.40.0
+Version: 1.1.0
 Summary: ACME client
 Home-page: https://github.com/letsencrypt/letsencrypt
 Author: Certbot Project
@@ -24,7 +24,7 @@ Description: .. This file contains a series of comments that are used to include
         systems.
         
         To see the changes made to Certbot between versions please refer to our
-        `changelog <https://github.com/certbot/certbot/blob/master/CHANGELOG.md>`_.
+        `changelog <https://github.com/certbot/certbot/blob/master/certbot/CHANGELOG.md>`_.
         
         Until May 2016, Certbot was named simply ``letsencrypt`` or ``letsencrypt-auto``,
         depending on install method. Instructions on the Internet, and some pieces of the
