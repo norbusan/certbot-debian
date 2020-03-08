@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# First, define a safe place for us to puke files
+if [ -d $AUTOPKGTEST_TMP ]
+then
+    TMP_DIR=$AUTOPKGTEST_TMP
+else
+    TMP_DIR=`mktemp -d`
+fi
+
+# Background pebble, since we'll need that
+## Speed up pebble
+export PEBBLE_VA_NOSLEEP = 1
+## Prevent flakiness from nonce failures
+export PEBBLE_WFE_NONCEREJECT = 0
+pebble -config debian/tests/pebble-config.json &
+
+# Next, trigger certbot
+certbot \
+    --no-random-sleep-on-renew \
+    --server https://localhost:14000/directory \
+    --no-verify-ssl \
+    --http-01-port 5002 \
+    --https-port 5001 \
+    --manual-public-ip-logging-ok \
+    --config-dir ${TMP_DIR}/certbot/http_01/conf \
+    --work-dir ${TMP_DIR}/certbot/http_01/work \
+    --logs-dir ${TMP_DIR}/certbot/http_01/logs \
+    --non-interactive \
+    --no-redirect \
+    --agree-tos \
+    --register-unsafely-without-email \
+    --debug \
+    -vv \
+    certonly -d localhost --standalone
