@@ -10,6 +10,7 @@ certbot/crypto_util.py
 certbot/errors.py
 certbot/interfaces.py
 certbot/main.py
+certbot/ocsp.py
 certbot/reverter.py
 certbot/ssl-dhparams.pem
 certbot/util.py
@@ -23,7 +24,6 @@ certbot/_internal/__init__.py
 certbot/_internal/account.py
 certbot/_internal/auth_handler.py
 certbot/_internal/cert_manager.py
-certbot/_internal/cli.py
 certbot/_internal/client.py
 certbot/_internal/configuration.py
 certbot/_internal/constants.py
@@ -33,12 +33,20 @@ certbot/_internal/hooks.py
 certbot/_internal/lock.py
 certbot/_internal/log.py
 certbot/_internal/main.py
-certbot/_internal/notify.py
-certbot/_internal/ocsp.py
 certbot/_internal/renewal.py
 certbot/_internal/reporter.py
 certbot/_internal/storage.py
 certbot/_internal/updater.py
+certbot/_internal/cli/__init__.py
+certbot/_internal/cli/cli_constants.py
+certbot/_internal/cli/cli_utils.py
+certbot/_internal/cli/group_adder.py
+certbot/_internal/cli/helpful.py
+certbot/_internal/cli/paths_parser.py
+certbot/_internal/cli/plugins_parsing.py
+certbot/_internal/cli/report_config_interaction.py
+certbot/_internal/cli/subparsers.py
+certbot/_internal/cli/verb_help.py
 certbot/_internal/display/__init__.py
 certbot/_internal/display/completer.py
 certbot/_internal/display/dummy_readline.py
@@ -109,6 +117,7 @@ docs/api.rst
 docs/challenges.rst
 docs/ciphers.rst
 docs/cli-help.txt
+docs/compatibility.rst
 docs/conf.py
 docs/contributing.rst
 docs/index.rst
@@ -133,6 +142,7 @@ docs/api/certbot.display.util.rst
 docs/api/certbot.errors.rst
 docs/api/certbot.interfaces.rst
 docs/api/certbot.main.rst
+docs/api/certbot.ocsp.rst
 docs/api/certbot.plugins.common.rst
 docs/api/certbot.plugins.dns_common.rst
 docs/api/certbot.plugins.dns_common_lexicon.rst
@@ -166,11 +176,11 @@ tests/crypto_util_test.py
 tests/eff_test.py
 tests/error_handler_test.py
 tests/errors_test.py
+tests/helpful_test.py
 tests/hook_test.py
 tests/lock_test.py
 tests/log_test.py
 tests/main_test.py
-tests/notify_test.py
 tests/ocsp_test.py
 tests/renewal_test.py
 tests/renewupdater_test.py

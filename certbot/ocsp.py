@@ -16,21 +16,20 @@ from cryptography.hazmat.primitives import serialization
 import pytz
 import requests
 
-from acme.magic_typing import Optional  # pylint: disable=unused-import, no-name-in-module
-from acme.magic_typing import Tuple  # pylint: disable=unused-import, no-name-in-module
+from acme.magic_typing import Optional
+from acme.magic_typing import Tuple
 from certbot import crypto_util
 from certbot import errors
 from certbot import util
-from certbot._internal.storage import RenewableCert  # pylint: disable=unused-import
+from certbot.interfaces import RenewableCert  # pylint: disable=unused-import
 
 try:
     # Only cryptography>=2.5 has ocsp module
     # and signature_hash_algorithm attribute in OCSPResponse class
-    from cryptography.x509 import ocsp  # pylint: disable=import-error, ungrouped-imports
+    from cryptography.x509 import ocsp  # pylint: disable=ungrouped-imports
     getattr(ocsp.OCSPResponse, 'signature_hash_algorithm')
 except (ImportError, AttributeError):  # pragma: no cover
     ocsp = None  # type: ignore
-
 
 
 logger = logging.getLogger(__name__)
@@ -64,13 +63,24 @@ class RevocationChecker(object):
 
         .. todo:: Make this a non-blocking call
 
-        :param `.storage.RenewableCert` cert: Certificate object
+        :param `.interfaces.RenewableCert` cert: Certificate object
         :returns: True if revoked; False if valid or the check failed or cert is expired.
         :rtype: bool
 
         """
-        cert_path, chain_path = cert.cert, cert.chain
+        return self.ocsp_revoked_by_paths(cert.cert_path, cert.chain_path)
 
+    def ocsp_revoked_by_paths(self, cert_path, chain_path):
+        # type: (str, str) -> bool
+        """Performs the OCSP revocation check
+
+        :param str cert_path: Certificate filepath
+        :param str chain_path: Certificate chain filepath
+
+        :returns: True if revoked; False if valid or the check failed or cert is expired.
+        :rtype: bool
+
+        """
         if self.broken:
             return False
 
@@ -78,7 +88,7 @@ class RevocationChecker(object):
         # so don't check OCSP if the cert is expired.
         # https://github.com/certbot/certbot/issues/7152
         now = pytz.UTC.fromutc(datetime.utcnow())
-        if cert.target_expiry <= now:
+        if crypto_util.notAfter(cert_path) <= now:
             return False
 
         url, host = _determine_ocsp_server(cert_path)
@@ -192,7 +202,7 @@ def _check_ocsp_cryptography(cert_path, chain_path, url):
 
 
 def _check_ocsp_response(response_ocsp, request_ocsp, issuer_cert, cert_path):
-    """Verify that the OCSP is valid for serveral criterias"""
+    """Verify that the OCSP is valid for serveral criteria"""
     # Assert OCSP response corresponds to the certificate we are talking about
     if response_ocsp.serial_number != request_ocsp.serial_number:
         raise AssertionError('the certificate in response does not correspond '
@@ -296,5 +306,5 @@ def _translate_ocsp_query(cert_path, ocsp_output, ocsp_errors):
         return True
     else:
         logger.warning("Unable to properly parse OCSP output: %s\nstderr:%s",
-                    ocsp_output, ocsp_errors)
+                       ocsp_output, ocsp_errors)
         return False
