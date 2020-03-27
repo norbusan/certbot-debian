@@ -4,6 +4,6 @@ Restrictions: superficial
 Features: test-name=smoke
 
 # End to End HTTP
-Tests: http-01, dns-01, tls-alpn-01
+Tests: http-01
 Depends: pebble
 Restrictions: allow-stderr, isolation-container
