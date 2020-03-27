@@ -1,3 +1,10 @@
+python-certbot (1.3.0-1) unstable; urgency=medium
+
+  * New upstream version 1.3.0
+  * Enable end-to-end testing 🎉
+
+ -- Harlan Lieberman-Berg <hlieberman@debian.org>  Thu, 26 Mar 2020 21:07:58 -0400
+
 python-certbot (1.1.0-1) unstable; urgency=medium
 
   * New upstream version 1.1.0
