@@ -29,7 +29,6 @@ wheel
 astroid
 mypy
 pylint
-typing
 
 [docs]
 repoze.sphinx.autointerface
